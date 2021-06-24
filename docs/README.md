@@ -3,7 +3,7 @@
 This is the API reference and example documentation for [Paytrail](https://www.paytrail.com/) - a Payment Service Provider with
 which ecommerce merchants can accept payments mobile and online.
 
-OpenAPI 3 specification for the API is also [available for download](paytrail-api.yaml ":ignore").
+OpenAPI 3 specification for the API is also [available for download](paytrail-api.yaml ':ignore').
 
 ?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/CheckoutFinland/psp-api/issues). You can also ask for support by opening an issue on GitHub. Thank you!
 
@@ -351,10 +351,7 @@ const applePayParameters = response.customProviders.applepay.parameters;
 
 const responseToApplePayHtml = (response) =>
   `<div id="apple-pay-button">
-    ${applePayParameters.map(
-      (param) =>
-        `<input type='hidden' name='${param.name}' value='${param.value}' />`
-    )}
+    ${applePayParameters.map((param) => `<input type='hidden' name='${param.name}' value='${param.value}' />`)}
   </div>`;
 ```
 
@@ -387,7 +384,7 @@ const applePayButton = checkoutFinland.applePayButton;
 // canMakePayment() checks that the user is on a Safari browser which supports Apple Pay.
 if (applePayButton.canMakePayment()) {
   // Mount the button to the element you created earlier, here e.g. #apple-pay-button.
-  applePayButton.mount("#apple-pay-button", (redirectUrl) => {
+  applePayButton.mount('#apple-pay-button', (redirectUrl) => {
     setTimeout(() => {
       window.location.replace(redirectUrl);
     }, 1500);

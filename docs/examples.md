@@ -358,10 +358,10 @@ Email refund payload is otherwise the same (ie. for shop-in-shop merchants there
 ### HMAC calculation (node.js)
 
 ```javascript
-const crypto = require("crypto");
+const crypto = require('crypto');
 
-const ACCOUNT = "375917";
-const SECRET = "SAIPPUAKAUPPIAS";
+const ACCOUNT = '375917';
+const SECRET = 'SAIPPUAKAUPPIAS';
 
 /**
  * Calculate HMAC
@@ -373,42 +373,42 @@ const SECRET = "SAIPPUAKAUPPIAS";
 const calculateHmac = (secret, params, body) => {
   const hmacPayload = Object.keys(params)
     .sort()
-    .map((key) => [key, params[key]].join(":"))
-    .concat(body ? JSON.stringify(body) : "")
-    .join("\n");
+    .map((key) => [key, params[key]].join(':'))
+    .concat(body ? JSON.stringify(body) : '')
+    .join('\n');
 
-  return crypto.createHmac("sha256", secret).update(hmacPayload).digest("hex");
+  return crypto.createHmac('sha256', secret).update(hmacPayload).digest('hex');
 };
 
 const headers = {
-  "checkout-account": ACCOUNT,
-  "checkout-algorithm": "sha256",
-  "checkout-method": "POST",
-  "checkout-nonce": "564635208570151",
-  "checkout-timestamp": "2018-07-06T10:01:31.904Z",
+  'checkout-account': ACCOUNT,
+  'checkout-algorithm': 'sha256',
+  'checkout-method': 'POST',
+  'checkout-nonce': '564635208570151',
+  'checkout-timestamp': '2018-07-06T10:01:31.904Z',
 };
 
 const body = {
-  stamp: "unique-identifier-for-merchant",
-  reference: "3759170",
+  stamp: 'unique-identifier-for-merchant',
+  reference: '3759170',
   amount: 1525,
-  currency: "EUR",
-  language: "FI",
+  currency: 'EUR',
+  language: 'FI',
   items: [
     {
       unitPrice: 1525,
       units: 1,
       vatPercentage: 24,
-      productCode: "#1234",
-      deliveryDate: "2018-09-01",
+      productCode: '#1234',
+      deliveryDate: '2018-09-01',
     },
   ],
   customer: {
-    email: "test.customer@example.com",
+    email: 'test.customer@example.com',
   },
   redirectUrls: {
-    success: "https://ecom.example.com/cart/success",
-    cancel: "https://ecom.example.com/cart/cancel",
+    success: 'https://ecom.example.com/cart/success',
+    cancel: 'https://ecom.example.com/cart/cancel',
   },
 };
 

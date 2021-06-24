@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: '3.0.0'
 info:
   version: 2.0.0
   title: Payment service API
@@ -58,7 +58,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -79,20 +79,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PaymentRequest"
+              $ref: '#/components/schemas/PaymentRequest'
       responses:
-        "201":
+        '201':
           description: Payment request created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentRequestResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/PaymentRequestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/{transactionId}:
     get:
@@ -145,7 +145,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -161,20 +161,20 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Payment response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Payment"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/{transactionId}/refund:
     post:
@@ -229,7 +229,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -250,28 +250,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Refund"
+              $ref: '#/components/schemas/Refund'
       responses:
-        "201":
+        '201':
           description: Refund created succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefundResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "422":
+                $ref: '#/components/schemas/RefundResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
           description: Payment method provider does not support refunds
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/{transactionId}/activate-invoice:
     post:
@@ -325,7 +325,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -341,20 +341,20 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Invoice activated succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivateInvoiceResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                $ref: '#/components/schemas/ActivateInvoiceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /merchants/payment-providers:
     get:
@@ -397,7 +397,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -439,18 +439,18 @@ paths:
           explode: false
           style: form
       responses:
-        "200":
+        '200':
           description: Payment methods available
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/BasePaymentMethodProvider"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                  $ref: '#/components/schemas/BasePaymentMethodProvider'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
   /merchants/grouped-payment-providers:
     get:
       tags:
@@ -492,7 +492,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -547,16 +547,16 @@ paths:
               - EN
           style: form
       responses:
-        "200":
+        '200':
           description: Payment methods available
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupedPaymentProvidersResponse"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/GroupedPaymentProvidersResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /settlements:
     get:
@@ -570,7 +570,7 @@ paths:
         - name: startDate
           in: query
           description: Filter out settlements created before given date.
-          example: "2019-01-01"
+          example: '2019-01-01'
           required: false
           style: form
           schema:
@@ -579,7 +579,7 @@ paths:
         - name: endDate
           in: query
           description: Filter out settlements created after given date.
-          example: "2019-01-01"
+          example: '2019-01-01'
           required: false
           style: form
           schema:
@@ -588,7 +588,7 @@ paths:
         - name: bankReference
           in: query
           description: Only include settlements with the given bank reference
-          example: "1234567890-1111"
+          example: '1234567890-1111'
           required: false
           style: form
           schema:
@@ -597,7 +597,7 @@ paths:
         - name: limit
           in: query
           description: Limit the number of settlement IDs returned
-          example: "1"
+          example: '1'
           required: false
           style: form
           schema:
@@ -606,7 +606,7 @@ paths:
         - name: submerchant
           in: header
           description: Get submerchant's payment report
-          example: "695874"
+          example: '695874'
           required: false
           style: form
           schema:
@@ -640,7 +640,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -650,22 +650,22 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: List of settlement IDs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SettlementIdItem"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                  $ref: '#/components/schemas/SettlementIdItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /tokenization/addcard-form:
     post:
@@ -681,20 +681,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddCardFormRequest"
+              $ref: '#/components/schemas/AddCardFormRequest'
       responses:
-        "302":
+        '302':
           description: Redirect to card addition form (or checkout-redirect-cancel-url)
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "403":
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
           description: Tokenization not allowed for merchant
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /tokenization/{checkout-tokenization-id}:
     post:
@@ -733,7 +733,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -749,22 +749,22 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Tokenization request response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenizationRequestResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "403":
+                $ref: '#/components/schemas/TokenizationRequestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
           description: Credit cards and/or AMEX not enabled for merchant
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /payments/token/mit/charge:
     post:
@@ -803,7 +803,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -824,20 +824,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TokenPaymentRequest"
+              $ref: '#/components/schemas/TokenPaymentRequest'
       responses:
-        "201":
+        '201':
           description: MIT charge request created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/token/mit/authorization-hold:
     post:
@@ -876,7 +876,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -897,20 +897,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TokenPaymentRequest"
+              $ref: '#/components/schemas/TokenPaymentRequest'
       responses:
-        "201":
+        '201':
           description: MIT authorization hold request created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/token/cit/charge:
     post:
@@ -949,7 +949,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -970,26 +970,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TokenPaymentRequest"
+              $ref: '#/components/schemas/TokenPaymentRequest'
       responses:
-        "201":
+        '201':
           description: CIT charge request created successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "403":
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '403':
           description: CIT charge requires 3DS authentication step up. Please redirect user to given URL.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenCITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenCITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/token/cit/authorization-hold:
     post:
@@ -1028,7 +1028,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -1049,26 +1049,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TokenPaymentRequest"
+              $ref: '#/components/schemas/TokenPaymentRequest'
       responses:
-        "201":
+        '201':
           description: CIT authorization hold request created successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "403":
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '403':
           description: CIT authorization hold requires 3DS authentication step up. Please redirect user to given URL.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenCITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenCITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/{transactionId}/token/commit:
     post:
@@ -1107,7 +1107,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -1128,20 +1128,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TokenPaymentRequest"
+              $ref: '#/components/schemas/TokenPaymentRequest'
       responses:
-        "201":
+        '201':
           description: CIT authorization hold committed successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/{transactionId}/token/revert:
     post:
@@ -1180,7 +1180,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -1196,18 +1196,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Authorization hold reverted successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TokenMITPaymentResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
+                $ref: '#/components/schemas/TokenMITPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
   /payments/report:
     post:
@@ -1246,7 +1246,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -1261,39 +1261,39 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PaymentReportRequest"
+              $ref: '#/components/schemas/PaymentReportRequest'
       responses:
-        "200":
+        '200':
           description: Payment report request response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentReportRequestResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                $ref: '#/components/schemas/PaymentReportRequestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
 
       callbacks:
         reportReady:
-          "{$request.body#/callbackUrl}":
+          '{$request.body#/callbackUrl}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: "#/components/schemas/PaymentReportCallbackJSON"
+                      $ref: '#/components/schemas/PaymentReportCallbackJSON'
                   application/csv:
                     schema:
                       description: The report as a CSV file
                       type: string
               responses: # Expected responses to the callback message
-                "200":
+                '200':
                   description: Your server returns this code if it can accept the callback
                 default:
                   description: Your server can not handle callback - will result in re-sending of the report to the given callback url.
@@ -1313,7 +1313,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "2397548234"
+            example: '2397548234'
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -1342,7 +1342,7 @@ paths:
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
-          example: "2018-08-08T10:10:59Z"
+          example: '2018-08-08T10:10:59Z'
           schema:
             type: string
             format: date-time
@@ -1357,38 +1357,38 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PaymentReportBySettlementIdRequest"
+              $ref: '#/components/schemas/PaymentReportBySettlementIdRequest'
       responses:
-        "200":
+        '200':
           description: Payment report request response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentReportRequestResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                $ref: '#/components/schemas/PaymentReportRequestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
-          $ref: "#/components/responses/Error"
+          $ref: '#/components/responses/Error'
       callbacks:
         reportReady:
-          "{$request.body#/callbackUrl}":
+          '{$request.body#/callbackUrl}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: "#/components/schemas/PaymentReportCallbackJSON"
+                      $ref: '#/components/schemas/PaymentReportCallbackJSON'
                   application/csv:
                     schema:
                       description: The report as a CSV file
                       type: string
               responses: # Expected responses to the callback message
-                "200":
+                '200':
                   description: Your server returns this code if it can accept the callback
                 default:
                   description: Your server can not handle callback - will result in re-sending of the report to the given callback url.
@@ -1446,21 +1446,21 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/Item"
+            $ref: '#/components/schemas/Item'
         customer:
-          $ref: "#/components/schemas/Customer"
+          $ref: '#/components/schemas/Customer'
         deliveryAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         invoicingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         manualInvoiceActivation:
           type: boolean
           example: false
           description: If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Collector.
         redirectUrls:
-          $ref: "#/components/schemas/Callbacks"
+          $ref: '#/components/schemas/Callbacks'
         callbackUrls:
-          $ref: "#/components/schemas/Callbacks"
+          $ref: '#/components/schemas/Callbacks'
         callbackDelay:
           type: integer
           minimum: 0
@@ -1530,17 +1530,17 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/Item"
+            $ref: '#/components/schemas/Item'
         customer:
-          $ref: "#/components/schemas/Customer"
+          $ref: '#/components/schemas/Customer'
         deliveryAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         invoicingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         redirectUrls:
-          $ref: "#/components/schemas/Callbacks"
+          $ref: '#/components/schemas/Callbacks'
         callbackUrls:
-          $ref: "#/components/schemas/Callbacks"
+          $ref: '#/components/schemas/Callbacks'
         callbackDelay:
           type: integer
           minimum: 0
@@ -1584,13 +1584,13 @@ components:
           description: Item VAT percentage
         productCode:
           type: string
-          example: "#927502759"
+          example: '#927502759'
           maxLength: 100
           description: Merchant specific product code
         deliveryDate:
           type: string
           format: date
-          example: "2018-03-07"
+          example: '2018-03-07'
           description: Estimated delivery date
         description:
           type: string
@@ -1648,14 +1648,14 @@ components:
       properties:
         success:
           type: string
-          example: "https://ecom.example.org/success"
+          example: 'https://ecom.example.org/success'
           maxLength: 300
           description: |
             URL to call when payment is succesfully paid.
             Can called multiple times; one must ensure idempotency of this endpoint.
         cancel:
           type: string
-          example: "https://ecom.example.org/cancel"
+          example: 'https://ecom.example.org/cancel'
           maxLength: 300
           description: |
             URL to call when payment is cancelled and not fulfilled.
@@ -1677,7 +1677,7 @@ components:
         postalCode:
           type: string
           pattern: '^\d+$'
-          example: "00100"
+          example: '00100'
           maxLength: 15
           description: Postal code
         city:
@@ -1824,10 +1824,10 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/RefundItem"
+            $ref: '#/components/schemas/RefundItem'
           description: Item level refund information for SiS refunds.
         callbackUrls:
-          $ref: "#/components/schemas/Callbacks"
+          $ref: '#/components/schemas/Callbacks'
 
     RefundItem:
       type: object
@@ -1915,9 +1915,9 @@ components:
           description: Token used to make authorization holds & charges on card
           example: 123e4567-e89b-12d3-a456-426655440000
         customer:
-          $ref: "#/components/schemas/TokenCustomerDetails"
+          $ref: '#/components/schemas/TokenCustomerDetails'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
 
     PaymentReportRequest:
       type: object
@@ -1951,12 +1951,12 @@ components:
         startDate:
           type: string
           format: datetime
-          example: "2019-01-01T18:00:00"
+          example: '2019-01-01T18:00:00'
           description: Filter out payments created before given datetime.
         endDate:
           type: string
           format: datetime
-          example: "2019-01-02T20:00:00"
+          example: '2019-01-02T20:00:00'
           description: Filter out payments created after given datetime.
         limit:
           type: integer
@@ -2033,12 +2033,12 @@ components:
         groups:
           type: array
           items:
-            $ref: "#/components/schemas/PaymentMethodGroupData"
+            $ref: '#/components/schemas/PaymentMethodGroupData'
           description: Contains data about the payment method groups. Contains only the groups found in the response's providers.
         providers:
           type: array
           items:
-            $ref: "#/components/schemas/PaymentMethodProvider"
+            $ref: '#/components/schemas/PaymentMethodProvider'
 
     TokenMITPaymentResponse:
       type: object
@@ -2142,7 +2142,7 @@ components:
 
     PaymentMethodProvider:
       allOf:
-        - $ref: "#/components/schemas/BasePaymentMethodProvider"
+        - $ref: '#/components/schemas/BasePaymentMethodProvider'
         - description: Each payment method provider object describes an HTML form. The payment method parameters need to be posted to defined url in application/x-www-form-urlencoded format.
         - required:
             - name
@@ -2216,7 +2216,7 @@ components:
           example: 9187445
         createdAt:
           type: string
-          example: "2019-10-30T09:13:00"
+          example: '2019-10-30T09:13:00'
         href:
           type: string
           format: url
@@ -2231,7 +2231,7 @@ components:
           description: If paid, the filing code issued by the payment method provider if any
         paidAt:
           type: string
-          example: "2019-10-30T09:14:28"
+          example: '2019-10-30T09:14:28'
           description: Timestamp when the transaction was paid
 
     # TODO: Once async, response status should be 'pending'
@@ -2283,12 +2283,12 @@ components:
         createdAt:
           type: string
           format: datetime
-          example: "2019-01-01T00:00:00+02:00"
+          example: '2019-01-01T00:00:00+02:00'
           description: When the settlement was formed
         settledAt:
           type: string
           format: datetime
-          example: "2019-01-02T04:00:00+02:00"
+          example: '2019-01-02T04:00:00+02:00'
           description: When the settlement was paid
 
     PaymentReportBySettlementIdRequest:
@@ -2365,29 +2365,19 @@ components:
           type: string
           format: DD-MM-YYYY
           description: When the payment was paid or initialized
-          example: "11-06-2019"
+          example: '11-06-2019'
         created:
           type: string
           format: HH:mm
           description: Hour and minute of the payment creation
-          example: "11:31"
+          example: '11:31'
         amount:
           type: float
           description: Payment amount in Euros
           example: 15.95
         status:
           type: string
-          enum:
-            [
-              New,
-              Paid,
-              waiting for approval,
-              Cancelled,
-              Timeout,
-              Halted,
-              Delayed,
-              Paid and settled,
-            ]
+          enum: [New, Paid, waiting for approval, Cancelled, Timeout, Halted, Delayed, Paid and settled]
           description: Payment status
           example: Paid
         firstname:
@@ -2422,7 +2412,7 @@ components:
         postcode:
           type: string
           description: Postal code
-          example: "33100"
+          example: '33100'
         postoffice:
           type: string
           description: Post office
@@ -2434,15 +2424,15 @@ components:
         checkoutReference:
           type: string
           description: Checkout reference
-          example: "1031751"
+          example: '1031751'
         archiveNumber:
           type: string
           description: Archive number
-          example: "81295824808952395"
+          example: '81295824808952395'
         payerName:
           type: string
           description: Name from bank
-          example: "DOEJOHN"
+          example: 'DOEJOHN'
         settlementId:
           type: number
           description: Settlement (report) id
@@ -2451,7 +2441,7 @@ components:
           type: string
           description: When the payment is settled
           format: DD-MM-YYYY
-          example: "2019-04-04"
+          example: '2019-04-04'
         originalTradeReference:
           type: string
           description: Merchant's reference of the original payment in case of refund
@@ -2507,16 +2497,16 @@ components:
           type: array
           description: Payment method group data for all of groups that are included in the query
           items:
-            $ref: "#/components/schemas/PaymentMethodGroupDataWithProviders"
+            $ref: '#/components/schemas/PaymentMethodGroupDataWithProviders'
         providers:
           type: array
           description: A flat list of payment method providers
           items:
-            $ref: "#/components/schemas/PaymentMethodProvider"
+            $ref: '#/components/schemas/PaymentMethodProvider'
 
     PaymentMethodGroupDataWithProviders:
       allOf:
-        - $ref: "#/components/schemas/PaymentMethodGroupData"
+        - $ref: '#/components/schemas/PaymentMethodGroupData'
         - description: Localized name, icon and providers data for single payment method group
         - required:
             - id
@@ -2528,7 +2518,7 @@ components:
             providers:
               type: array
               items:
-                $ref: "#/components/schemas/PaymentMethodProvider"
+                $ref: '#/components/schemas/PaymentMethodProvider'
 
     Error:
       required:
@@ -2554,22 +2544,22 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: The specified resource was not found
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
     Error:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'

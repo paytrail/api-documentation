@@ -5,19 +5,13 @@
     <title>Paytrail Payment API</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="Description" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css" />
 
     <link rel="stylesheet" href="./style.css" />
   </head>
@@ -38,8 +32,8 @@
       var num = 0;
       mermaid.initialize({
         startOnLoad: false,
-        theme: "base",
-        themeVariables: { primaryColor: "#dadada", noteBkgColor: "#ebf8f2" },
+        theme: 'base',
+        themeVariables: { primaryColor: '#dadada', noteBkgColor: '#ebf8f2' },
 
         sequence: {
           useMaxWidth: true,
@@ -48,23 +42,19 @@
       });
 
       window.$docsify = {
-        name: "",
-        repo: "CheckoutFinland/psp-api",
+        name: '',
+        repo: 'CheckoutFinland/psp-api',
         maxLevel: 3,
         subMaxLevel: 3,
-        themeColor: "#e60094",
-        name: "Paytrail Payment API",
-        logo: "images/paytrail-logo.svg",
+        themeColor: '#e60094',
+        name: 'Paytrail Payment API',
+        logo: 'images/paytrail-logo.svg',
 
         markdown: {
           renderer: {
             code: function (code, lang) {
-              if (lang === "mermaid") {
-                return (
-                  '<div class="mermaid">' +
-                  mermaid.render("mermaid-svg-" + num++, code) +
-                  "</div>"
-                );
+              if (lang === 'mermaid') {
+                return '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + '</div>';
               }
               return this.origin.code.apply(this, arguments);
             },
