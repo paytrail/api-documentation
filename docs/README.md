@@ -5,7 +5,7 @@ which ecommerce merchants can accept payments mobile and online.
 
 OpenAPI 3 specification for the API is also [available for download](paytrail-api.yaml ':ignore').
 
-?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/CheckoutFinland/psp-api/issues). You can also ask for support by opening an issue on GitHub. Thank you!
+?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/paytrail/api-documentation/issues). You can also ask for support by opening an issue on GitHub. Thank you!
 
 ## API endpoint
 

@@ -9,7 +9,7 @@ info:
     here, and the responses of some do not match the description here.
   contact:
     name: Checkout
-    url: https://github.com/CheckoutFinland/psp-api/issues
+    url: https://github.com/paytrail/api-documentation/issues
 servers:
   - url: https://api.checkout.fi
 tags:

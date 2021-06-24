@@ -1,8 +1,8 @@
 body {
-    font-family: "Poppins", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-  }
+  font-family: 'Poppins', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
 
-  .app-name img {
-    max-width: 100px;
-  }
+.app-name img {
+  max-width: 100px;
+}

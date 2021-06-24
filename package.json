@@ -8,7 +8,7 @@
   },
   "scripts": {
     "serve": "docsify serve -p 8080 docs",
-    "prettier": "prettier --write './docs/*.{html,md,yaml}'"
+    "prettier": "prettier --write './docs/*.{css,html,md,yaml}'"
   },
   "repository": {
     "type": "git",
