@@ -1,0 +1,6 @@
+singleQuote: true
+arrowParens: always
+semi: true
+quoteProps: consistent
+endOfLine: lf
+printWidth: 120

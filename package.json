@@ -1,0 +1,22 @@
+{
+  "name": "api-documentation",
+  "version": "1.0.0",
+  "description": "Paytrail Payment API documentation",
+  "devDependencies": {
+    "docsify": "4.12.1",
+    "prettier": "2.3.1"
+  },
+  "scripts": {
+    "serve": "docsify serve -p 8080 docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paytrail/api-documentation.git"
+  },
+  "author": "Paytrail Oyj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paytrail/api-documentation/issues"
+  },
+  "homepage": "https://github.com/paytrail/api-documentation#readme"
+}
