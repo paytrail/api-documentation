@@ -9,13 +9,13 @@ OpenAPI 3 specification for the API is also [available for download](paytrail-ap
 
 ## API endpoint
 
-API endpoint is `api.checkout.fi`
+API endpoint is `service.paytrail.com`
 
 ## Authentication
 
 All API calls need to be signed using HMAC and SHA-256 or SHA-512. When a request contains a body, the body must be valid JSON and a `content-type` header with the value `application/json; charset=utf-8` must be included.
 
-All API responses are signed the same way, allowing merchant to verify response validity. In addition, the responses contain `cof-request-id` header. Saving or logging the value of this header is recommended.
+All API responses are signed the same way, allowing merchant to verify response validity. In addition, the responses contain `request-id` header. Saving or logging the value of this header is recommended.
 
 The signature is transmitted in the `signature` HTTP header. Signature payload consists of the following fields separated with a line feed (`\n`). Carriage returns (`\r`) are not supported.
 
@@ -26,13 +26,13 @@ The headers are:
 
 | Field                     | Type    | Description                                                                                                                                                                                                                                                                                                        |
 | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `checkout-account`        | numeric | Checkout account ID, e.g. `375917`                                                                                                                                                                                                                                                                                 |
+| `checkout-account`        | numeric | Paytrail account ID, e.g. `375917`                                                                                                                                                                                                                                                                                 |
 | `checkout-algorithm`      | string  | Used signature algorithm, either `sha256` or `sha512`                                                                                                                                                                                                                                                              |
 | `checkout-method`         | string  | HTTP verb of the request, either `GET` or `POST`                                                                                                                                                                                                                                                                   |
 | `checkout-nonce`          | string  | Unique identifier for this request                                                                                                                                                                                                                                                                                 |
 | `checkout-timestamp`      | string  | ISO 8601 date time                                                                                                                                                                                                                                                                                                 |
-| `checkout-transaction-id` | string  | Checkout transaction ID when accessing single transaction - not required for a new payment request                                                                                                                                                                                                                 |
-| `cof-plugin-version`      | string  | For SaaS services, use the marketing name of the platform. For eCommerce platform plugins, use the platform name, your identifier, and plugin version (for example, `woocommerce-yourcompany-1.1.0`). Platform information helps customer service to provide better assistance for the merchants using the plugin. |
+| `checkout-transaction-id` | string  | Paytrail transaction ID when accessing single transaction - not required for a new payment request                                                                                                                                                                                                                 |
+| `platform-name`      | string  | For SaaS services, use the marketing name of the platform. For eCommerce platform plugins, use the platform name, your identifier, and plugin version (for example, `woocommerce-yourcompany-1.1.0`). Platform information helps customer service to provide better assistance for the merchants using the plugin. |
 
 The HTTP verb, nonce and timestamp are used to mitigate various replay and timing attacks. Below is an example payload passed to a HMAC function:
 
@@ -82,24 +82,24 @@ sequenceDiagram
 Client ->> Merchant: Proceed to checkout
 
 opt Without opening a new payment before client proceeds
-Merchant ->> api.checkout.fi: List methods (GET /merchants/payment-providers)
-api.checkout.fi ->> Merchant: Suitable payment methods
+Merchant ->> service.paytrail.com: List methods (GET /merchants/payment-providers)
+service.paytrail.com ->> Merchant: Suitable payment methods
 Merchant ->> Client: Render suitable payment methods
 Client ->> Merchant: Select a payment method
 end
 
-Merchant ->> api.checkout.fi: Initiate new payment (POST /payments)
-api.checkout.fi ->> Merchant: JSON with payment methods
+Merchant ->> service.paytrail.com: Initiate new payment (POST /payments)
+service.paytrail.com ->> Merchant: JSON with payment methods
 Merchant ->> Client: Render payment method buttons
 Client ->> Payment method provider: Submits chosen payment form
-Payment method provider -->> Client: Redirect to Checkout success/cancel URL
-Client -->> api.checkout.fi: success/cancel
+Payment method provider -->> Client: Redirect to Paytrail success/cancel URL
+Client -->> service.paytrail.com: success/cancel
 
 opt Callback URL
-api.checkout.fi ->> Merchant: Call success/cancel callback URL
+service.paytrail.com->> Merchant: Call success/cancel callback URL
 end
 
-api.checkout.fi -->> Client: Redirect to Merchant success/cancel URL
+service.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
 Client ->> Merchant: Return to success/cancel
 Merchant ->> Client: Render thank you -page
 ```
@@ -153,22 +153,22 @@ See detailed [response documentation](#create-payment) for explanation.
 ```json
 {
   "transactionId": "5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
-  "href": "https://api.checkout.fi/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
+  "href": "https://service.paytrail.com/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
   "reference": "809759248",
   "terms": "By continuing with your payment, you agree to our <a href=\"https://www.checkout.fi/ehdot-ja-sopimukset/maksuehdot\" target=\"_blank\">payment terms & conditions</a>",
   "groups": [
     {
       "id": "mobile",
       "name": "Mobile payment methods",
-      "icon": "https://payment.checkout.fi/static/img/payment-groups/mobile.png",
-      "svg": "https://payment.checkout.fi/static/img/payment-groups/mobile.svg"
+      "icon": "https://static.paytrail.com/static/img/payment-groups/mobile.png",
+      "svg": "https://static.paytrail.com/static/img/payment-groups/mobile.svg"
     }
   ],
   "providers": [
     {
       "url": "https://maksu.pivo.fi/api/payments",
-      "icon": "https://payment.checkout.fi/static/img/pivo_140x75.png",
-      "svg": "https://payment.checkout.fi/static/img/payment-methods/pivo-siirto.svg",
+      "icon": "https://static.paytrail.com/static/img/pivo_140x75.png",
+      "svg": "https://static.paytrail.com/static/img/payment-methods/pivo-siirto.svg",
       "name": "Pivo",
       "group": "mobile",
       "id": "pivo",
@@ -202,19 +202,19 @@ Once the payment is complete, or cancelled, the client browser is normally redir
 The payment information is available in the query string parameters of the client request. For example, if the `redirectUrls.success` value was `https://example.org`, it would be accessed with parameters appended:
 
 ```
-https://example.org/51/success/return?checkout-account=375917&checkout-algorithm=sha256&checkout-amount=2964&checkout-stamp=15336332710015&checkout-reference=192387192837195&checkout-transaction-id=4b300af6-9a22-11e8-9184-abb6de7fd2d0&checkout-status=ok&checkout-provider=nordea&signature=b2d3ecdda2c04563a4638fcade3d4e77dfdc58829b429ad2c2cb422d0fc64080
+https://example.org?checkout-account=375917&checkout-algorithm=sha256&checkout-amount=2964&checkout-stamp=15336332710015&checkout-reference=192387192837195&checkout-transaction-id=4b300af6-9a22-11e8-9184-abb6de7fd2d0&checkout-status=ok&checkout-provider=nordea&signature=b2d3ecdda2c04563a4638fcade3d4e77dfdc58829b429ad2c2cb422d0fc64080
 ```
 
 The query string parameters are listed below. If callback URLs were provided, same parameters are used.
 
 | Field                     | Type    | Description                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `checkout-account`        | numeric | Checkout account ID                                                                                                                                                                                                                                                                                                                                    |
+| `checkout-account`        | numeric | Paytrail account ID                                                                                                                                                                                                                                                                                                                                    |
 | `checkout-algorithm`      | string  | Used signature algorithm. The same as used by merchant when creating the payment.                                                                                                                                                                                                                                                                      |
 | `checkout-amount`         | numeric | Payment amount in currency minor unit, e.g. cents                                                                                                                                                                                                                                                                                                      |
 | `checkout-stamp`          | string  | Merchant provided stamp                                                                                                                                                                                                                                                                                                                                |
 | `checkout-reference`      | string  | Merchant provided reference                                                                                                                                                                                                                                                                                                                            |
-| `checkout-transaction-id` | string  | Checkout provided transaction ID.<br><br>**Note:** In case of refund request that fails in semantic validation (e.g. insufficent account balance), this field will not be provided since the refund transaction does not exist yet. <br><br>**Important:** Store the value. It is needed for other actions such as refund or payment information query |
+| `checkout-transaction-id` | string  | Paytrail provided transaction ID.<br><br>**Note:** In case of refund request that fails in semantic validation (e.g. insufficent account balance), this field will not be provided since the refund transaction does not exist yet. <br><br>**Important:** Store the value. It is needed for other actions such as refund or payment information query |
 | `checkout-status`         | string  | Payment status, either `ok`, `pending`, `delayed`, or `fail`. See [statuses](#statuses) section for more information.                                                                                                                                                                                                                                  |
 | `checkout-provider`       | string  | The payment method provider the client used. Current values are documented on [providers tab](/payment-method-providers#test-credentials). The values are subject to change without notice.                                                                                                                                                            |
 | `signature`               | string  | HMAC signature calculated from other parameter                                                                                                                                                                                                                                                                                                         |
@@ -295,15 +295,15 @@ Note, that at the moment HTTP 400 may occur also for 3rd party reasons - e.g. be
 
 ## Apple Pay
 
-**The Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Checkout Finland's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
+**The Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Paytrail's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
 
-Checkout provides a frontend library **checkoutfinland.js** which makes implementing Apple Pay to your existing Checkout Finland payment wall simple.
+Paytrail provides a frontend library **paytrail.js** which makes implementing Apple Pay to your existing Paytrail payment wall simple.
 
 ### Prerequisites
 
 Before you start, you need to:
 
-- **Enable Apple Pay for your merchant** in [Checkout Extranet > Payment Methods](https://extranet-beta.checkout.fi/trades/methods).
+- **Enable Apple Pay for your merchant** in [Paytrail Merchant Panel > Payment Methods](https://merchant.paytrail.com/trades/methods).
   - After Apple Pay is enabled for your merchant, your [Payments Create-response's](#response) `customProviders`-field will contain parameters for your Apple Pay implementation, which are used later in [Step 1.](#3-mount-an-apple-pay-button-to-the-html-element)
 - **Serve your frontend application over HTTPS.** This is a requirement both in development and production. For development, we recommend serving your localhost server with [**ngrok**](https://ngrok.com/).
 - [**Verify your domain with Apple Pay**](#verifying-your-domain-with-apple-pay), both in development and production.
@@ -316,20 +316,20 @@ To use Apple Pay, you need to register with Apple all of your web domains that w
 
 Next follow these steps:
 
-- Download [**this domain association file**](https://pay.checkout.fi/.well-known/apple-developer-merchantid-domain-association) and host it at `/.well-known/apple-developer-merchantid-domain-association` on your site.
+- Download [**this domain association file**](https://pay.paytrail.com/.well-known/apple-developer-merchantid-domain-association) and host it at `/.well-known/apple-developer-merchantid-domain-association` on your site.
   - For example, if you're registering https://example.com, make that file available at https://example.com/.well-known/apple-developer-merchantid-domain-association.
-- Next, go to Checkout Extranet and add your domain to the registered Apple Pay domains.
+- Next, go to Paytrail Merchant Panel and add your domain to the registered Apple Pay domains.
 
-_**Important note:** Apple’s documentation for Apple Pay on the Web describes their process of “merchant validation”, which Checkout Finland handles for you behind the scenes. You **do not** need to create an Apple Merchant ID, CSR, etc., as described in their documentation, and should instead just follow the two steps above._
+_**Important note:** Apple’s documentation for Apple Pay on the Web describes their process of “merchant validation”, which Paytrail handles for you behind the scenes. You **do not** need to create an Apple Merchant ID, CSR, etc., as described in their documentation, and should instead just follow the two steps above._
 
 Now we are ready to implement Apple Pay to your store page.
 
-### 1. Set up checkoutfinland.js & HTML-element
+### 1. Set up paytrail.js & HTML-element
 
-First include **checkoutfinland.js** in your page:
+First include **paytrail.js** in your page:
 
 ```html
-<script src="https://api.checkout.fi/static/checkoutfinland.js"></script>
+<script src="https://service.paytrail.com/static/paytrail.js"></script>
 ```
 
 Then add an `#apple-pay-button` -element to your site, and generate parameter `<input>`-elements inside it from the [Payments Create-response's](#response) `customProviders.applepay`-field:
@@ -372,11 +372,11 @@ const responseToApplePayHtml = (response) =>
 </style>
 ```
 
-_**Note:** In production, the button should be hidden by default with `display: none;`, as the button will be displayed with **checkoutfinland.js** in the next step. For development purposes however, the button can be displayed with `display: block;`._
+_**Note:** In production, the button should be hidden by default with `display: none;`, as the button will be displayed with **paytrail.js** in the next step. For development purposes however, the button can be displayed with `display: block;`._
 
 ### 3. Mount an Apple Pay button to the HTML element
 
-Finally, we need to mount the button element using **checkoutfinland.js**. Mounting will display the button and add on-click -actions to initiate payment.
+Finally, we need to mount the button element using **paytrail.js**. Mounting will display the button and add on-click -actions to initiate payment.
 
 ```javascript
 const applePayButton = checkoutFinland.applePayButton;
@@ -392,17 +392,17 @@ if (applePayButton.canMakePayment()) {
 }
 ```
 
-_**Note:** The callback given to `mount()` is called on a successful payment, and is called with the merchants (your) Checkout success redirect url. You can customize the actions after a successful payment. The example callback above will redirect the user to the success url after 1.5 seconds, to give time for the Apple Pay modal success-animation to finish._
+_**Note:** The callback given to `mount()` is called on a successful payment, and is called with the merchants (your) Paytrail success redirect url. You can customize the actions after a successful payment. The example callback above will redirect the user to the success url after 1.5 seconds, to give time for the Apple Pay modal success-animation to finish._
 
 ## Token payments
 
-Checkout provides an API for tokenizing payment cards and issuing payments on those tokenized payment cards.
+Paytrail provides an API for tokenizing payment cards and issuing payments on those tokenized payment cards.
 
 For developing purposes there is [list of cards](/payment-method-providers#test-cards-for-tokenization) which can be safely used to test different scenarios on tokenization and payment flows (e.g. failing payments or using of 3DS).
 
 ### Adding (tokenizing) cards
 
-Adding a new card stores the payment card information to Checkout and returns a tokenization id that can be used to fetch a card token for payments.
+Adding a new card stores the payment card information to Paytrail and returns a tokenization id that can be used to fetch a card token for payments.
 
 The following illustrates how the user moves in the card tokenization process:
 
@@ -410,20 +410,20 @@ The following illustrates how the user moves in the card tokenization process:
 sequenceDiagram
 
 Client ->> Merchant backend: Initialize adding card
-Merchant backend -->> Client: Checkout add card form request details
-Client ->> api.checkout.fi: Request add card form (POST /tokenization/addcard-form)
-api.checkout.fi -->> Client: HTTP 302 Redirect to add card form
+Merchant backend -->> Client: Paytrail add card form request details
+Client ->> service.paytrail.com: Request add card form (POST /tokenization/addcard-form)
+service.paytrail.com -->> Client: HTTP 302 Redirect to add card form
 Client ->> Card addition form: Redirect to add card form
-Card addition form -->> api.checkout.fi: HTTP 302 Redirect to Checkout service
+Card addition form -->> service.paytrail.com: HTTP 302 Redirect to Paytrail service
 
 alt success
-api.checkout.fi -->> Merchant backend: HTTP 302 Redirect to Merchant success URL with 'checkout-tokenization-id'
-Merchant backend ->> api.checkout.fi: Tokenize with tokenization id (POST /tokenization/{checkout-tokenization-id})
-api.checkout.fi -->> Merchant backend: Card token
+service.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant success URL with 'checkout-tokenization-id'
+Merchant backend ->> service.paytrail.com: Tokenize with tokenization id (POST /tokenization/{checkout-tokenization-id})
+service.paytrail.com -->> Merchant backend: Card token
 Merchant backend ->> Merchant backend: Save token to DB
 Merchant backend -->> Client: display success view
 else failure
-api.checkout.fi -->> Merchant backend: HTTP 302 Redirect to Merchant failure URL
+service.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant failure URL
 Merchant backend -->> Client: display failure view
 end
 
@@ -431,7 +431,7 @@ end
 
 ### Add card form
 
-`HTTP POST /tokenization/addcard-form` is a form post requested from the user's browser. On a successful request the user will be redirected to Checkout's card addition service where user will input credit card information.
+`HTTP POST /tokenization/addcard-form` is a form post requested from the user's browser. On a successful request the user will be redirected to Paytrail's card addition service where user will input credit card information.
 
 <b>Note!</b> Authentication is done with form parameters, no headers used for authentication.
 
@@ -441,7 +441,7 @@ POST parameters
 
 | field                           | info    | required           | description                                                                                                       |
 | ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `checkout-account`              | numeric | <center>x</center> | Checkout account ID                                                                                               |
+| `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                               |
 | `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
 | `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                      |
 | `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                          |
@@ -452,7 +452,7 @@ POST parameters
 
 #### Response
 
-On a successful request, user is `HTTP 302` redirected to Checkout's card addition form page.
+On a successful request, user is `HTTP 302` redirected to Paytrail's card addition form page.
 
 ### Get token
 
@@ -525,7 +525,7 @@ When charging a token using customer initiated transaction, applicable exemption
 
 Regardless, there is always a possibility the card issuer requires strong customer authentication by requesting a step-up. In this case, the response will contain "soft decline" result code 403 and an URL, where the customer needs to be redirected to, in order to perform the authentication.
 
-After the user has authenticated with 3DS, the user is redirected to Checkout services and an authorization hold on the user card is created. If the merchants initial request is a direct charge request, the payment is also committed from the card. Finally, Checkout redirects the user back to the merchant URL.
+After the user has authenticated with 3DS, the user is redirected to Paytrail services and an authorization hold on the user card is created. If the merchants initial request is a direct charge request, the payment is also committed from the card. Finally, Paytrail redirects the user back to the merchant URL.
 
 The following illustrates how the user moves in the token payment process:
 
@@ -533,29 +533,29 @@ The following illustrates how the user moves in the token payment process:
 sequenceDiagram
 
 Client ->> Merchant backend: Pay with tokenized card
-Merchant backend ->> api.checkout.fi: Create payment (POST /payments/token/cit/[charge|authorization-hold])
+Merchant backend ->> service.paytrail.com: Create payment (POST /payments/token/cit/[charge|authorization-hold])
 
 alt success
-api.checkout.fi -->> Merchant backend: HTTP 201, transaction ID
+service.paytrail.com -->> Merchant backend: HTTP 201, transaction ID
 end
 
 alt 3DS required
-api.checkout.fi -->> Merchant backend: HTTP 403, transaction ID & 3DS redirect url
+service.paytrail.com -->> Merchant backend: HTTP 403, transaction ID & 3DS redirect url
 Merchant backend -->> Client: Redirect user to 3DS
 Client ->> 3DS Server: Redirect user to 3DS
-3DS Server -->> api.checkout.fi: 3DS result
+3DS Server -->> service.paytrail.com: 3DS result
 
 alt success
-Note over Client,api.checkout.fi: Authorization hold created on card
+Note over Client,service.paytrail.com: Authorization hold created on card
 
     alt direct charge
-      api.checkout.fi ->> api.checkout.fi: Commit authorization hold
+      service.paytrail.com ->> service.paytrail.com: Commit authorization hold
     end
 
 end
 end
 
-api.checkout.fi -->> Client: Redirect to Merchant success/cancel URL
+service.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
 Client ->> Merchant backend: Return to success/cancel
 Merchant backend ->> Client: Render view based on result (e.g. Thank You -page)
 
@@ -642,7 +642,7 @@ Revert will return `HTTP 200` when successful, and the `transactionId` of the pa
 
 ### Manually activating invoices
 
-Checkout provides customer an option to pay with invoice. For certain invoice payment methods (currently only Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
+Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
 
 #### Payment creation to pending status
 
@@ -667,7 +667,7 @@ Activation will return `HTTP 200` when successful.
 
 ## Payment Reports
 
-Checkout provides an API for asynchronous payment report generation. A merchant can view their payments in this report. A call to the endpoint must contain a callback URL where the payment report will be delivered to once it has been generated.
+Paytrail provides an API for asynchronous payment report generation. A merchant can view their payments in this report. A call to the endpoint must contain a callback URL where the payment report will be delivered to once it has been generated.
 
 The endpoint supports specifying whether the result will be delivered as a JSON payload or as a CSV file. It also supports field filtering and some result filtering.
 
@@ -960,10 +960,10 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 | ID           | Description                                                                         |
 | ------------ | ----------------------------------------------------------------------------------- |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay, Masterpass                         |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                         |
 | `bank`       | Bank payment methods                                                                |
 | `creditcard` | Visa, MasterCard, American Express                                                  |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Collector, Mash, Jousto, AfterPay |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Collector, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
 

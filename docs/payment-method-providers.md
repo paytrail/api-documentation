@@ -8,7 +8,6 @@ The payment methods that can be tested without real money transactions have been
 
 | Provider                                             | `checkout-provider`                                   | Credentials                                                                                                                                            |
 | ---------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Masterpass                                           | `masterpass`                                          | Use _IE English_ Masterpass wallet and one of the [provided credit cards](https://developer.mastercard.com/page/masterpass-sandbox-testing-guidelines) |
 | OP                                                   | `osuuspankki`                                         | Username: 123456<br>Password: 7890<br>Security code: any                                                                                               |
 | Nordea                                               | `nordea`                                              | Username: 123456<br>Password: 1111<br>Security code: any                                                                                               |
 | Handelsbanken<br>POP Pankki<br>Säästöpankki<br>OmaSP | `handelsbanken`<br>`pop`<br>`saastopankki`<br>`omasp` | Username: 11111111<br>Password: 123456<br>Security code: 123456                                                                                        |
@@ -19,7 +18,6 @@ The payment methods that can be tested without real money transactions have been
 | Mastercard                                           | `creditcard`                                          | Card number: 5353299308701770<br>Expiry date: 11/2023<br>CVC: 770                                                                                      |
 | American Express                                     | `amex`                                                | Card number: 373953192351004<br>Expiry date: 12/2023<br>CVC: 1004                                                                                      |
 | Collector<br>Collector B2B                           | `collectorb2c`<br>`collectorb2b`                      | Social security number: 010380-000P                                                                                                                    |
-| Mash                                                 | `mash`                                                | Generate a social security number with [Mash provided service](https://sc-rel.mash.com/My/Test/GenerateSsnForTesting?age=34&tps=651)                   |
 | Pivo                                                 | `pivo`                                                | Testing is not possible                                                                                                                                |
 | MobilePay                                            | `mobilepay`                                           | Testing is not possible                                                                                                                                |
 | Siirto                                               | `siirto`                                              | Testing is not possible                                                                                                                                |
@@ -45,7 +43,7 @@ The payment methods that can be tested without real money transactions have been
 
 ### General limitations
 
-Some payment method providers have minimum and/or maximum amounts for the purchases. These are not currently enforced by the API for other than Mash and AinaPay.
+Some payment method providers have minimum and/or maximum amounts for the purchases. These are not currently enforced by the API for other than AinaPay.
 
 ### Refunds
 

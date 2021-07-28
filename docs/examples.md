@@ -8,6 +8,8 @@ You can find example payloads and responses for all the requests, as well as [co
 
 #### Request body
 
+##### Normal merchant
+
 ```json
 {
   "stamp": "29858472953",
@@ -24,9 +26,65 @@ You can find example payloads and responses for all the requests, as well as [co
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
       "category": "Pet supplies",
-      "merchant": "375917",
+    }
+  ],
+  "customer": {
+    "email": "erja.esimerkki@example.org",
+    "firstName": "Erja",
+    "lastName": "Esimerkki",
+    "phone": "+358501234567",
+    "vatId": "FI12345671"
+  },
+  "deliveryAddress": {
+    "streetAddress": "Eteläpuisto 2 C",
+    "postalCode": "33200",
+    "city": "Tampere",
+    "county": "Pirkanmaa",
+    "country": "FI"
+  },
+  "invoicingAddress": {
+    "streetAddress": "Gebhardinaukio 1",
+    "postalCode": "00510",
+    "city": "Helsinki",
+    "county": "Uusimaa",
+    "country": "FI"
+  },
+  "redirectUrls": {
+    "success": "https://ecom.example.org/success",
+    "cancel": "https://ecom.example.org/cancel"
+  },
+  "callbackUrls": {
+    "success": "https://ecom.example.org/success",
+    "cancel": "https://ecom.example.org/cancel"
+  }
+}
+```
+
+##### Shop-in-Shop merchant
+
+```json
+{
+  "stamp": "29858472953",
+  "reference": "9187445",
+  "amount": 1590,
+  "currency": "EUR",
+  "language": "FI",
+  "items": [
+    {
+      "unitPrice": 1590,
+      "units": 1,
+      "vatPercentage": 24,
+      "productCode": "#927502759",
+      "deliveryDate": "2018-03-07",
+      "description": "Cat ladder",
+      "category": "Pet supplies",
+      "merchant": "695874",
       "stamp": "29858472952",
-      "reference": "9187445"
+      "reference": "9187445",
+      "commission": {
+        "merchant": "695874",
+        "amount": 159
+      }
     }
   ],
   "customer": {
