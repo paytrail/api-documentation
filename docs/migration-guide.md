@@ -49,7 +49,7 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
   - Signature calculation with form values in specific order joined with  `|` (pipe) character
   - Response either an XML document or HTTP redirect to hosted payment gateway
   - Payment API issued payment ID was an integer
-  - Payload for shop-in-shop payments completely different from normal payment
+  - Payload for Sales Channel payments completely different from normal payment
   - Error replies were HTML pages with limited information on how to fix the problem
 
 - New Payment API payments are initialized with a JSON POST to `https://service.paytrail.com/payments`
@@ -61,7 +61,7 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
   - No support for redirect, JSON document contains URL to hosted payment gateway, i.e. payments must be initialized with a server-to-server call.
   - Payment API transaction IDs are UUIDs and are used e.g. for refunds or payment status queries
   - Swedish payments use correct language code (SV)
-  - Payload for shop-in-shop / marketplace payments pretty much the same as for normal payments
+  - Payload for Sales Channel (shop-in-shop) payments pretty much the same as for normal payments
   - Correct HTTP status codes and understandable error replies in JSON format
 
 #### Payment confirmation
