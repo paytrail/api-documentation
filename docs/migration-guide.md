@@ -31,7 +31,7 @@ The new API offers a lot of improvements, including but not limited to:
 The new Paytrail Payment API is nearly identical compared to the current Checkout PSP API. 
 
 The main differences are:
-- The PSP API URL was `https://api.checkout.fi`  and the new Payment API URL is `https://service.paytrail.com`
+- The PSP API URL was `https://api.checkout.fi` and the new Payment API URL is `https://service.paytrail.com`
 - Two fields have been renamed:
   - `cof-request-id` is now `request-id`
   - `cof-plugin-version` is now `plugin-name`
@@ -44,64 +44,56 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
 
 #### Payment initialization
 
-Legacy E2 Interface payments were initiated with a form data POST to https://payment.paytrail.com/e2 
+- Legacy E2 Interface payments were initiated with a form data POST to `https://payment.paytrail.com/e2`
+  - Merchant authentication info in the payment payload
+  - Signature calculation with form values in specific order joined with  `|` (pipe) character
+  - Response either an XML document or HTTP redirect to hosted payment gateway
+  - Payment API issued payment ID was an integer
+  - Payload for shop-in-shop payments completely different from normal payment
+  - Error replies were HTML pages with limited information on how to fix the problem
 
-- Merchant authentication info in the payment payload
-- Signature calculation with form values in specific order joined with  | (pipe) character
-- Response either an XML document or HTTP redirect to hosted payment gateway
-- Payment API issued payment ID was an integer
-- Payload for shop-in-shop payments completely different from normal payment
-- Error replies were HTML pages with limited information on how to fix the problem
-
-New Payment API payments are initialized with a JSON POST to https://api.checkout.fi/payments
-
-- Merchant authentication info in headers
-- Signature calculation payload includes headers in alphabetical order and the full body payload
-- HMAC signed JSON response
-- SVG icons provided
-- Payment methods have a group attribute which allows easy grouping for improved user experience
-- No support for redirect, JSON document contains URL to hosted payment gateway, i.e. payments must be initialized with a server-to-server call.
-- Payment API transaction IDs are UUIDs and are used e.g. for refunds or payment status queries
-- Swedish payments use correct language code (SV)
-- Payload for shop-in-shop / marketplace payments pretty much the same as for normal payments
-- Correct HTTP status codes and understandable error replies in JSON format
+- New Payment API payments are initialized with a JSON POST to `https://service.paytrail.com/payments`
+  - Merchant authentication info in headers
+  - Signature calculation payload includes headers in alphabetical order and the full body payload
+  - HMAC signed JSON response
+  - SVG icons provided
+  - Payment methods have a group attribute which allows easy grouping for improved user experience
+  - No support for redirect, JSON document contains URL to hosted payment gateway, i.e. payments must be initialized with a server-to-server call.
+  - Payment API transaction IDs are UUIDs and are used e.g. for refunds or payment status queries
+  - Swedish payments use correct language code (SV)
+  - Payload for shop-in-shop / marketplace payments pretty much the same as for normal payments
+  - Correct HTTP status codes and understandable error replies in JSON format
 
 #### Payment confirmation
 
-Legacy E2 Interface returned the client browser back to webshop with payment confirmation data in query string
+- Legacy E2 Interface returned the client browser back to webshop with payment confirmation data in query string
+  - Payment status is a number with many possible values
 
-- Payment status is a number with many possible values
-
-New Payment API does client browser redirects too, but offers an option to define callback URLs
-
-- Callback URLs are server-to-server calls and can be delayed
-- Callback URLs ensure that payment is registered also to the shop even if client browser does not return. Callback URLs are used also with providers supporting them which means that e.g. credit card payments are always registered to shop regardless of what client browser does
-- Human readable payment statuses
-- Used payment method is reported to shop too
+- New Payment API does client browser redirects too, but offers an option to define callback URLs
+  - Callback URLs are server-to-server calls and can be delayed
+  - Callback URLs ensure that payment is registered also to the shop even if client browser does not return. Callback URLs are used also with providers supporting them which means that e.g. credit card payments are always registered to shop regardless of what client browser does
+  - Human readable payment statuses
+  - Used payment method is reported to shop too
 
 #### Refund
 
-Legacy E2 Interface refund was done with a POST request to `https://api.paytrail.com/merchant/v1/payments/{orderNumber}/refund`
+- Legacy E2 Interface refund was done with a POST request to `https://api.paytrail.com/merchant/v1/payments/{orderNumber}/refund`
+  - Headers contained MD5 encoded signature
+  - JSON response
 
-- Headers contained MD5 encoded signature
-- JSON response
-
-New API refunds are done with a JSON POST to `https://api.checkout.fi/payments/{transactionId}/refund`
-
-- Refund API supports callback URLs too
-- HMAC signed JSON response
+- New API refunds are done with a JSON POST to `https://service.paytrail.com/payments/{transactionId}/refund`
+  - Refund API supports callback URLs too
+  - HMAC signed JSON response
 
 #### Status API
 
-In legacy E2 Interface querying payment status was done with GET request to `https://rpcapi.checkout.fi/poll`
+- In legacy E2 Interface querying payment status was done with GET request to `https://api.paytrail.com/merchant/v1/payments?order_number={orderNumber}`
+  - Merchant defined stamp and reference used for locating the payment
+  - XML response with status only
 
-- Merchant defined stamp and reference used for locating the payment
-- XML response with status only
-
-New status API is called with GET to `https://api.checkout.fi/payments/{transactionId}`
-
-- Payment API issued transaction ID used
-- HMAC signed JSON response with more information than just the status
+- New status API is called with GET to `https://service.paytrail.com/payments/{transactionId}`
+  - Payment API issued transaction ID used
+  - HMAC signed JSON response with more information than just the status
 
 ## New endpoints in the new API
 
