@@ -47,7 +47,7 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
 - Legacy E2 Interface payments were initiated with a form data POST to `https://payment.paytrail.com/e2`
   - Merchant authentication info in the payment payload
   - Signature calculation with form values in specific order joined with  `|` (pipe) character
-  - Response either an XML document or HTTP redirect to hosted payment gateway
+  - Response is a HTTP redirect to hosted payment gateway
   - Payment API issued payment ID was an integer
   - Payload for Sales Channel payments completely different from normal payment
   - Error replies were HTML pages with limited information on how to fix the problem
@@ -66,8 +66,8 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
 
 #### Payment confirmation
 
-- Legacy E2 Interface returned the client browser back to webshop with payment confirmation data in query string
-  - Payment status is a number with many possible values
+- Legacy E2 Interface returned the client browser back to webshop with payment confirmation data in query string and on successful payment sent a notify call to webshop
+  - Payment status is either `PAID` or `CANCELLED` 
 
 - New Payment API does client browser redirects too, but offers an option to define callback URLs
   - Callback URLs are server-to-server calls and can be delayed
@@ -88,12 +88,12 @@ The new Payment API is completely different from the legacy E2 Interface. We've 
 #### Status API
 
 - In legacy E2 Interface querying payment status was done with GET request to `https://api.paytrail.com/merchant/v1/payments?order_number={orderNumber}`
-  - Merchant defined stamp and reference used for locating the payment
-  - XML response with status only
+  - Merchant defined order number used for locating the payment
+  - JSON response with status and payment method ID
 
 - New status API is called with GET to `https://service.paytrail.com/payments/{transactionId}`
   - Payment API issued transaction ID used
-  - HMAC signed JSON response with more information than just the status
+  - HMAC signed JSON response with various information
 
 ## New endpoints in the new API
 
