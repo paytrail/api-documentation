@@ -25,7 +25,7 @@ You can find example payloads and responses for all the requests, as well as [co
       "productCode": "#927502759",
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
-      "category": "Pet supplies",
+      "category": "Pet supplies"
     }
   ],
   "customer": {
@@ -36,14 +36,14 @@ You can find example payloads and responses for all the requests, as well as [co
     "vatId": "FI12345671"
   },
   "deliveryAddress": {
-    "streetAddress": "Eteläpuisto 2 C",
-    "postalCode": "33200",
+    "streetAddress": "Hämeenkatu 6 B",
+    "postalCode": "33100",
     "city": "Tampere",
     "county": "Pirkanmaa",
     "country": "FI"
   },
   "invoicingAddress": {
-    "streetAddress": "Gebhardinaukio 1",
+    "streetAddress": "Testikatu 1",
     "postalCode": "00510",
     "city": "Helsinki",
     "county": "Uusimaa",
@@ -95,14 +95,14 @@ You can find example payloads and responses for all the requests, as well as [co
     "vatId": "FI12345671"
   },
   "deliveryAddress": {
-    "streetAddress": "Eteläpuisto 2 C",
-    "postalCode": "33200",
+    "streetAddress": "Hämeenkatu 6 B",
+    "postalCode": "33100",
     "city": "Tampere",
     "county": "Pirkanmaa",
     "country": "FI"
   },
   "invoicingAddress": {
-    "streetAddress": "Gebhardinaukio 1",
+    "streetAddress": "Testikatu 1",
     "postalCode": "00510",
     "city": "Helsinki",
     "county": "Uusimaa",
@@ -124,13 +124,13 @@ You can find example payloads and responses for all the requests, as well as [co
 ```json
 {
   "transactionId": "5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
-  "href": "https://api.checkout.fi/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
+  "href": "https://services.paytrail.com/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
   "reference": "809759248",
   "providers": [
     {
       "url": "https://maksu.pivo.fi/api/payments",
-      "icon": "https://payment.checkout.fi/static/img/pivo_140x75.png",
-      "svg": "https://payment.checkout.fi/static/img/payment-methods/pivo-siirto.svg",
+      "icon": "https://static.paytrail.com/static/img/pivo_140x75.png",
+      "svg": "https://static.paytrail.com/static/img/payment-methods/pivo-siirto.svg",
       "name": "Pivo",
       "group": "mobile",
       "id": "pivo",
@@ -187,8 +187,8 @@ You can find example payloads and responses for all the requests, as well as [co
     },
     {
       "url": "https://v1.api.paymenthighway.io/form/view/masterpass",
-      "icon": "https://payment.checkout.fi/static/img/masterpass_arrow_140x75.png",
-      "svg": "https://payment.checkout.fi/static/img/payment-methods/masterpass.svg",
+      "icon": "https://static.paytrail.com/static/img/masterpass_arrow_140x75.png",
+      "svg": "https://static.paytrail.com/static/img/payment-methods/masterpass.svg",
       "name": "Masterpass",
       "group": "mobile",
       "id": "masterpass",
@@ -235,27 +235,27 @@ You can find example payloads and responses for all the requests, as well as [co
         },
         {
           "name": "sph-success-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/success"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/success"
         },
         {
           "name": "sph-cancel-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/cancel"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/cancel"
         },
         {
           "name": "sph-failure-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/failure"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/failure"
         },
         {
           "name": "sph-webhook-success-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/success"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/success"
         },
         {
           "name": "sph-webhook-cancel-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/cancel"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/cancel"
         },
         {
           "name": "sph-webhook-failure-url",
-          "value": "https://api.checkout.fi/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/failure"
+          "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/failure"
         },
         {
           "name": "sph-webhook-delay",
@@ -343,7 +343,7 @@ signature: 4d84e3aedaa847b23e672ff3bc9c57ae5d1c1e84aec251ce39914eaf250bb8b2
   "reference": "4940046476",
   "stamp": "15725981193483",
   "createdAt": "2019-11-01T10:48:39.979Z",
-  "href": "https://pay.checkout.fi/pay/681538c4-fc84-11e9-83bc-2ffcef4c3453"
+  "href": "https://pay.paytrail.com/pay/681538c4-fc84-11e9-83bc-2ffcef4c3453"
 }
 ```
 
@@ -405,8 +405,8 @@ Email refund payload is otherwise the same (ie. for shop-in-shop merchants there
 
 ```json
 {
-  "provider": "handelsbanken",
-  "status": "ok",
+  "provider": "spankki",
+  "status": "pending",
   "transactionId": "258ad3a5-9711-44c3-be65-64a0ef462ba3"
 }
 ```
@@ -564,7 +564,7 @@ $headers['signature'] = calculateHmac($SECRET, $headers, $body);
 $client = new \GuzzleHttp\Client([ 'headers' => $headers ]);
 $response = null;
 try {
-    $response = $client->post('https://api.checkout.fi/payments', [ 'body' => $body ]);
+    $response = $client->post('https://services.paytrail.com/payments', [ 'body' => $body ]);
 } catch (\GuzzleHttp\Exception\ClientException $e) {
     if ($e->hasResponse()) {
         $response = $e->getResponse();

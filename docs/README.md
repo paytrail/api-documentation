@@ -1,15 +1,16 @@
 # Paytrail Payment API
 
-This is the API reference and example documentation for [Paytrail](https://www.paytrail.com/) - a Payment Service Provider with
-which ecommerce merchants can accept payments mobile and online.
+This is the API reference and example documentation for the new [Paytrail](https://www.paytrail.com/) Payment API.
 
 OpenAPI 3 specification for the API is also [available for download](paytrail-api.yaml ':ignore').
 
 ?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/paytrail/api-documentation/issues). You can also ask for support by opening an issue on GitHub. Thank you!
 
+?> [Old Paytrail API reference](https://docs.paytrail.com/) and [Checkout Finland API reference](https://checkoutfinland.github.io/psp-api/#/) are available separately.
+
 ## API endpoint
 
-API endpoint is `service.paytrail.com`
+API endpoint is `services.paytrail.com`.
 
 ## Authentication
 
@@ -32,7 +33,7 @@ The headers are:
 | `checkout-nonce`          | string  | Unique identifier for this request                                                                                                                                                                                                                                                                                 |
 | `checkout-timestamp`      | string  | ISO 8601 date time                                                                                                                                                                                                                                                                                                 |
 | `checkout-transaction-id` | string  | Paytrail transaction ID when accessing single transaction - not required for a new payment request                                                                                                                                                                                                                 |
-| `platform-name`      | string  | For SaaS services, use the marketing name of the platform. For eCommerce platform plugins, use the platform name, your identifier, and plugin version (for example, `woocommerce-yourcompany-1.1.0`). Platform information helps customer service to provide better assistance for the merchants using the plugin. |
+| `platform-name`           | string  | For SaaS services, use the marketing name of the platform. For eCommerce platform plugins, use the platform name, your identifier, and plugin version (for example, `woocommerce-yourcompany-1.1.0`). Platform information helps customer service to provide better assistance for the merchants using the plugin. |
 
 The HTTP verb, nonce and timestamp are used to mitigate various replay and timing attacks. Below is an example payload passed to a HMAC function:
 
@@ -82,24 +83,24 @@ sequenceDiagram
 Client ->> Merchant: Proceed to checkout
 
 opt Without opening a new payment before client proceeds
-Merchant ->> service.paytrail.com: List methods (GET /merchants/payment-providers)
-service.paytrail.com ->> Merchant: Suitable payment methods
+Merchant ->> services.paytrail.com: List methods (GET /merchants/payment-providers)
+services.paytrail.com ->> Merchant: Suitable payment methods
 Merchant ->> Client: Render suitable payment methods
 Client ->> Merchant: Select a payment method
 end
 
-Merchant ->> service.paytrail.com: Initiate new payment (POST /payments)
-service.paytrail.com ->> Merchant: JSON with payment methods
+Merchant ->> services.paytrail.com: Initiate new payment (POST /payments)
+services.paytrail.com ->> Merchant: JSON with payment methods
 Merchant ->> Client: Render payment method buttons
 Client ->> Payment method provider: Submits chosen payment form
 Payment method provider -->> Client: Redirect to Paytrail success/cancel URL
-Client -->> service.paytrail.com: success/cancel
+Client -->> services.paytrail.com: success/cancel
 
 opt Callback URL
-service.paytrail.com->> Merchant: Call success/cancel callback URL
+services.paytrail.com->> Merchant: Call success/cancel callback URL
 end
 
-service.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
+services.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
 Client ->> Merchant: Return to success/cancel
 Merchant ->> Client: Render thank you -page
 ```
@@ -128,8 +129,7 @@ See all available fields from [create payment request body section](#create-paym
       "unitPrice": 1590,
       "units": 1,
       "vatPercentage": 24,
-      "productCode": "#927502759",
-      "deliveryDate": "2018-03-07"
+      "productCode": "#927502759"
     }
   ],
   "customer": {
@@ -153,7 +153,7 @@ See detailed [response documentation](#create-payment) for explanation.
 ```json
 {
   "transactionId": "5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
-  "href": "https://service.paytrail.com/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
+  "href": "https://services.paytrail.com/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
   "reference": "809759248",
   "terms": "By continuing with your payment, you agree to our <a href=\"https://www.checkout.fi/ehdot-ja-sopimukset/maksuehdot\" target=\"_blank\">payment terms & conditions</a>",
   "groups": [
@@ -264,8 +264,7 @@ See [example response](/examples#get) from examples tab.
 `HTTP POST /payments/{transactionId}/refund` refunds a payment by transaction ID.
 
 ?>
-Asynchronous refunds are planned for later implementation. It is advised that integrating partners implement refunds with this in mind, as it will be the primary method for refunds later.
-Technically this means that when a refund request is accepted, an OK response is sent to the caller. Later, when the refund is processed, the callback will be called with the actual outcome.
+Refunds can be asynchronous. Technically this means that when a refund request is accepted, the response may contain status `pending`. Later, when the refund is processed, the callback will be called with the actual outcome. At the moment, this only applies to email refunds but might be implemented for other types later.
 
 #### Request
 
@@ -287,11 +286,57 @@ See detailed description from [refund payment request body section](#refund-paym
 
 | Status code | Explanation                                           |
 | ----------- | ----------------------------------------------------- |
-| 201         | Refund created successfully                           |
+| 201         | Refund request received                               |
 | 400         | Something went wrong                                  |
 | 422         | Used payment method provider does not support refunds |
 
 Note, that at the moment HTTP 400 may occur also for 3rd party reasons - e.g. because Nordea test API does not support refunds. See all provider limitations from [providers tab](/payment-method-providers#refunds).
+
+```json
+{
+  "provider": "handelsbanken",
+  "status": "ok",
+  "transactionId": "258ad3a5-9711-44c3-be65-64a0ef462ba3"
+}
+```
+
+### Email refunds
+
+`HTTP POST /payments/{transactionId}/refund/email` email refunds a payment by transaction ID.
+
+?>
+Email refunds are always asynchronous. Technically this means that when a refund request is accepted, the response contain status `pending`. Later, when the customer has entered their bank details and the refund is processed, the callback will be called with the actual outcome.
+
+See detailed description from [refund payment request body section](#refund-payment).
+
+```json
+{
+  "amount": 1590,
+  "email": "recipient@example.com",
+  "refundStamp": "bd71d096-94b6-4e1b-b4a3-d7cea73738ac",
+  "refundReference": "your reference",
+  "callbackUrls": {
+    "success": "https://ecom.example.org/success",
+    "cancel": "https://ecom.example.org/cancel"
+  }
+}
+```
+
+#### Response
+
+| Status code | Explanation                                                 |
+| ----------- | ----------------------------------------------------------- |
+| 201         | Email refund request received                               |
+| 400         | Something went wrong                                        |
+| 422         | Used payment method provider does not support email refunds |
+
+```json
+{
+  "provider": "spankki",
+  "status": "pending",
+  "transactionId": "258ad3a5-9711-44c3-be65-64a0ef462ba3"
+}
+```
 
 ## Apple Pay
 
@@ -329,7 +374,7 @@ Now we are ready to implement Apple Pay to your store page.
 First include **paytrail.js** in your page:
 
 ```html
-<script src="https://service.paytrail.com/static/paytrail.js"></script>
+<script src="https://services.paytrail.com/static/paytrail.js"></script>
 ```
 
 Then add an `#apple-pay-button` -element to your site, and generate parameter `<input>`-elements inside it from the [Payments Create-response's](#response) `customProviders.applepay`-field:
@@ -411,19 +456,19 @@ sequenceDiagram
 
 Client ->> Merchant backend: Initialize adding card
 Merchant backend -->> Client: Paytrail add card form request details
-Client ->> service.paytrail.com: Request add card form (POST /tokenization/addcard-form)
-service.paytrail.com -->> Client: HTTP 302 Redirect to add card form
+Client ->> services.paytrail.com: Request add card form (POST /tokenization/addcard-form)
+services.paytrail.com -->> Client: HTTP 302 Redirect to add card form
 Client ->> Card addition form: Redirect to add card form
-Card addition form -->> service.paytrail.com: HTTP 302 Redirect to Paytrail service
+Card addition form -->> services.paytrail.com: HTTP 302 Redirect to Paytrail service
 
 alt success
-service.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant success URL with 'checkout-tokenization-id'
-Merchant backend ->> service.paytrail.com: Tokenize with tokenization id (POST /tokenization/{checkout-tokenization-id})
-service.paytrail.com -->> Merchant backend: Card token
+services.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant success URL with 'checkout-tokenization-id'
+Merchant backend ->> services.paytrail.com: Tokenize with tokenization id (POST /tokenization/{checkout-tokenization-id})
+services.paytrail.com -->> Merchant backend: Card token
 Merchant backend ->> Merchant backend: Save token to DB
 Merchant backend -->> Client: display success view
 else failure
-service.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant failure URL
+services.paytrail.com -->> Merchant backend: HTTP 302 Redirect to Merchant failure URL
 Merchant backend -->> Client: display failure view
 end
 
@@ -533,29 +578,29 @@ The following illustrates how the user moves in the token payment process:
 sequenceDiagram
 
 Client ->> Merchant backend: Pay with tokenized card
-Merchant backend ->> service.paytrail.com: Create payment (POST /payments/token/cit/[charge|authorization-hold])
+Merchant backend ->> services.paytrail.com: Create payment (POST /payments/token/cit/[charge|authorization-hold])
 
 alt success
-service.paytrail.com -->> Merchant backend: HTTP 201, transaction ID
+services.paytrail.com -->> Merchant backend: HTTP 201, transaction ID
 end
 
 alt 3DS required
-service.paytrail.com -->> Merchant backend: HTTP 403, transaction ID & 3DS redirect url
+services.paytrail.com -->> Merchant backend: HTTP 403, transaction ID & 3DS redirect url
 Merchant backend -->> Client: Redirect user to 3DS
 Client ->> 3DS Server: Redirect user to 3DS
-3DS Server -->> service.paytrail.com: 3DS result
+3DS Server -->> services.paytrail.com: 3DS result
 
 alt success
-Note over Client,service.paytrail.com: Authorization hold created on card
+Note over Client,services.paytrail.com: Authorization hold created on card
 
     alt direct charge
-      service.paytrail.com ->> service.paytrail.com: Commit authorization hold
+      services.paytrail.com ->> services.paytrail.com: Commit authorization hold
     end
 
 end
 end
 
-service.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
+services.paytrail.com -->> Client: Redirect to Merchant success/cancel URL
 Client ->> Merchant backend: Return to success/cancel
 Merchant backend ->> Client: Render view based on result (e.g. Thank You -page)
 
@@ -866,20 +911,20 @@ General API HTTP status codes and what to expect of them.
 
 ##### Item
 
-| Field         | Type                      | Required           | Example                              | Description                                                                                   |
-| ------------- | ------------------------- | ------------------ | ------------------------------------ | --------------------------------------------------------------------------------------------- |
-| unitPrice     | integer                   | <center>x</center> | 1000                                 | Price per unit, VAT included, in each country's minor unit, e.g. for Euros use cents          |
-| units         | integer                   | <center>x</center> | 5                                    | Quantity, how many items ordered                                                              |
-| vatPercentage | integer                   | <center>x</center> | 24                                   | VAT percentage                                                                                |
-| productCode   | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods.                     |
-| deliveryDate  | string                    | <center>x</center> | 2019-12-31                           | When is this item going to be delivered                                                       |
-| description   | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods.                          |
-| category      | string                    | <center>-</center> | fur suits                            | Merchant specific item category                                                               |
-| orderId       | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                  |
-| stamp         | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments.                          |
-| reference     | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                  |
-| merchant      | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments. |
-| commission    | [Commission](#commission) | <center>-</center> | -                                    | Shop-in-Shop commission. Do not use for normal payments.                                      |
+| Field         | Type                      | Required           | Example                              | Description                                                                                                             |
+| ------------- | ------------------------- | ------------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| unitPrice     | integer                   | <center>x</center> | 1000                                 | Price per unit, VAT included, in each country's minor unit, e.g. for Euros use cents                                    |
+| units         | integer                   | <center>x</center> | 5                                    | Quantity, how many items ordered                                                                                        |
+| vatPercentage | integer                   | <center>x</center> | 24                                   | VAT percentage                                                                                                          |
+| productCode   | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods.                                               |
+| deliveryDate  | string                    | <center>-</center> | 2019-12-31                           | When is this item going to be delivered. This field is deprecated but remains here as a reference for old integrations. |
+| description   | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods.                                                    |
+| category      | string                    | <center>-</center> | fur suits                            | Merchant specific item category                                                                                         |
+| orderId       | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                                            |
+| stamp         | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments.                                                    |
+| reference     | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                                            |
+| merchant      | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments.                           |
+| commission    | [Commission](#commission) | <center>-</center> | -                                    | Shop-in-Shop commission. Do not use for normal payments.                                                                |
 
 ##### Customer
 
@@ -958,11 +1003,11 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                         |
-| ------------ | ----------------------------------------------------------------------------------- |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                         |
-| `bank`       | Bank payment methods                                                                |
-| `creditcard` | Visa, MasterCard, American Express                                                  |
+| ID           | Description                                                                   |
+| ------------ | ----------------------------------------------------------------------------- |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                               |
+| `bank`       | Bank payment methods                                                          |
+| `creditcard` | Visa, MasterCard, American Express                                            |
 | `credit`     | Instalment and invoice payment methods: OP Lasku, Collector, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
@@ -1003,5 +1048,13 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 | -------- | ------- | ------------------ | ------- | --------------------------------------------------------------------------------------------- |
 | merchant | string  | <center>x</center> | 695874  | Merchant from whom the commission is returned to the submerchant.                             |
 | amount   | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable. |
+
+#### Response body
+
+| Field         | Type   | Description                                                                                                          |
+| ------------- | ------ | -------------------------------------------------------------------------------------------------------------------- |
+| transactionId | string | Assigned transaction ID for the payment                                                                              |
+| provider      | string | Provider id for the original payment                                                                                 |
+| status        | string | `pending`, `ok`, or `fail`. Status `pending` indicates that the refund request has been received, but not completed. |
 
 See [an example payload and response](/examples#refund)
