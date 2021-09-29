@@ -1,17 +1,14 @@
 openapi: '3.0.0'
 info:
   version: 2.0.0
-  title: Payment service API
+  title: Payment API
   description: |
-    Payment processing API
-
-    Note: The API is currently under development. Some endpoints do not yet have all the features described
-    here, and the responses of some do not match the description here.
+    Paytrail Payment API
   contact:
     name: Checkout
     url: https://github.com/paytrail/api-documentation/issues
 servers:
-  - url: https://api.checkout.fi
+  - url: https://services.paytrail.com
 tags:
   - name: payments
     description: Create, fetch or refund payments
@@ -1559,7 +1556,6 @@ components:
         - units
         - vatPercentage
         - productCode
-        - deliveryDate
       properties:
         unitPrice:
           type: integer
@@ -2024,7 +2020,7 @@ components:
         href:
           type: string
           format: url
-          example: https://pay.checkout.fi/pay/93ee8d18-10db-410b-92ac-7d6e49369ce3
+          example: https://pay.paytrail.com/pay/93ee8d18-10db-410b-92ac-7d6e49369ce3
           description: Unique URL to hosted payment gateway
         terms:
           type: string
@@ -2096,12 +2092,12 @@ components:
         icon:
           type: string
           format: url
-          example: https://payment.checkout.fi/static/img/payment-groups/bank.png
+          example: https://static.paytrail.com/static/img/payment-groups/bank.png
           description: URL to the group PNG icon
         svg:
           type: string
           format: url
-          example: https://payment.checkout.fi/static/img/payment-groups/bank.svg
+          example: https://static.paytrail.com/static/img/payment-groups/bank.svg
           description: URL to the group SVG icon (recommended to be used instead if PNG)
 
     BasePaymentMethodProvider:
@@ -2124,12 +2120,12 @@ components:
         svg:
           type: string
           format: url
-          example: https://payment.checkout.fi/static/img/payment-methods/op-logo.svg
+          example: https://static.paytrail.com/static/img/payment-methods/op-logo.svg
           description: URL to payment method SVG icon (recommended to be used instead if PNG)
         icon:
           type: string
           format: url
-          example: https://payment.checkout.fi/static/img/op_140x75.png
+          example: https://static.paytrail.com/static/img/op_140x75.png
           description: URL to payment method PNG icon
         group:
           type: string
@@ -2155,7 +2151,7 @@ components:
             url:
               type: string
               format: url
-              example: https://api.checkout.fi/payments/93ee8d18-10db-410b-92ac-7d6e49369ce3/osuuspankki/redirect
+              example: https://services.paytrail.com/payments/93ee8d18-10db-410b-92ac-7d6e49369ce3/osuuspankki/redirect
               description: Form action url
             parameters:
               type: array
@@ -2220,7 +2216,7 @@ components:
         href:
           type: string
           format: url
-          example: https://pay.checkout.fi/pay/93ee8d18-10db-410b-92ac-7d6e49369ce3
+          example: https://pay.paytrail.com/pay/93ee8d18-10db-410b-92ac-7d6e49369ce3
           description: If transaction is in status 'new', link to the hosted payment gateway
         provider:
           type: string
