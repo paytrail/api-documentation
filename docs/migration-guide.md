@@ -35,7 +35,7 @@ The main differences are:
 - The PSP API URL was `https://api.checkout.fi` and the new Payment API URL is `https://services.paytrail.com`
 - Two fields have been renamed:
   - `cof-request-id` is now `request-id`
-  - `cof-plugin-version` is now `plugin-name`
+  - `cof-plugin-version` is now `platform-name`
 - One previously required field has been made optional:
   - `deliveryDate`
 - Email refund responses now have status `pending`. Status `ok` callback will be sent when the actual refund has been completed.
