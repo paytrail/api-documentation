@@ -478,7 +478,7 @@ end
 
 `HTTP POST /tokenization/addcard-form` is a form post requested from the user's browser. On a successful request the user will be redirected to Paytrail's card addition service where user will input credit card information.
 
-<b>Note!</b> Authentication is done with form parameters, no headers used for authentication.
+<b>Note!</b> Authentication is done with form parameters, no headers are used for authentication. All authentication fields are listed below.
 
 POST parameters
 
@@ -488,6 +488,8 @@ POST parameters
 | ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                               |
 | `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
+| `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                 |
+| `checkout-nonce`                | string  | <center>x</center> | Unique identifier for this request                                 |
 | `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                      |
 | `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                          |
 | `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers |
@@ -780,7 +782,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 | ------------ | -------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | requestType  | string   | <center>x</center> |         | In which format will the response be delivered in, currently supported are `json` and `csv`.                                                                                                                                                                                                                                                                                                      |
 | callbackUrl  | string   | <center>x</center> |         | The url the system will send the report to as a `POST` request. Callback URLs must use HTTPS.                                                                                                                                                                                                                                                                                                     |
-| reportFields | string[] | <center></center>  | all     | Limit the fields that will be included in the report. Leaving this empty will include all fields. Possible values: `created`, `amount`, `status`, `firstname`, `familyname`, `description`, `reference`, `paymentMethod`, `stamp`, `address`, `postcode`, `postoffice`, `country`, `checkoutReference`, `archiveNumber`, `settlementId`, `settlementDate`, `refundAmount`, `fee` and `provision`. |
+| reportFields | string[] | <center></center>  | all     | Limit the fields that will be included in the report. Leaving this empty will include all fields. Possible values: `entryDate`, `created`, `amount`, `status`, `firstname`, `familyname`, `description`, `reference`, `paymentMethod`, `stamp`, `address`, `postcode`, `postoffice`, `country`, `checkoutReference`, `archiveNumber`, `payerName`, `settlementId`, `settlementDate`, `originalTradeReference`, `vatPercentage`, `vatAmount`, `paymentMethodFee`, `paymentMethodCommission`, `shopInShopCommission`, `shopInShopCommissionVatPercentage` and `shopInShopCommissionVatAmount` |
 | submerchant  | integer  | <center></center>  |         | Get submerchant's payment report (aggregate only)                                                                                                                                                                                                                                                                                                                                                 |
 
 #### Response
