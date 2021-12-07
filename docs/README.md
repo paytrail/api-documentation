@@ -689,7 +689,7 @@ Revert will return `HTTP 200` when successful, and the `transactionId` of the pa
 
 ### Manually activating invoices
 
-Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
+Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley/Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
 
 #### Payment creation to pending status
 
@@ -697,7 +697,7 @@ Payment needs to be created with the `manualInvoiceActivation` flag set to true.
 
 #### Activating invoice
 
-`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Collector and is in pending status.
+`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley/Collector and is in pending status.
 
 ##### Request
 
@@ -900,12 +900,12 @@ General API HTTP status codes and what to expect of them.
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items.                                                                                                                                                                                                                                                                                      |
 | currency                | alpha3                                      | <center>x</center> | Currency, only `EUR` supported at the moment                                                                                                                                                                                                                                                                                                                                                             |
 | language                | alpha2                                      | <center>x</center> | Payment's language, currently supported are `FI`, `SV`, and `EN`                                                                                                                                                                                                                                                                                                                                         |
-| orderId                 | string                                      | <center>-</center> | Order ID. Used for e.g. Collector payments order ID. If not given, merchant reference is used instead.                                                                                                                                                                                                                                                                                                   |
+| orderId                 | string                                      | <center>-</center> | Order ID. Used for e.g. Walley/Collector payments order ID. If not given, merchant reference is used instead.                                                                                                                                                                                                                                                                                                   |
 | items                   | [Item](#item)[]                             | <center>x</center> | Array of items                                                                                                                                                                                                                                                                                                                                                                                           |
 | customer                | [Customer](#customer1)                      | <center>x</center> | Customer information                                                                                                                                                                                                                                                                                                                                                                                     |
 | deliveryAddress         | [Address](#address)                         | <center>-</center> | Delivery address                                                                                                                                                                                                                                                                                                                                                                                         |
 | invoicingAddress        | [Address](#address)                         | <center>-</center> | Invoicing address                                                                                                                                                                                                                                                                                                                                                                                        |
-| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Collector.                                                                                                                                                                                                                                                               |
+| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Walley/Collector.                                                                                                                                                                                                                                                               |
 | redirectUrls            | [CallbackUrl](#callbackurl)                 | <center>x</center> | Where to redirect browser after a payment is paid or cancelled.                                                                                                                                                                                                                                                                                                                                          |
 | callbackUrls            | [CallbackUrl](#callbackurl)                 | <center>-</center> | Which url to ping after this payment is paid or cancelled                                                                                                                                                                                                                                                                                                                                                |
 | callbackDelay           | number                                      | <center>-</center> | Callback URL polling delay in seconds. If callback URLs are given, the call can be delayed up to 900 seconds. Default: 0                                                                                                                                                                                                                                                                                 |
@@ -933,8 +933,8 @@ General API HTTP status codes and what to expect of them.
 | Field     | Type   | Required           | Example              | Description                                     |
 | --------- | ------ | ------------------ | -------------------- | ----------------------------------------------- |
 | email     | string | <center>x</center> | john.doe@example.org | Email                                           |
-| firstName | string | <center>-</center> | John                 | First name (required for OPLasku and Collector) |
-| lastName  | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Collector)  |
+| firstName | string | <center>-</center> | John                 | First name (required for OPLasku and Walley/Collector) |
+| lastName  | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley/Collector)  |
 | phone     | string | <center>-</center> | 358451031234         | Phone number                                    |
 | vatId     | string | <center>-</center> | FI02454583           | VAT ID, if any                                  |
 
@@ -1010,7 +1010,7 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 | `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                               |
 | `bank`       | Bank payment methods                                                          |
 | `creditcard` | Visa, MasterCard, American Express                                            |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Collector, Jousto, AfterPay |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
 
