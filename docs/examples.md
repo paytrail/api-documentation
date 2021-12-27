@@ -599,7 +599,7 @@ const responseToHtml = (response) =>
   response.providers
     .map((provider) =>
       `<form method='POST' action=${provider.url}>
-            ${provider.parameters.map(parameterToInput}
+            ${provider.parameters.map(parameterToInput)}
             <button><img src='${provider.svg}' /></button>
         </form>`
     )
