@@ -7,6 +7,8 @@ npm install
 npm run serve
 ```
 
+Requires docsify-cli https://www.npmjs.com/package/docsify-cli
+
 ## Run Swagger UI locally
 
 ```bash
