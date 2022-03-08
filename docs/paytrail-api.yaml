@@ -1422,7 +1422,7 @@ components:
           example: 1590
           minimum: 0
           maximum: 99999999
-          description: Total amount of the payment (sum of items), VAT included
+          description: Total amount of the payment (sum of items), VAT should be included in amount unless `usePricesWithoutVat` is set to true
         currency:
           type: string
           example: EUR
@@ -1475,6 +1475,10 @@ components:
               - creditcard
               - credit
               - other
+        usePricesWithoutVat:
+          type: boolean
+          example: false
+          description: If true, `amount` and `items.unitPrice` should be sent to API without VAT, and final VAT-included prices are calculated by Paytrail's system (with prices rounded to closest cent). Also, when true, items must be included.
 
     TokenPaymentRequest:
       type: object
@@ -1563,7 +1567,7 @@ components:
           example: 1590
           minimum: 0
           maximum: 99999999
-          description: Unit price of an item in currency minor unit, eg. EUR cents. VAT included.
+          description: Unit price of an item in currency minor unit, eg. EUR cents. VAT should be included in amount unless `usePricesWithoutVat` is set to true.
         units:
           type: integer
           format: int64
