@@ -4,6 +4,7 @@
   "description": "Paytrail Payment API documentation",
   "devDependencies": {
     "docsify": "4.12.1",
+    "docsify-cli": "^4.4.3",
     "prettier": "2.4.1"
   },
   "scripts": {
