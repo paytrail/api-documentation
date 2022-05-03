@@ -2198,6 +2198,7 @@ components:
             - fail
             - pending
             - delayed
+            - refund pending
           description: Transaction status
         amount:
           type: integer
