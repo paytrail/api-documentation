@@ -247,7 +247,7 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 | Field         | Type    | Description                                                                                                          |
 | ------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
 | transactionId | string  | Assigned transaction ID for the payment                                                                              |
-| status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are desribed [above](#statuses).                              |
+| status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                              |
 | amount        | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
 | currency      | alpha3  | Currency                                                                                                             |
 | stamp         | string  | Merchant unique identifier for the order                                                                             |
