@@ -226,13 +226,13 @@ Merchant must check that signature is valid. Signature is calculated as describe
 
 The currently possible payment statuses are:
 
-| Status    | Description                                                                                                                                                                                                                              |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                             |
-| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                          |
-| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                            |
-| `pending` | Payment was initially approved by the provider but further processing is required, for example anti-fraud check is ongoing or invoice requires manual activation.                                                                        |
-| `delayed` | A rare status related to a single payment method that is not generally enabled. May take days to complete. If completed, will be reported as `ok` via the callback _or_ the redirect URL. This can be handled the same way as `pending`. |
+| Status    | Description                                                                                                                                                                                                                                                                                                      |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                     |
+| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                  |
+| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                    |
+| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing<br> 2. invoice requires manual activation<br>3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals) |
+| `delayed` | A rare status related to a single payment method that is not generally enabled. May take days to complete. If completed, will be reported as `ok` via the callback _or_ the redirect URL. This can be handled the same way as `pending`.                                                                         |
 
 ### Get
 
@@ -244,19 +244,19 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 
 #### Response
 
-| Field         | Type    | Description                                                                                                                                                                      |
-| ------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transactionId | string  | Assigned transaction ID for the payment                                                                                                                                          |
-| status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. `new` is for transactions that have been created but nothing further has happened. Other statuses are desribed [above](#statuses). |
-| amount        | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                                                                                  |
-| currency      | alpha3  | Currency                                                                                                                                                                         |
-| stamp         | string  | Merchant unique identifier for the order                                                                                                                                         |
-| reference     | string  | Order reference                                                                                                                                                                  |
-| createdAt     | string  | Transaction creation timestamp                                                                                                                                                   |
-| href          | string  | If transaction is in status `new`, link to the hosted payment gateway                                                                                                            |
-| provider      | string  | If processed, the name of the payment method provider                                                                                                                            |
-| filingCode    | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code.                                                             |
-| paidAt        | string  | Timestamp when the transaction was paid                                                                                                                                          |
+| Field         | Type    | Description                                                                                                          |
+| ------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| transactionId | string  | Assigned transaction ID for the payment                                                                              |
+| status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                              |
+| amount        | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
+| currency      | alpha3  | Currency                                                                                                             |
+| stamp         | string  | Merchant unique identifier for the order                                                                             |
+| reference     | string  | Order reference                                                                                                      |
+| createdAt     | string  | Transaction creation timestamp                                                                                       |
+| href          | string  | If transaction is in status `new`, link to the hosted payment gateway                                                |
+| provider      | string  | If processed, the name of the payment method provider                                                                |
+| filingCode    | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
+| paidAt        | string  | Timestamp when the transaction was paid                                                                              |
 
 See [example response](/examples#get) from examples tab.
 
