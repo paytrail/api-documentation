@@ -491,6 +491,7 @@ POST parameters
 | `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
 | `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                            |
 | `checkout-nonce`                | string  | <center>x</center> | Unique identifier for this request                                                                                |
+| `checkout-timestamp`            | string  | <center>x</center> | ISO 8601 date time                                                                                                |
 | `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                      |
 | `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                          |
 | `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers |
