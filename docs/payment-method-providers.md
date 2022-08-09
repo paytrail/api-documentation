@@ -8,7 +8,6 @@ The payment methods that can be tested without real money transactions have been
 
 | Provider                                             | `checkout-provider`                                   | Credentials                                                       |
 | ---------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------- |
-| OP                                                   | `osuuspankki`                                         | Username: 123456<br>Password: 7890<br>Security code: any          |
 | Nordea                                               | `nordea`                                              | Username: 123456<br>Password: 1111<br>Security code: any          |
 | Handelsbanken<br>POP Pankki<br>Säästöpankki<br>OmaSP | `handelsbanken`<br>`pop`<br>`saastopankki`<br>`omasp` | Username: 11111111<br>Password: 123456<br>Security code: 123456   |
 | Aktia                                                | `aktia`                                               | Username: 12345678<br>Password: 123456<br>Security code: 1234     |
@@ -18,6 +17,7 @@ The payment methods that can be tested without real money transactions have been
 | Mastercard                                           | `creditcard`                                          | Card number: 5353299308701770<br>Expiry date: 11/2023<br>CVC: 770 |
 | American Express                                     | `amex`                                                | Card number: 373953192351004<br>Expiry date: 12/2023<br>CVC: 1004 |
 | Walley/Collector<br>Walley/Collector B2B             | `collectorb2c`<br>`collectorb2b`                      | Social security number: 010380-000P                               |
+| OP                                                   | `osuuspankki`                                         | Testing is not possible                                           |
 | Pivo                                                 | `pivo`                                                | Testing is not possible                                           |
 | MobilePay                                            | `mobilepay`                                           | Testing is not possible                                           |
 | Siirto                                               | `siirto`                                              | Testing is not possible                                           |
