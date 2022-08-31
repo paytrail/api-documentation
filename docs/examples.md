@@ -587,6 +587,130 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
+### Calculating HMAC (C#)
+```cs
+ public class Body
+    {
+        public string stamp { get; set; }
+        public string reference { get; set; }
+        public int amount { get; set; }
+        public string currency { get; set; }
+        public string language { get; set; }
+        public Item[] items { get; set; }
+        public Customer customer { get; set; }
+        public RedirectUrls redirectUrls { get; set; }
+    }
+    public class Item
+    {
+        public int unitPrice { get; set; }
+        public int units { get; set; }
+        public int vatPercentage { get; set; }
+        public string productCode { get; set; }
+        public string deliveryDate { get; set; }
+    }
+    public class Customer
+    {
+        public Customer(string _email)
+        {
+            this.email = _email;
+        }
+        public string email { get; set; }
+    }
+    public class RedirectUrls
+    {
+        public RedirectUrls() { }
+        public RedirectUrls(string _s, string _c)
+        {
+            this.success = _s;
+            this.cancel = _c;
+        }
+        public string success { get; set; }
+        public string cancel { get; set; }
+    }
+    
+    /**
+     * Calculate Checkout HMAC
+     *
+     * @param string                $secret Merchant shared secret key
+     * @param array[string]string   $params HTTP headers or query string
+     * @param string                $body HTTP request body, empty string for GET requests
+     * @return string SHA-256 HMAC
+    */
+ 
+ 
+    public class Crypto
+    {
+        /// <summary>
+        /// Calculate Sha256 Hash
+        /// </summary>
+        /// <param name="message">Raw string</param>
+        /// <param name="secret">Shared secret</param>
+        /// <returns>string</returns>
+        public static string ComputeSha256Hash(string message, string secret)
+        {
+            var key = Encoding.UTF8.GetBytes(secret);
+            string outMsg = "";
+            using (var hmac = new HMACSHA256(key))
+            {
+                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
+                outMsg = BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+            return outMsg;
+        }
+        /// <summary>
+        /// Calculate HMAC
+        /// </summary>
+        /// <param name="secret">Shared secret</param>
+        /// <param name="hparams">params Headers or query string parameters</param>
+        /// <param name="body">body Request body or empty string for GET requests</param>
+        /// <returns>string</returns>
+        public static string CalculateHmac(string secret, Dictionary<string,string> hparams, string body = "")
+        {
+            var includedKeys = hparams.ToList().Where(h=>h.Key.StartsWith("checkout-"));            
+            List<string> data = new List<string>();
+            foreach(var pair in includedKeys)
+            {
+                data.Add(String.Format("{0}:{1}", pair.Key, hparams[pair.Key]));
+            }
+            data.Add(body);
+                     
+            return ComputeSha256Hash(string.Join("\n", data.ToArray()), secret);
+        }       
+    }
+    
+    
+    // string(64) "3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6"
+    
+    //Program.cs
+        const string secret = "SAIPPUAKAUPPIAS";
+        var headers = new Dictionary<string, string>();
+        headers.Add("checkout-account", "375917");
+        headers.Add("checkout-algorithm", "sha256");
+        headers.Add("checkout-method", "POST");
+        headers.Add("checkout-nonce", "564635208570151");
+        headers.Add("checkout-timestamp", "2018-07-06T10:01:31.904Z");
+        
+        var b = new Body();
+        b.stamp = "unique-identifier-for-merchant";
+        b.reference = "3759170";
+        b.amount = 1525;
+        b.currency = "EUR";
+        b.language = "FI";
+        var item = new Item();
+        item.unitPrice = 1525;
+        item.units = 1;
+        item.vatPercentage = 24;
+        item.productCode = "#1234";
+        item.deliveryDate = "2018-09-01";
+        b.items = new Item[] { item };
+        b.customer = new Customer("test.customer@example.com");
+        b.redirectUrls = new RedirectUrls("https://ecom.example.com/cart/success", "https://ecom.example.com/cart/cancel");
+        
+        var body = JsonSerializer.Serialize(b);
+        var encData = Crypto.CalculateHmac(secret,headers,body);
+        Console.WriteLine("Encrypted data: " + encData);
+```
+
 ### Payment provider form rendering
 
 Dummy form rendering from the example [response](#response):
