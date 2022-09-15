@@ -590,60 +590,6 @@ echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ### Calculating HMAC (C#)
 
 ```cs
-// Body.cs
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HMACCalculation
-{
-    public class Body
-    {
-        public string stamp { get; set; }
-        public string reference { get; set; }
-        public int amount { get; set; }
-        public string currency { get; set; }
-        public string language { get; set; }
-
-        public Item[] items { get; set; }
-        public Customer customer { get; set; }
-        public RedirectUrls redirectUrls { get; set; }
-    }
-
-    public class Item
-    {
-        public int unitPrice { get; set; }
-        public int units { get; set; }
-        public int vatPercentage { get; set; }
-        public string productCode { get; set; }
-        public string deliveryDate { get; set; }
-    }
-
-    public class Customer
-    {
-        public Customer(string _email)
-        {
-            this.email = _email;
-        }
-        public string email { get; set; }
-    }
-
-    public class RedirectUrls
-    {
-        public RedirectUrls() { }
-        public RedirectUrls(string _s, string _c)
-        {
-            this.success = _s;
-            this.cancel = _c;
-        }
-
-        public string success { get; set; }
-        public string cancel { get; set; }
-    }
-}
-
 // HMACCalculation.cs
 using System.Collections.Specialized;
 using System.Security.Cryptography;
@@ -726,7 +672,8 @@ namespace HMACCalculation
     }
 }
 
-//Program.cs
+// Using the calculation:
+// Program.cs - Creating a request to Paytrail with the HMACCalculation
 
 using HMACCalculation;
 using System;
@@ -752,7 +699,7 @@ class Program
         //headers.Add("checkout-nonce", "564635208570151");
         //headers.Add("checkout-timestamp", "2018-07-06T10:01:31.904Z");
 
-        var b = new Body();
+        var b = new Body(); // See body implementation below
         b.stamp = Crypto.RandomDigits(11);
         b.reference = "3759170";
         b.amount = 1525;
@@ -794,6 +741,61 @@ class Program
         Console.WriteLine("Status: {0}", response.StatusCode);
         Console.WriteLine("Timestamp: {0}", httpRequestMessage.Headers.FirstOrDefault(h=>h.Key.Equals("checkout-timestamp")).Value.First() );
         Console.WriteLine("Result: {0}",await response.Content.ReadAsStringAsync());
+    }
+}
+
+// Body.cs - Storing data prior to making the request 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HMACCalculation
+{
+    public class Body
+    {
+        public string stamp { get; set; }
+        public string reference { get; set; }
+        public int amount { get; set; }
+        public string currency { get; set; }
+        public string language { get; set; }
+
+        public Item[] items { get; set; }
+        public Customer customer { get; set; }
+        public RedirectUrls redirectUrls { get; set; }
+    }
+
+    public class Item
+    {
+        public int unitPrice { get; set; }
+        public int units { get; set; }
+        public int vatPercentage { get; set; }
+        public string productCode { get; set; }
+        public string deliveryDate { get; set; }
+    }
+
+    public class Customer
+    {
+        public Customer(string _email)
+        {
+            this.email = _email;
+        }
+        public string email { get; set; }
+    }
+
+    public class RedirectUrls
+    {
+        public RedirectUrls() { }
+        public RedirectUrls(string _s, string _c)
+        {
+            this.success = _s;
+            this.cancel = _c;
+        }
+
+        public string success { get; set; }
+        public string cancel { get; set; }
     }
 }
 ```
