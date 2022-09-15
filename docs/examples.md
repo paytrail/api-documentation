@@ -672,7 +672,6 @@ namespace HMACCalculation
     }
 }
 
-// Using the calculation:
 // Program.cs - Creating a request to Paytrail with the HMACCalculation
 
 using HMACCalculation;
