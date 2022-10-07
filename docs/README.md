@@ -796,7 +796,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 
 ## Settlements
 
-`HTTP GET /settlements` returns merchant's settlement IDs. Maximum of 100 settlement IDs are returned, starting from the most recent settelements. The endpoint supports the following `query`-parameters:
+`HTTP GET /settlements` returns merchant's settlement IDs and corresponding bank references. Maximum of 100 settlement IDs are returned, starting from the most recent settelements. The endpoint supports the following `query`-parameters:
 
 | Field         | Required          | Description                                                                                                                       |
 | ------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -809,7 +809,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 Example
 
 ```
-/settlements?bankReference=kissa&startDate=2019-01-01&endDate=2019-02-01
+/settlements?bankReference=45667372&startDate=2019-01-01&endDate=2019-02-01
 ```
 
 #### Response
@@ -818,6 +818,17 @@ Example
 | ----------- | ----------------------------------- |
 | 200         | Settlement IDs fetched successfully |
 | 400         | Something went wrong                |
+
+```json
+[
+  {
+    "id": 678,
+    "createdAt": "2019-01-06T013:43:32.780Z",
+    "settledAt": "2019-01-08",
+    "reference": "45667372"
+  }
+]
+```
 
 ## Merchants
 
