@@ -826,7 +826,7 @@ Example
     "id": 678,
     "createdAt": "2019-01-06T013:43:32.780Z",
     "settledAt": "2019-01-08",
-    "reference": "45667372"
+    "settlementReference": "45667372"
   }
 ]
 ```
