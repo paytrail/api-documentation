@@ -963,7 +963,7 @@ General API HTTP status codes and what to expect of them.
 | ------------- | ------ | ------------------ | --------------- |-------------------------------------------|
 | streetAddress | string | <center>x</center> | Fake Street 123 | Street address. Maximum of 50 characters. |
 | postalCode    | string | <center>x</center> | 00100           | Postal code. Maximum of 15 characters     |
-| city          | string | <center>x</center> | Luleå           | City. maximum of 30 characters            |
+| city          | string | <center>x</center> | Luleå           | City. Maximum of 30 characters            |
 | county        | string | <center>-</center> | Norbotten       | County/State                              |
 | country       | string | <center>x</center> | SE              | Alpha-2 country code                      |
 
