@@ -413,7 +413,7 @@ Email refund payload is otherwise the same (ie. for shop-in-shop merchants there
 
 ## Code examples
 
-### HMAC calculation (node.js)
+### HMAC calculation (Node.js)
 
 ```javascript
 const crypto = require('crypto');
@@ -475,8 +475,12 @@ calculateHmac(SECRET, headers, body);
 ```
 
 ### HMAC calculation (Java)
+
 ```java
-// Use Apache Common Codec to provide classes for creating HMAC
+// This example is built on Spring Boot and uses Lombok to reduce boilerplate code.
+// Neither is required to actually calculate the HMAC.
+//
+// Use Apache Common Codec to provide classes for creating HMAC (HmacUtils).
 // Alternatively, if you are unable to add dependency of Apache Common Codec,
 // you can use Bouncy Castle JDK to provide Base64 class and implement code manually
 
@@ -495,7 +499,7 @@ public class Crypto {
     outMsg = hmac.hmacHex(message);
     return outMsg.replace("-","").toLowerCase();
   }
-    
+
   /**
    *
    * @param secret Merchant shared secret
@@ -505,14 +509,14 @@ public class Crypto {
    */
   public static String CalculateHmac(String secret, Map<String,String> hParams, String body) {
     List<String> data = new ArrayList<>();
-    
+
     List<String> data = hParams.entrySet().stream()
       .filter(item -> item.getKey().startsWith("checkout-"))
       .map(entry -> String.format("%s:%s", entry.getKey(), entry.getValue()))
       .collect(Collectors.toList());
-    
+
     data.add(body);
-    
+
     String message = String.join("\n", data);
     return ComputeSha256Hash(message,secret);
   }
@@ -576,7 +580,7 @@ public class DemoApplication {
 
   public static void main(String[] args) throws JsonProcessingException {
     SpringApplication.run(DemoApplication.class, args);
-        
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     Logger logger = LoggerFactory.getLogger(DemoApplication.class);
@@ -868,13 +872,13 @@ echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 Dummy form rendering from the example [response](#response):
 
 ```javascript
-const parameterToInput = (param) =>
-  `<input type='hidden' name='${param.name}' value='${param.value}' />`;
+const parameterToInput = (param) => `<input type='hidden' name='${param.name}' value='${param.value}' />`;
 
 const responseToHtml = (response) =>
   response.providers
-    .map((provider) =>
-      `<form method='POST' action=${provider.url}>
+    .map(
+      (provider) =>
+        `<form method='POST' action=${provider.url}>
             ${provider.parameters.map(parameterToInput)}
             <button><img src='${provider.svg}' /></button>
         </form>`
