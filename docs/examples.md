@@ -739,6 +739,122 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
+### HMAC Calculation (Bash Script)
+
+```bashscript
+#!/bin/bash
+
+function hash_hmac {
+  digest="$1"
+  data="$2"
+  key="$3"
+  shift 3
+  echo -n "$data" | openssl dgst "-$digest" -hmac "$key" "$@"
+}
+
+function calculate_hmac {
+  secret="$1"
+  hparams="$2"
+  body="$3"
+  message=""
+  newline=$'\n'
+
+  # loop to filter headers which starts with "checkout"
+  for value in $hparams
+  do
+    if [[ $value == checkout* ]]
+    then
+      message+="${value}${newline}"
+    fi
+  done
+  # remove all the blank spaces of body
+  body="$(echo -e "${body}" | tr -d '[:space:]')"
+  message+="${body}"
+  hash_hmac "sha256" "$message" "$secret"
+}
+
+# bash script is not an OOP language so the data should be declared
+# in packages to make it clear and easier to follow
+# properties of objects(packages) are fixed for the data consistency purpose
+
+# Item Package
+ITEM_UNIT_PRICE="unitPrice"
+ITEM_UNITS="units"
+ITEM_VAT_PERCENTAGE="vatPercentage"
+ITEM_PRODUCT_CODE="productCode"
+ITEM_DELIVERY_DATE="deliveryDate"
+
+PACKAGE_ITEM=$(cat <<EOF
+{
+  "$ITEM_UNIT_PRICE":1525,
+  "$ITEM_UNITS":1,
+  "$ITEM_VAT_PERCENTAGE":24,
+  "$ITEM_PRODUCT_CODE":"#1234",
+  "$ITEM_DELIVERY_DATE":"2018-09-01"
+}
+EOF
+)
+
+# Customer Package
+CUSTOMER_EMAIL="email"
+
+PACKAGE_CUSTOMER=$(cat <<EOF
+{
+  "$CUSTOMER_EMAIL":"test.customer@example.com"
+}
+EOF
+)
+
+# Redirect Urls Package
+REDIRECTURLS_SUCCESS="success"
+REDIRECTURLS_CANCEL="cancel"
+
+PACKAGE_REDIRECTURLS=$(cat <<EOF
+{
+  "$REDIRECTURLS_SUCCESS":"https://ecom.example.com/cart/success",
+  "$REDIRECTURLS_CANCEL":"https://ecom.example.com/cart/cancel"
+}
+EOF
+)
+
+# Body Package
+BODY_STAMP="stamp"
+BODY_REFERENCE="reference"
+BODY_CURRENCY="currency"
+BODY_ITEMS="items"
+BODY_CUSTOMER="customer"
+BODY_REDIRECT_URLS="redirectUrls"
+
+PACKAGE_BODY=$(cat <<EOF
+{
+  "$BODY_STAMP":"unique-identifier-for-merchant",
+  "$BODY_REFERENCE":"3759170","amount":1525,
+  "$BODY_CURRENCY":"EUR","language":"FI",
+  "$BODY_ITEMS":[$PACKAGE_ITEM],
+  "$BODY_CUSTOMER":$PACKAGE_CUSTOMER,
+  "$BODY_REDIRECT_URLS":$PACKAGE_REDIRECTURLS
+}
+EOF
+)
+
+# Header Package
+PACKAGE_HEADERS=$(cat <<EOF
+checkout-account:375917
+checkout-algorithm:sha256
+checkout-method:POST
+checkout-nonce:564635208570151
+checkout-timestamp:2018-07-06T10:01:31.904Z
+EOF
+)
+
+secret=$'SAIPPUAKAUPPIAS'
+headers="$PACKAGE_HEADERS"
+body="$PACKAGE_BODY"
+
+calculate_hmac "$secret" "$headers" "$body"
+# result: (stdin)= 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+```
+
 ### Payment provider form rendering
 
 Dummy form rendering from the example [response](#response):
