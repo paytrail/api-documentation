@@ -839,11 +839,11 @@ EOF
 
 # Header Package
 PACKAGE_HEADERS=$(cat <<EOF
-checkout-account:375917
-checkout-algorithm:sha256
-checkout-method:POST
-checkout-nonce:564635208570151
-checkout-timestamp:2018-07-06T10:01:31.904Z
+  checkout-account:375917
+  checkout-algorithm:sha256
+  checkout-method:POST
+  checkout-nonce:564635208570151
+  checkout-timestamp:2018-07-06T10:01:31.904Z
 EOF
 )
 
