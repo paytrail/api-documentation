@@ -820,7 +820,9 @@ EOF
 # Body Package
 BODY_STAMP="stamp"
 BODY_REFERENCE="reference"
+BODY_AMOUNT="amount"
 BODY_CURRENCY="currency"
+BODY_LANGUAGE="language"
 BODY_ITEMS="items"
 BODY_CUSTOMER="customer"
 BODY_REDIRECT_URLS="redirectUrls"
@@ -828,8 +830,10 @@ BODY_REDIRECT_URLS="redirectUrls"
 PACKAGE_BODY=$(cat <<EOF
 {
   "$BODY_STAMP":"unique-identifier-for-merchant",
-  "$BODY_REFERENCE":"3759170","amount":1525,
-  "$BODY_CURRENCY":"EUR","language":"FI",
+  "$BODY_REFERENCE":"3759170",
+  "$BODY_AMOUNT":1525,
+  "$BODY_CURRENCY":"EUR",
+  "$BODY_LANGUAGE":"FI",
   "$BODY_ITEMS":[$PACKAGE_ITEM],
   "$BODY_CUSTOMER":$PACKAGE_CUSTOMER,
   "$BODY_REDIRECT_URLS":$PACKAGE_REDIRECTURLS
