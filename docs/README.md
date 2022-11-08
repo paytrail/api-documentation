@@ -644,6 +644,27 @@ When creating CIT authorization holds or direct charges the payment might need a
 | transactionId   | string | Assigned transaction ID for the payment |
 | threeDSecureUrl | string | 3DS redirect URL                        |
 
+If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and and `acquirerResponseCodeDescription` are returned if available.
+
+| field                           | type   | descrpition                                                   |
+| ------------------------------- | ------ | ------------------------------------------------------------- |
+| message                         | string | Always "Failed to create token payment."                      |
+| status                          | string | Always "error"                                                |
+| acquirerResponseCode            | string | Acquirer response code or empty                               |
+| acquirerResponseCodeDescription | string | Meaningful description of the acquirer response code or empty |
+
+##### Retrying failed payments
+
+Never retry a transaction when the `acquirerResponseCode` is:
+
+| Nets                                             | Amex                    |
+| ------------------------------------------------ | ----------------------- |
+| 111, 119, 165, 200, 207, 208, 209, 902, 908, 909 | 181, 183, 187, 189, 200 |
+
+The cardholder needs to give a new card number to proceed.
+
+When the `acquirerResponseCode` is any other than above for a specific acquirer, you may retry the transaction up to 15 times in the next 30 days.
+
 #### Commit authorization hold
 
 `HTTP POST /payments/{transactionId}/token/commit` commits an existing authorization hold.
