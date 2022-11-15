@@ -739,6 +739,88 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
+### HMAC calculation (Go)
+
+```go
+package main
+
+import (
+	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"sort"
+)
+
+func headersToBytesSorted(headers map[string]string) (sortedHeaders []byte) {
+	var keys []string
+	for key := range headers {
+		if key[:9] == "checkout-" {
+			keys = append(keys, key)
+		}
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		sortedHeaders = append(sortedHeaders, []byte(key+":"+headers[key]+"\n")...)
+	}
+	return
+}
+
+func CalculateHmac(secret, body []byte, headers map[string]string) string {
+	payload := headersToBytesSorted(headers)
+	payload = append(payload, body...)
+	hash := hmac.New(sha256.New, secret)
+	hash.Write(payload)
+	return hex.EncodeToString(hash.Sum(nil))
+}
+
+func main() {
+
+	Account := "375917"
+	Secret := []byte("SAIPPUAKAUPPIAS")
+
+	Headers := map[string]string{
+		"checkout-account":   Account,
+		"checkout-algorithm": "sha256",
+		"checkout-method":    "POST",
+		"checkout-nonce":     "564635208570151",
+		"checkout-timestamp": "2018-07-06T10:01:31.904Z",
+	}
+
+	Body := []byte(`{
+		"stamp": "unique-identifier-for-merchant",
+		"reference": "3759170",
+		"amount": 1525,
+		"currency": "EUR",
+		"language": "FI",
+		"items": [
+		  {
+			"unitPrice": 1525,
+			"units": 1,
+			"vatPercentage": 24,
+			"productCode": "#1234",
+			"deliveryDate": "2018-09-01"
+		  }
+		],
+		"customer": {
+		  "email": "test.customer@example.com"
+		},
+		"redirectUrls": {
+		  "success": "https://ecom.example.com/cart/success",
+		  "cancel": "https://ecom.example.com/cart/cancel"
+		}
+	  }`)
+
+	buf := new(bytes.Buffer)
+	json.Compact(buf, Body)
+	fmt.Println(CalculateHmac(Secret, buf.Bytes(), Headers))
+
+	// Result: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+}
+```
+
 ### Payment provider form rendering
 
 Dummy form rendering from the example [response](#response):
