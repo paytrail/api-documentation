@@ -24,6 +24,8 @@ The payment methods that can be tested without real money transactions have been
 | OP Lasku                                             | `oplasku`                                             | Testing is not possible                                           |
 | Jousto                                               | `jousto`                                              | Testing is not possible                                           |
 | Ålandsbanken                                         | `alandsbanken`                                        | Testing is not possible                                           |
+| Nordea B2B                                           | `nordea-business`                                     | Testing is not possible                                           |
+| Danske B2B                                           | `danske-business`                                     | Testing is not possible                                           |
 
 ## Test cards for tokenization
 
