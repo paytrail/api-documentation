@@ -644,7 +644,7 @@ When creating CIT authorization holds or direct charges the payment might need a
 | transactionId   | string | Assigned transaction ID for the payment |
 | threeDSecureUrl | string | 3DS redirect URL                        |
 
-If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and and `acquirerResponseCodeDescription` are returned if available.
+If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
 | field                           | type   | descrpition                                                   |
 | ------------------------------- | ------ | ------------------------------------------------------------- |
