@@ -413,7 +413,7 @@ Email refund payload is otherwise the same (ie. for shop-in-shop merchants there
 
 ## Code examples
 
-### HMAC calculation (node.js)
+### HMAC calculation (Node.js)
 
 ```javascript
 const crypto = require('crypto');
@@ -472,6 +472,158 @@ const body = {
 
 // Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
 calculateHmac(SECRET, headers, body);
+```
+
+### HMAC calculation (Java)
+
+```java
+// This example is built on Spring Boot and uses Lombok to reduce boilerplate code.
+// Neither is required to actually calculate the HMAC.
+//
+// Use Apache Common Codec to provide classes for creating HMAC (HmacUtils).
+// Alternatively, if you are unable to add dependency of Apache Common Codec,
+// you can use Bouncy Castle JDK to provide Base64 class and implement code manually
+
+// Class Crypto.java
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class Crypto {
+  /**
+   *
+   * @param message Raw string
+   * @param secret Merchant shared secret
+   * @return
+   */
+  public static String ComputeSha256Hash(String message, String secret) {
+    String outMsg;
+    var hmac = new HmacUtils(HmacAlgorithms.HMAC_SHA_256,secret);
+    outMsg = hmac.hmacHex(message);
+    return outMsg.replace("-","").toLowerCase();
+  }
+
+  /**
+   *
+   * @param secret Merchant shared secret
+   * @param hParams Headers or query string parameters
+   * @param body Request body or empty string for GET request
+   * @return
+   */
+  public static String CalculateHmac(String secret, Map<String,String> hParams, String body) {
+    List<String> data = new ArrayList<>();
+
+    List<String> data = hParams.entrySet().stream()
+      .filter(item -> item.getKey().startsWith("checkout-"))
+      .map(entry -> String.format("%s:%s", entry.getKey(), entry.getValue()))
+      .collect(Collectors.toList());
+
+    data.add(body);
+
+    String message = String.join("\n", data);
+    return ComputeSha256Hash(message,secret);
+  }
+}
+
+//Class Body.java
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Body {
+  private String stamp;
+  private String reference;
+  private int amount;
+  private String currency;
+  private String language;
+  private List<Item> items;
+  private Customer customer;
+  private RedirectUrls redirectUrls;
+}
+
+// Class Customer.java
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Customer {
+  @Email
+  private String email;
+}
+
+// Class Item.java
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Item {
+  private int unitPrice;
+  private int units;
+  private int vatPercentage;
+  private String productCode;
+  private String deliveryDate;
+}
+
+// Class RedirectUrls.java
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class RedirectUrls {
+  private String success;
+  private String cancel;
+}
+
+// Application.java
+@SpringBootApplication
+public class DemoApplication {
+
+  public static void main(String[] args) throws JsonProcessingException {
+    SpringApplication.run(DemoApplication.class, args);
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+
+    String secret =  "SAIPPUAKAUPPIAS";
+    Map<String,String> headers = new LinkedHashMap<>();
+    headers.put("checkout-account", "375917");
+    headers.put("checkout-algorithm", "sha256");
+    headers.put("checkout-method", "POST");
+    headers.put("checkout-nonce", "564635208570151");
+    headers.put("checkout-timestamp", "2018-07-06T10:01:31.904Z");
+
+    var item = Item.builder()
+      .unitPrice(1525)
+      .units(1)
+      .vatPercentage(24)
+      .productCode("#1234")
+      .deliveryDate("2018-09-01")
+      .build();
+
+    var customer = new Customer("test.customer@example.com");
+
+    var redirectUrls = new RedirectUrls("https://ecom.example.com/cart/success", "https://ecom.example.com/cart/cancel");
+
+    var b = Body.builder()
+      .stamp("unique-identifier-for-merchant")
+      .reference("3759170")
+      .amount(1525)
+      .currency("EUR")
+      .language("FI")
+      .items(Arrays.asList(item))
+      .customer(customer)
+      .redirectUrls(redirectUrls)
+      .build();
+
+    var body = objectMapper.writeValueAsString(b);
+    var encData = Crypto.CalculateHmac(secret,headers,body);
+    logger.info("Encrypted data: " + encData);
+    // result after running the app:
+    //Encrypted data: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+  }
+
+}
 ```
 
 ### HMAC calculation (PHP)
@@ -586,6 +738,7 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 }
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
+
 
 ### Calculating HMAC (C#)
 
@@ -796,6 +949,87 @@ namespace HMACCalculation
         public string success { get; set; }
         public string cancel { get; set; }
     }
+```
+
+### HMAC calculation (Go)
+
+```go
+package main
+
+import (
+	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"sort"
+)
+
+func headersToBytesSorted(headers map[string]string) (sortedHeaders []byte) {
+	var keys []string
+	for key := range headers {
+		if key[:9] == "checkout-" {
+			keys = append(keys, key)
+		}
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		sortedHeaders = append(sortedHeaders, []byte(key+":"+headers[key]+"\n")...)
+	}
+	return
+}
+
+func CalculateHmac(secret, body []byte, headers map[string]string) string {
+	payload := headersToBytesSorted(headers)
+	payload = append(payload, body...)
+	hash := hmac.New(sha256.New, secret)
+	hash.Write(payload)
+	return hex.EncodeToString(hash.Sum(nil))
+}
+
+func main() {
+
+	Account := "375917"
+	Secret := []byte("SAIPPUAKAUPPIAS")
+
+	Headers := map[string]string{
+		"checkout-account":   Account,
+		"checkout-algorithm": "sha256",
+		"checkout-method":    "POST",
+		"checkout-nonce":     "564635208570151",
+		"checkout-timestamp": "2018-07-06T10:01:31.904Z",
+	}
+
+	Body := []byte(`{
+		"stamp": "unique-identifier-for-merchant",
+		"reference": "3759170",
+		"amount": 1525,
+		"currency": "EUR",
+		"language": "FI",
+		"items": [
+		  {
+			"unitPrice": 1525,
+			"units": 1,
+			"vatPercentage": 24,
+			"productCode": "#1234",
+			"deliveryDate": "2018-09-01"
+		  }
+		],
+		"customer": {
+		  "email": "test.customer@example.com"
+		},
+		"redirectUrls": {
+		  "success": "https://ecom.example.com/cart/success",
+		  "cancel": "https://ecom.example.com/cart/cancel"
+		}
+	  }`)
+
+	buf := new(bytes.Buffer)
+	json.Compact(buf, Body)
+	fmt.Println(CalculateHmac(Secret, buf.Bytes(), Headers))
+
+	// Result: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
 }
 ```
 
@@ -804,13 +1038,13 @@ namespace HMACCalculation
 Dummy form rendering from the example [response](#response):
 
 ```javascript
-const parameterToInput = (param) =>
-  `<input type='hidden' name='${param.name}' value='${param.value}' />`;
+const parameterToInput = (param) => `<input type='hidden' name='${param.name}' value='${param.value}' />`;
 
 const responseToHtml = (response) =>
   response.providers
-    .map((provider) =>
-      `<form method='POST' action=${provider.url}>
+    .map(
+      (provider) =>
+        `<form method='POST' action=${provider.url}>
             ${provider.parameters.map(parameterToInput)}
             <button><img src='${provider.svg}' /></button>
         </form>`
