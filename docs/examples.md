@@ -752,6 +752,8 @@ namespace HMACCalculation
 {
     public class Crypto
     {
+    	static readonly string[] supportedEnc = { "sha256", "sha512" };
+	
         /// <summary>
         /// Calculate SHA Hash
         /// </summary>
@@ -759,8 +761,13 @@ namespace HMACCalculation
         /// <param name="secret">Shared secret</param>
         /// <param name="encType">encryption Type: sha256 or sha512</param>
         /// <returns>string</returns>
-        private static string ComputeShaHash(string message, string secret, string encType)
+        private static string ComputeShaHash(string message, string secret, string encType = "sha256")
         {
+	   if(!Crypto.supportedEnc.Any( e => e.Equals(encType, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new Exception("Not supported encryption");
+            }
+	    
             var key = Encoding.UTF8.GetBytes(secret);
             string outMsg = "";
             if (encType.Equals("sha512"))
