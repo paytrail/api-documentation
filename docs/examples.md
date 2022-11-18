@@ -770,7 +770,7 @@ namespace HMACCalculation
 	    
             var key = Encoding.UTF8.GetBytes(secret);
             string outMsg = "";
-            if (encType.Equals("sha512"))
+            if (encType.Equals("sha512",StringComparison.InvariantCultureIgnoreCase))
             {
                 using (var hmac = new HMACSHA512(key))
                 {
