@@ -823,7 +823,7 @@ func main() {
 
 ### HMAC Calculation (Bash Script)
 
-```bashscript
+```bash
 #!/bin/bash
 
 function hash_hmac {
