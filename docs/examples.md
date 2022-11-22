@@ -868,7 +868,7 @@ echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
 
-### Calculating HMAC (C#)
+### HMAC calculation (C#)
 
 ```cs
 // HMACCalculation.cs
