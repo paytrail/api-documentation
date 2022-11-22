@@ -867,6 +867,225 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
+
+### Calculating HMAC (C#)
+
+```cs
+// HMACCalculation.cs
+using System.Collections.Specialized;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace HMACCalculation
+{
+    public class Crypto
+    {
+    	static readonly string[] supportedEnc = { "sha256", "sha512" };
+	
+        /// <summary>
+        /// Calculate SHA Hash
+        /// </summary>
+        /// <param name="message">Raw string</param>
+        /// <param name="secret">Shared secret</param>
+        /// <param name="encType">encryption Type: sha256 or sha512</param>
+        /// <returns>string</returns>
+        private static string ComputeShaHash(string message, string secret, string encType = "sha256")
+        {
+	   if(!Crypto.supportedEnc.Any( e => e.Equals(encType, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new Exception("Not supported encryption");
+            }
+	    
+            var key = Encoding.UTF8.GetBytes(secret);
+            string outMsg = "";
+            if (encType.Equals("sha512",StringComparison.InvariantCultureIgnoreCase))
+            {
+                using (var hmac = new HMACSHA512(key))
+                {
+                    var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
+                    outMsg = BitConverter.ToString(hash).Replace("-", "").ToLower();
+                }
+            }
+            else
+            {
+                using (var hmac = new HMACSHA256(key))
+                {
+                    // ComputeHash - returns byte array
+                    var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
+                    outMsg = BitConverter.ToString(hash).Replace("-", "").ToLower();
+
+                }
+            }
+            return outMsg;
+        }
+
+        /// <summary>
+        /// Calculate HMAC
+        /// </summary>
+        /// <param name="secret">Shared secret</param>
+        /// <param name="hparams">params Headers or query string parameters</param>
+        /// <param name="body">body Request body or empty string for GET requests</param>
+        /// <param name="encType">encryption Type: sha256 or sha512</param>
+        /// <returns>string</returns>
+        public static string CalculateHmac(string secret, Dictionary<string, string> hparams, string body = "", string encType="sha256")
+        {
+            // Keep only checkout- params, more relevant for response validation.Filter query
+            // string parameters the same way - the signature includes only checkout- values.           
+            // Keys must be sorted alphabetically
+            var includedKeys = hparams.Where(h => h.Key.StartsWith("checkout-")).OrderBy(h=>h.Key).ToList();
+            List<string> data = new List<string>();
+            foreach (var pair in includedKeys)
+            {
+                var row = String.Format("{0}:{1}", pair.Key, hparams[pair.Key]);
+                data.Add(row);
+            }
+            data.Add(body);
+
+            return ComputeShaHash(string.Join("\n", data.ToArray()), secret, encType);
+        }
+
+        /// <summary>
+        /// Random Digits by length
+        /// </summary>
+        /// <param name="length">Length of generated number</param>        
+        /// <returns>string</returns>
+        public static string RandomDigits(int length)
+        {
+            var random = new Random();
+            string s = string.Empty;
+            for (int i = 0; i < length; i++)
+                s = String.Concat(s, random.Next(10).ToString());
+            return s;
+        }
+    }
+}
+
+// Program.cs - Creating a request to Paytrail with the HMACCalculation
+
+using HMACCalculation;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Globalization;
+using System.Text.Json;
+
+class Program
+{    
+    static async Task Main(string[] args)
+    {
+        string secret = "SAIPPUAKAUPPIAS";
+
+        var timestamp = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
+        var headers = new Dictionary<string, string>();
+        headers.Add("checkout-account", "375917");        
+        headers.Add("checkout-algorithm", "sha512");
+        headers.Add("checkout-method", "POST");
+        headers.Add("checkout-nonce", Crypto.RandomDigits(20));
+        headers.Add("checkout-timestamp",timestamp);
+        //headers.Add("checkout-nonce", "564635208570151");
+        //headers.Add("checkout-timestamp", "2018-07-06T10:01:31.904Z");
+
+        var b = new Body(); // See body implementation below
+        b.stamp = Crypto.RandomDigits(11);
+        b.reference = "3759170";
+        b.amount = 1525;
+        b.currency = "EUR";
+        b.language = "FI";
+        var item = new Item();
+        item.unitPrice = 1525;
+        item.units = 1;
+        item.vatPercentage = 24;
+        item.productCode = "#1234";
+        item.deliveryDate = DateTime.Now.AddDays(5).ToString("yyyy-MM-dd");
+        //item.deliveryDate = "2018-09-01";
+
+        b.items = new Item[] { item };
+        b.customer = new Customer("test.customer@example.com");
+        b.redirectUrls = new RedirectUrls("https://ecom.example.com/cart/success", "https://ecom.example.com/cart/cancel");
+
+        var body = JsonSerializer.Serialize(b);
+        Console.WriteLine("Body txt: {0}", body);
+        var encData = Crypto.CalculateHmac(secret, headers, body, headers["checkout-algorithm"]);
+        Console.WriteLine("Encrypted data: {0}" , encData);
+
+        var client = new HttpClient();
+        var httpRequestMessage = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri("https://services.paytrail.com/payments"),           
+            Content = new StringContent(body,System.Text.Encoding.UTF8, "application/json"),
+            Headers = {
+                { "checkout-account", headers["checkout-account"] },
+                { "checkout-algorithm", headers["checkout-algorithm"] },
+                { "checkout-method", headers["checkout-method"] },
+                { "checkout-nonce", headers["checkout-nonce"] },
+                { "checkout-timestamp", headers["checkout-timestamp"] },
+                { "signature", encData }
+            }
+        };
+        var response = await client.SendAsync(httpRequestMessage);
+        Console.WriteLine("Status: {0}", response.StatusCode);
+        Console.WriteLine("Timestamp: {0}", httpRequestMessage.Headers.FirstOrDefault(h=>h.Key.Equals("checkout-timestamp")).Value.First() );
+        Console.WriteLine("Result: {0}",await response.Content.ReadAsStringAsync());
+    }
+}
+
+// Body.cs - Storing data prior to making the request 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HMACCalculation
+{
+    public class Body
+    {
+        public string stamp { get; set; }
+        public string reference { get; set; }
+        public int amount { get; set; }
+        public string currency { get; set; }
+        public string language { get; set; }
+
+        public Item[] items { get; set; }
+        public Customer customer { get; set; }
+        public RedirectUrls redirectUrls { get; set; }
+    }
+
+    public class Item
+    {
+        public int unitPrice { get; set; }
+        public int units { get; set; }
+        public int vatPercentage { get; set; }
+        public string productCode { get; set; }
+        public string deliveryDate { get; set; }
+    }
+
+    public class Customer
+    {
+        public Customer(string _email)
+        {
+            this.email = _email;
+        }
+        public string email { get; set; }
+    }
+
+    public class RedirectUrls
+    {
+        public RedirectUrls() { }
+        public RedirectUrls(string _s, string _c)
+        {
+            this.success = _s;
+            this.cancel = _c;
+        }
+
+        public string success { get; set; }
+        public string cancel { get; set; }
+    }
+```
+
 ### HMAC calculation (Go)
 
 ```go
