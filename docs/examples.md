@@ -671,7 +671,7 @@ class Body:
     self.customer = customer
     self.redirectUrls = redirectUrls
 
-  # create toDictionary() method to customize a convertter of object class to dict type
+  # create toDictionary() method to customize a converter of object class to dict type
   def toDictionary(self) -> dict:
     items = []
     for item in self.items:
@@ -698,21 +698,21 @@ class Crypto:
   @staticmethod
   def compute_sha256_hash(message: str, secret: str) -> str:
 
-    # message must remove the whitespaces that were created during json parsing process
+    # whitespaces that were created during json parsing process must be removed
     hash = hmac.new(secret.encode(), message.replace(' ','').encode() ,digestmod=hashlib.sha256)
     return hash.hexdigest()
 
   #/
   # @param secret Merchant shared secret
-  # @param hParams Headers or query string parameters
+  # @param headerParams Headers or query string parameters
   # @param body Request body or empty string for GET request
   # @return
   #/
   @staticmethod
-  def calculate_hmac(self, secret: str, hparams: dict, body: str='') -> str:
+  def calculate_hmac(self, secret: str, headerParams: dict, body: str='') -> str:
 
     data = []
-    for key,value in hparams.items():
+    for key,value in headerParams.items():
       if key.startswith('checkout-'):
         data.append('{key}:{value}'.format(key = key, value = value))
 
@@ -749,7 +749,7 @@ b = Body(stamp, reference, amount, currency, language, items, customer,redirectU
 body = json.dumps(b.toDictionary())
 encData = Crypto.calculate_hmac(Crypto,secret,headers,body)
 print("Encrypted data: " + encData)
-# result after run the program:
+# result after running the program:
 # Encrypted data: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
 
 ```
