@@ -26,6 +26,7 @@ The payment methods that can be tested without real money transactions have been
 | Ålandsbanken                                         | `alandsbanken`                                        | Testing is not possible                                           |
 | Nordea B2B                                           | `nordea-business`                                     | Testing is not possible                                           |
 | Danske B2B                                           | `danske-business`                                     | Testing is not possible                                           |
+| Fellow Yrityslasku                                   | `fellow`                                              | Vat-ID: 2525954-5<br>verification code: 1234<br>When in "*Valitse tunnistustapa*" phase, change browser address to https://test-merchantfellowfinance.azurewebsites.net/ProcessRebound?code=administrator_096ec98a-29fb-44b5-8368-15d4dbe52468_280875-115K |
 
 ## Test cards for tokenization
 

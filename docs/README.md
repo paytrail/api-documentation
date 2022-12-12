@@ -1045,12 +1045,12 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                          |
-| ------------ | ------------------------------------------------------------------------------------ |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                      |
-| `bank`       | Bank payment methods                                                                 |
-| `creditcard` | Visa, MasterCard, American Express                                                   |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay |
+| ID           | Description                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------------- |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                                          |
+| `bank`       | Bank payment methods                                                                                     |
+| `creditcard` | Visa, MasterCard, American Express                                                                       |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay, Fellow Yrityslasku |
 
 ##### PaymentMethodGroupData
 
