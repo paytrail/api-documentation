@@ -1288,6 +1288,90 @@ calculate_hmac "$secret" "$headers" "$body"
 # result: (stdin)= 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
 ```
 
+### HMAC Calculation (Rust)
+
+```rust
+use json::{JsonValue, object};
+use itertools::Itertools;
+use std::collections::BTreeMap;
+use sha2::Sha256;
+use hmac::{Hmac, Mac};
+
+const ACCOUNT: &'static str = "375917";
+const SECRET: &'static str = "SAIPPUAKAUPPIAS";
+
+type HmacSha256 = Hmac<Sha256>;
+
+/// Calculate Checkout HMAC
+/// 
+/// @param `secret` Merchant shared secret
+/// @param `header` Headers or query string parameters
+/// @param `body` Request body or empty string for GET request
+/// @return
+/// 
+fn calculate_hmac(secret: &str, header: BTreeMap<&str, &str>, body: Option<JsonValue>) -> String {
+
+    let hmac_payload = header
+        .iter()
+        .sorted_by_key(|item| item.0)
+        .map(|item| format!("{}:{}", item.0, item.1))
+        .join("\n");
+    
+    let hmac_result = format!("{}\n{}", hmac_payload, body.unwrap_or(JsonValue::from("")).to_string());
+
+    let mut hash256 = HmacSha256::new_from_slice(secret.as_bytes())
+        .unwrap();
+
+    hash256.update(hmac_result.as_bytes());
+
+    let result = hash256.finalize();
+
+    return format!("{:x}", result.into_bytes());
+}
+
+
+fn main() {
+
+    let headers = BTreeMap::from([
+        ("checkout-account", ACCOUNT),
+        ("checkout-algorithm", "sha256"),
+        ("checkout-method", "POST"),
+        ("checkout-nonce", "564635208570151"),
+        ("checkout-timestamp", "2018-07-06T10:01:31.904Z"),
+    ]);
+    
+    // Product body for requests
+    let body = object! {
+          "stamp": "unique-identifier-for-merchant",
+          "reference": "3759170",
+          "amount": 1525,
+          "currency": "EUR",
+          "language": "FI",
+          "items": [
+            {
+              "unitPrice": 1525,
+              "units": 1,
+              "vatPercentage": 24,
+              "productCode": "#1234",
+              "deliveryDate": "2018-09-01",
+            },
+          ],
+          "customer": {
+            "email": "test.customer@example.com",
+          },
+          "redirectUrls": {
+            "success": "https://ecom.example.com/cart/success",
+            "cancel": "https://ecom.example.com/cart/cancel",
+          },
+    };
+
+    // Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+
+    calculate_hmac(SECRET, headers, Some(body));
+}
+```
+
+
 ### Payment provider form rendering
 
 Dummy form rendering from the example [response](#response):
