@@ -1084,6 +1084,8 @@ namespace HMACCalculation
         public string success { get; set; }
         public string cancel { get; set; }
     }
+
+// Expected HMAC with commented default values: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
 ```
 
 ### HMAC calculation (Go)
