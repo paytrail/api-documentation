@@ -6,7 +6,7 @@ OpenAPI 3 specification for the API is also [available for download](paytrail-ap
 
 ?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/paytrail/api-documentation/issues). You can also ask for support by opening an issue on GitHub. Thank you!
 
-?> and [Checkout Finland API reference](https://checkoutfinland.github.io/psp-api/#/) is available separately.
+?> [Checkout Finland API reference](https://checkoutfinland.github.io/psp-api/#/) is available separately.
 
 ## API endpoint
 
