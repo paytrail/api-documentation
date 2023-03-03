@@ -699,7 +699,7 @@ class Crypto:
   def compute_sha256_hash(message: str, secret: str) -> str:
 
     # whitespaces that were created during json parsing process must be removed
-    hash = hmac.new(secret.encode(), message.replace(' ','').encode() ,digestmod=hashlib.sha256)
+    hash = hmac.new(secret.encode(), message.encode() ,digestmod=hashlib.sha256)
     return hash.hexdigest()
 
   #/
@@ -746,7 +746,7 @@ redirectUrls = RedirectUrls("https://ecom.example.com/cart/success", "https://ec
 
 b = Body(stamp, reference, amount, currency, language, items, customer,redirectUrls)
 
-body = json.dumps(b.toDictionary())
+body = json.dumps(b.toDictionary(), separators=(',', ':'))
 encData = Crypto.calculate_hmac(Crypto,secret,headers,body)
 print("Encrypted data: " + encData)
 # result after running the program:
