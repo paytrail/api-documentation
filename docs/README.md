@@ -627,7 +627,7 @@ If creating an authorization hold, the payment needs to be committed later with 
 
 ##### Request
 
-The commit request body schema is the same as the one used for [creating payments](#create-request-body) expect with the addition of a the new token field (which must also be included as part of HMAC calculation):
+The commit request body schema is the same as the one used for [create payment request body section](#create-payment) expect with the addition of a the new token field (which must also be included as part of HMAC calculation):
 
 | field | info   | required           | description        |
 |-------|--------|--------------------|--------------------|
