@@ -26,7 +26,7 @@ The signature is transmitted in the `signature` HTTP header. Signature payload c
 The headers are:
 
 | Field                     | Type    | Description                                                                                                                                                                                                                                                                                                                                                             |
-|---------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `checkout-account`        | numeric | Paytrail account ID, e.g. `375917`                                                                                                                                                                                                                                                                                                                                      |
 | `checkout-algorithm`      | string  | Used signature algorithm, either `sha256` or `sha512`                                                                                                                                                                                                                                                                                                                   |
 | `checkout-method`         | string  | HTTP verb of the request, either `GET` or `POST`                                                                                                                                                                                                                                                                                                                        |
@@ -210,7 +210,7 @@ https://example.org?checkout-account=375917&checkout-algorithm=sha256&checkout-a
 The query string parameters are listed below. If callback URLs were provided, same parameters are used.
 
 | Field                           | Type    | Description                                                                                                                                                                                                                                                                                                                                            |
-|---------------------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `checkout-account`              | numeric | Paytrail account ID                                                                                                                                                                                                                                                                                                                                    |
 | `checkout-algorithm`            | string  | Used signature algorithm. The same as used by merchant when creating the payment.                                                                                                                                                                                                                                                                      |
 | `checkout-amount`               | numeric | Payment amount in currency minor unit, e.g. cents. Maximum value of 99999999.                                                                                                                                                                                                                                                                          |
@@ -229,7 +229,7 @@ Merchant must check that signature is valid. Signature is calculated as describe
 The currently possible payment statuses are:
 
 | Status    | Description                                                                                                                                                                                                                                                                                                      |
-|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                     |
 | `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                  |
 | `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                    |
@@ -247,7 +247,7 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 #### Response
 
 | Field         | Type    | Description                                                                                                          |
-|---------------|---------|----------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
 | transactionId | string  | Assigned transaction ID for the payment                                                                              |
 | status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                             |
 | amount        | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
@@ -288,7 +288,7 @@ See detailed description from [refund payment request body section](#refund-paym
 #### Response
 
 | Status code | Explanation                                           |
-|-------------|-------------------------------------------------------|
+| ----------- | ----------------------------------------------------- |
 | 201         | Refund request received                               |
 | 400         | Something went wrong                                  |
 | 422         | Used payment method provider does not support refunds |
@@ -327,7 +327,7 @@ See detailed description from [refund payment request body section](#refund-paym
 #### Response
 
 | Status code | Explanation                                                 |
-|-------------|-------------------------------------------------------------|
+| ----------- | ----------------------------------------------------------- |
 | 201         | Email refund request received                               |
 | 400         | Something went wrong                                        |
 | 422         | Used payment method provider does not support email refunds |
@@ -487,7 +487,7 @@ POST parameters
 #### Request
 
 | field                           | info    | required           | description                                                                                                       |
-|---------------------------------|---------|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                               |
 | `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
 | `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                            |
@@ -511,7 +511,7 @@ On a successful request, user is `HTTP 302` redirected to Paytrail's card additi
 Tokenization id must be also set on request header.
 
 | field                      | info   | required           | description     |
-|----------------------------|--------|--------------------|-----------------|
+| -------------------------- | ------ | ------------------ | --------------- |
 | `checkout-tokenization-id` | string | <center>x</center> | Tokenization id |
 
 This request returns the actual card token which can then be used to make payments on the card.
@@ -527,7 +527,7 @@ If tokenization is successful, `HTTP 200` and the `token` of the card is returne
 This token is used to make authorization holds and charges on the payment card.
 
 | field    | type                  | description                                                 |
-|----------|-----------------------|-------------------------------------------------------------|
+| -------- | --------------------- | ----------------------------------------------------------- |
 | token    | string                | Payment card token                                          |
 | card     | [Card](#card)         | Masked card details. Present if verification was successful |
 | customer | [Customer](#customer) | Customer details                                            |
@@ -537,7 +537,7 @@ This token is used to make authorization holds and charges on the payment card.
 Card details
 
 | Field            | Type   | Description                                                                                                                                        |
-|------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type             | string | Card type, for example ‘Visa’                                                                                                                      |
 | bin              | string | First 2 or 6 digits of the card number. (6 MC/VISA, 2 Amex/Diners)                                                                                 |
 | partial_pan      | string | Last four digits of the card                                                                                                                       |
@@ -555,7 +555,7 @@ Card details
 Customer details
 
 | Field           | Type   | Description                                                 |
-|-----------------|--------|-------------------------------------------------------------|
+| --------------- | ------ | ----------------------------------------------------------- |
 | network_address | string | The IP address of the customer for fraud detection purposes |
 | country_code    | string | e.g. FI                                                     |
 
@@ -627,10 +627,10 @@ If creating an authorization hold, the payment needs to be committed later with 
 
 ##### Request
 
-The commit request body schema is the same as the one used for [create payment request body section](#create-payment) expect with the addition of a the new token field (which must also be included as part of HMAC calculation):
+The commit request body schema is the same as the one used for [create payment request body section](#create-payment) except with the addition of a the new token field (which must also be included as part of HMAC calculation):
 
 | field | info   | required           | description        |
-|-------|--------|--------------------|--------------------|
+| ----- | ------ | ------------------ | ------------------ |
 | token | string | <center>x</center> | Payment card token |
 
 ##### Response
@@ -640,14 +640,14 @@ If authorization hold or charge is successful, `HTTP 201` and the `transactionId
 When creating CIT authorization holds or direct charges the payment might need a 3DS step-up. In these cases `HTTP 403` along with the `transactionId` and `threeDSecureUrl` is returned. When this happens, the merchant must redirect user to the given `threeDSecureUrl` for secure authorization and further redirect. See documentation [here](#customer-initiated-transactions-cit).
 
 | field           | type   | description                             |
-|-----------------|--------|-----------------------------------------|
+| --------------- | ------ | --------------------------------------- |
 | transactionId   | string | Assigned transaction ID for the payment |
 | threeDSecureUrl | string | 3DS redirect URL                        |
 
 If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
 | field                           | type   | description                                                   |
-|---------------------------------|--------|---------------------------------------------------------------|
+| ------------------------------- | ------ | ------------------------------------------------------------- |
 | message                         | string | Always "Failed to create token payment."                      |
 | status                          | string | Always "error"                                                |
 | acquirerResponseCode            | string | Acquirer response code or empty                               |
@@ -658,7 +658,7 @@ If authorization hold or charge fails, `HTTP 400` and additional `acquirerRespon
 Never retry a transaction when the `acquirerResponseCode` is:
 
 | Nets                                             | Amex                    |
-|--------------------------------------------------|-------------------------|
+| ------------------------------------------------ | ----------------------- |
 | 111, 119, 165, 200, 207, 208, 209, 902, 908, 909 | 181, 183, 187, 189, 200 |
 
 The cardholder needs to give a new card number to proceed.
@@ -686,7 +686,7 @@ The final items may differ from the ones used when creating the authorization ho
 Commit will return `HTTP 201` when successful, and the `transactionId` of the payment.
 
 | field         | type   | description                             |
-|---------------|--------|-----------------------------------------|
+| ------------- | ------ | --------------------------------------- |
 | transactionId | string | Assigned transaction ID for the payment |
 
 #### Revert authorization hold
@@ -706,7 +706,7 @@ No request body required.
 Revert will return `HTTP 200` when successful, and the `transactionId` of the payment.
 
 | field         | type   | description                             |
-|---------------|--------|-----------------------------------------|
+| ------------- | ------ | --------------------------------------- |
 | transactionId | string | Assigned transaction ID for the payment |
 
 ## Invoices
@@ -732,7 +732,7 @@ No request body required.
 Activation will return `HTTP 200` when successful.
 
 | field   | type   | description                                   |
-|---------|--------|-----------------------------------------------|
+| ------- | ------ | --------------------------------------------- |
 | status  | string | Status of activation. `ok` or `error`         |
 | message | string | Response details, eg. detailed error message. |
 
@@ -749,7 +749,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 `HTTP POST /payments/report` results in a callback containing the payment report.
 
 | Field         | Type     | Required           | Default   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|---------------|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | -------- | ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | requestType   | string   | <center>x</center> |           | In which format will the response be delivered in, currently supported are `json` and `csv`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | callbackUrl   | string   | <center>x</center> |           | The url the system will send the report to as a `POST` request.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | paymentStatus | string   | <center></center>  | `default` | How are the payments statuses filtered. `default` includes both paid and settled payments, `paid` includes paid payments that have not been settled yet, `all` includes everything, for example unpaid or failed payments and `settled` only includes settled payments.                                                                                                                                                                                                                                                                                                                                                                    |
@@ -762,7 +762,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 #### Response
 
 | Status code | Explanation                                      |
-|-------------|--------------------------------------------------|
+| ----------- | ------------------------------------------------ |
 | 200         | Payment report generation initiated successfully |
 | 400         | Something went wrong                             |
 
@@ -806,7 +806,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 `HTTP POST /settlements/:id/payments/report` results in a callback containing the payment report.
 
 | Field        | Type     | Required           | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|--------------|----------|--------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------ | -------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | requestType  | string   | <center>x</center> |         | In which format will the response be delivered in, currently supported are `json` and `csv`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | callbackUrl  | string   | <center>x</center> |         | The url the system will send the report to as a `POST` request. Callback URLs must use HTTPS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | reportFields | string[] | <center></center>  | all     | Limit the fields that will be included in the report. Leaving this empty will include all fields. Possible values: `entryDate`, `created`, `amount`, `status`, `firstname`, `familyname`, `description`, `reference`, `paymentMethod`, `stamp`, `address`, `postcode`, `postoffice`, `country`, `checkoutReference`, `archiveNumber`, `payerName`, `settlementId`, `settlementDate`, `settlementReference`, `originalTradeReference`, `vatPercentage`, `vatAmount`, `paymentMethodFee`, `paymentMethodCommission`, `shopInShopCommission`, `shopInShopCommissionVatPercentage` and `shopInShopCommissionVatAmount` |
@@ -815,7 +815,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 #### Response
 
 | Status code | Explanation                                      |
-|-------------|--------------------------------------------------|
+| ----------- | ------------------------------------------------ |
 | 200         | Payment report generation initiated successfully |
 | 400         | Something went wrong                             |
 
@@ -824,7 +824,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 `HTTP GET /settlements` returns merchant's settlement IDs and corresponding bank references. Maximum of 100 settlement IDs are returned, starting from the most recent settelements. The endpoint supports the following `query`-parameters:
 
 | Field         | Required          | Description                                                                                                                       |
-|---------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | startDate     | <center></center> | Only settlements created after this date will be included in the response. Must follow the following format: `YYYY-MM-DD`.        |
 | endDate       | <center></center> | Only settlements created before or on this date will be included in the response. Must follow the following format: `YYYY-MM-DD`. |
 | bankReference | <center></center> | Only include settlements that were settled with this bank reference.                                                              |
@@ -840,7 +840,7 @@ Example
 #### Response
 
 | Status code | Explanation                         |
-|-------------|-------------------------------------|
+| ----------- | ----------------------------------- |
 | 200         | Settlement IDs fetched successfully |
 | 400         | Something went wrong                |
 
@@ -866,7 +866,7 @@ Actions related to merchants are mapped under `/merchants` API endpoint.
 #### HTTP GET query parameters
 
 | Field  | Type                                        | Required           | Example           | Description                                                                                                                                                                                                                                         |
-|--------|---------------------------------------------|--------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------ | ------------------------------------------- | ------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amount | integer                                     | <center>-</center> | 1000              | Purchase amount in currency's minor unit. Some payment methods have minimum or maximum purchase limits. When the amount is provided, only the methods suitable for the amount are returned. Otherwise, all merchant's payment methods are returned. |
 | groups | [PaymentMethodGroup](#paymentmethodgroup)[] | <center>-</center> | mobile,creditcard | Comma separated list of payment method groups to include. Otherwise all enabled methods are returned.                                                                                                                                               |
 
@@ -883,7 +883,7 @@ Example
 #### HTTP GET query parameters
 
 | Field    | Type                                        | Required           | Example           | Description                                                                                                                                                                                                                                         |
-|----------|---------------------------------------------|--------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------- | ------------------------------------------- | ------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amount   | integer                                     | <center>-</center> | 1000              | Purchase amount in currency's minor unit. Some payment methods have minimum or maximum purchase limits. When the amount is provided, only the methods suitable for the amount are returned. Otherwise, all merchant's payment methods are returned. |
 | groups   | [PaymentMethodGroup](#paymentmethodgroup)[] | <center>-</center> | mobile,creditcard | Comma separated list of payment method groups to include. Otherwise all enabled methods are returned.                                                                                                                                               |
 | language | string                                      | <center>-</center> | FI, EN, SV        | Code of the language the terms of payment and the payment group names will be displayed in. Supports only FI, EN and SV. FI is the default if left undefined.                                                                                       |
@@ -897,7 +897,7 @@ Example
 #### Response
 
 | Field     | Type                                                                          | Description                                                                                                                                                                                     |
-|-----------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | terms     | string                                                                        | Localized text with a link to the terms of payment                                                                                                                                              |
 | groups    | [PaymentMethodGroupDataWithProviders](#paymentmethodgroupdatawithproviders)[] | Array of payment method group data with localized names and URLs to icons and providers. Contains only the groups the merchant has providers in. Can be limited by the request query parameters |
 | providers | [Provider](#provider)[]                                                       | A flat list of all the providers the merchant has. Can be limited by query parameters.                                                                                                          |
@@ -905,7 +905,7 @@ Example
 ##### PaymentMethodGroupDataWithProviders
 
 | Field     | Type                                      | Description                                                            |
-|-----------|-------------------------------------------|------------------------------------------------------------------------|
+| --------- | ----------------------------------------- | ---------------------------------------------------------------------- |
 | id        | [PaymentMethodGroup](#paymentmethodgroup) | ID of the group                                                        |
 | name      | string                                    | Localized name of the group                                            |
 | icon      | string                                    | URL to PNG version of the group icon                                   |
@@ -917,7 +917,7 @@ Example
 General API HTTP status codes and what to expect of them.
 
 | Code | Text                 | Description                                                                 |
-|------|----------------------|-----------------------------------------------------------------------------|
+| ---- | -------------------- | --------------------------------------------------------------------------- |
 | 200  | OK                   | Everything worked as expected.                                              |
 | 201  | Created              | A payment/refund was created successfully.                                  |
 | 400  | Bad Request          | The request was unacceptable, probably due to missing a required parameter. |
@@ -932,7 +932,7 @@ General API HTTP status codes and what to expect of them.
 #### Request body
 
 | Field                   | Type                                        | Required           | Description                                                                                                                                                                                                                                                                                                                                                                                              |
-|-------------------------|---------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------- | ------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stamp                   | string                                      | <center>x</center> | Merchant unique identifier for the order. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                     |
 | reference               | string                                      | <center>x</center> | Order reference. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                                              |
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999999.                                                                                                                                             |
@@ -953,7 +953,7 @@ General API HTTP status codes and what to expect of them.
 ##### Item
 
 | Field                     | Type                      | Required           | Example                              | Description                                                                                                                                                                                                                                              |
-|---------------------------|---------------------------|--------------------|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------- | ------------------------- | ------------------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | unitPrice                 | integer                   | <center>x</center> | 1000                                 | Price per unit, in each country's minor unit, e.g. for Euros use cents. By default price should include VAT, unless [`usePricesWithoutVat`](#request-body) is set to true. No negative values accepted. Maximum value of 2147483647, minimum value is 0. |
 | units                     | integer                   | <center>x</center> | 5                                    | Quantity, how many items ordered. Negative values are not supported.                                                                                                                                                                                     |
 | vatPercentage             | integer                   | <center>x</center> | 24                                   | VAT percentage                                                                                                                                                                                                                                           |
@@ -970,7 +970,7 @@ General API HTTP status codes and what to expect of them.
 ##### Customer
 
 | Field       | Type   | Required           | Example              | Description                                                                       |
-|-------------|--------|--------------------|----------------------|-----------------------------------------------------------------------------------|
+| ----------- | ------ | ------------------ | -------------------- | --------------------------------------------------------------------------------- |
 | email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                                 |
 | firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley/Collector). Maximum of 50 characters. |
 | lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley/Collector). Maximum of 50 characters.  |
@@ -981,7 +981,7 @@ General API HTTP status codes and what to expect of them.
 ##### Address
 
 | Field         | Type   | Required           | Example         | Description                               |
-|---------------|--------|--------------------|-----------------|-------------------------------------------|
+| ------------- | ------ | ------------------ | --------------- | ----------------------------------------- |
 | streetAddress | string | <center>x</center> | Fake Street 123 | Street address. Maximum of 50 characters. |
 | postalCode    | string | <center>x</center> | 00100           | Postal code. Maximum of 15 characters.    |
 | city          | string | <center>x</center> | Luleå           | City. maximum of 30 characters.           |
@@ -993,14 +993,14 @@ General API HTTP status codes and what to expect of them.
 These URLs must use HTTPS.
 
 | Field   | Type   | Required           | Example                        | Description                  |
-|---------|--------|--------------------|--------------------------------|------------------------------|
+| ------- | ------ | ------------------ | ------------------------------ | ---------------------------- |
 | success | string | <center>x</center> | https://example.org/51/success | Called on successful payment |
 | cancel  | string | <center>x</center> | https://example.org/51/cancel  | Called on cancelled payment  |
 
 ##### Commission
 
 | Field    | Type    | Required           | Example | Description                                                                                   |
-|----------|---------|--------------------|---------|-----------------------------------------------------------------------------------------------|
+| -------- | ------- | ------------------ | ------- | --------------------------------------------------------------------------------------------- |
 | merchant | string  | <center>x</center> | 695874  | Merchant who gets the commission                                                              |
 | amount   | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable. |
 
@@ -1011,7 +1011,7 @@ See [an example payload and response](/examples#create)
 The response JSON object contains the transaction ID of the payment and list of provider forms. It is highly recommended to render the icons and forms in the shop, but if this is not possible the response also contains a link to the hosted payment gateway. The response contains also HMAC verification headers and `cof-request-id` header. Storing or logging the request ID header is advised for possible debug needs.
 
 | Field           | Type                                                | Description                                                                                                                                |
-|-----------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | transactionId   | string                                              | Assigned transaction ID for the payment                                                                                                    |
 | href            | string                                              | URL to hosted payment gateway. Redirect (`HTTP GET`) user here if the payment forms cannot be rendered directly inside the web shop.       |
 | terms           | string                                              | Localized text with a link to the terms of payment                                                                                         |
@@ -1025,7 +1025,7 @@ The response JSON object contains the transaction ID of the payment and list of 
 Each provider describes a HTML form which the customer browser submits when performing the payment. Rendering the forms embedded in the web shop is the preferred way for the payment flow.
 
 | Field      | Type                                      | Description                                                                                                                                                           |
-|------------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | url        | string                                    | Form target URL. Use `POST` as method.                                                                                                                                |
 | icon       | string                                    | URL to PNG version of the provider icon                                                                                                                               |
 | svg        | string                                    | URL to SVG version of the provider icon. Using the SVG icon is preferred.                                                                                             |
@@ -1039,14 +1039,14 @@ Each provider describes a HTML form which the customer browser submits when perf
 The form field values are rendered as hidden `<input>` elements in the form. See form rendering [example](/examples#payment-provider-form-rendering)
 
 | Field | Type   | Description        |
-|-------|--------|--------------------|
+| ----- | ------ | ------------------ |
 | name  | string | Name of the input  |
 | value | string | Value of the input |
 
 ##### PaymentMethodGroup
 
 | ID           | Description                                                                          |
-|--------------|--------------------------------------------------------------------------------------|
+| ------------ | ------------------------------------------------------------------------------------ |
 | `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                      |
 | `bank`       | Bank payment methods                                                                 |
 | `creditcard` | Visa, MasterCard, American Express                                                   |
@@ -1055,7 +1055,7 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 ##### PaymentMethodGroupData
 
 | Field | Type                                      | Description                                                            |
-|-------|-------------------------------------------|------------------------------------------------------------------------|
+| ----- | ----------------------------------------- | ---------------------------------------------------------------------- |
 | id    | [PaymentMethodGroup](#paymentmethodgroup) | ID of the group                                                        |
 | name  | string                                    | Localized name of the group                                            |
 | icon  | string                                    | URL to PNG version of the group icon                                   |
@@ -1066,7 +1066,7 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 #### Request body
 
 | Field           | Type                        | Required             | Description                                                                                                                                                                                                                                                                                                                                         |
-|-----------------|-----------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | --------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amount          | integer                     | <center>-/x</center> | Total amount to refund, in currency's minor units (ie. EUR cents). Required for normal payment refunds. Shop-in-Shop payments can be refunded to full amount by giving the full payment amount here without items.                                                                                                                                  |
 | email           | string                      | <center>-</center>   | Refund recipient email address. Some payment methods [do not support API refunds](/payment-method-providers#refunds), and some have refund related limitations. If email address is given, email refund will be executed as a fallback method if API refund is unsuccessful, or as the default method if the provider does not support API refunds. |
 | refundStamp     | string                      | <center>-</center>   | Merchant unique identifier for the refund                                                                                                                                                                                                                                                                                                           |
@@ -1077,7 +1077,7 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 ##### RefundItem
 
 | Field           | Type                                  | Required           | Description                                                                                                                              |
-|-----------------|---------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | amount          | integer                               | <center>x</center> | Total amount to refund this item, in currency's minor units (ie. EUR cents)                                                              |
 | stamp           | string                                | <center>x</center> | The item unique identifier                                                                                                               |
 | refundStamp     | string                                | <center>-</center> | Merchant unique identifier for the refund                                                                                                |
@@ -1087,14 +1087,14 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 ##### RefundCommission
 
 | Field    | Type    | Required           | Example | Description                                                                                   |
-|----------|---------|--------------------|---------|-----------------------------------------------------------------------------------------------|
+| -------- | ------- | ------------------ | ------- | --------------------------------------------------------------------------------------------- |
 | merchant | string  | <center>x</center> | 695874  | Merchant from whom the commission is returned to the submerchant.                             |
 | amount   | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable. |
 
 #### Response body
 
 | Field         | Type   | Description                                                                                                          |
-|---------------|--------|----------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------ | -------------------------------------------------------------------------------------------------------------------- |
 | transactionId | string | Assigned transaction ID for the payment                                                                              |
 | provider      | string | Provider id for the original payment                                                                                 |
 | status        | string | `pending`, `ok`, or `fail`. Status `pending` indicates that the refund request has been received, but not completed. |

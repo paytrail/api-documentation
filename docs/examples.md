@@ -867,7 +867,6 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
 ```
 
-
 ### HMAC calculation (C#)
 
 ```cs
@@ -881,7 +880,7 @@ namespace HMACCalculation
     public class Crypto
     {
     	static readonly string[] supportedEnc = { "sha256", "sha512" };
-	
+
         /// <summary>
         /// Calculate SHA Hash
         /// </summary>
@@ -895,7 +894,7 @@ namespace HMACCalculation
             {
                 throw new Exception("Not supported encryption");
             }
-	    
+
             var key = Encoding.UTF8.GetBytes(secret);
             string outMsg = "";
             if (encType.Equals("sha512",StringComparison.InvariantCultureIgnoreCase))
@@ -930,7 +929,7 @@ namespace HMACCalculation
         public static string CalculateHmac(string secret, Dictionary<string, string> hparams, string body = "", string encType="sha256")
         {
             // Keep only checkout- params, more relevant for response validation.Filter query
-            // string parameters the same way - the signature includes only checkout- values.           
+            // string parameters the same way - the signature includes only checkout- values.
             // Keys must be sorted alphabetically
             var includedKeys = hparams.Where(h => h.Key.StartsWith("checkout-")).OrderBy(h=>h.Key).ToList();
             List<string> data = new List<string>();
@@ -947,7 +946,7 @@ namespace HMACCalculation
         /// <summary>
         /// Random Digits by length
         /// </summary>
-        /// <param name="length">Length of generated number</param>        
+        /// <param name="length">Length of generated number</param>
         /// <returns>string</returns>
         public static string RandomDigits(int length)
         {
@@ -971,14 +970,14 @@ using System.Globalization;
 using System.Text.Json;
 
 class Program
-{    
+{
     static async Task Main(string[] args)
     {
         string secret = "SAIPPUAKAUPPIAS";
 
         var timestamp = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
         var headers = new Dictionary<string, string>();
-        headers.Add("checkout-account", "375917");        
+        headers.Add("checkout-account", "375917");
         headers.Add("checkout-algorithm", "sha512");
         headers.Add("checkout-method", "POST");
         headers.Add("checkout-nonce", Crypto.RandomDigits(20));
@@ -1013,7 +1012,7 @@ class Program
         var httpRequestMessage = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri("https://services.paytrail.com/payments"),           
+            RequestUri = new Uri("https://services.paytrail.com/payments"),
             Content = new StringContent(body,System.Text.Encoding.UTF8, "application/json"),
             Headers = {
                 { "checkout-account", headers["checkout-account"] },
@@ -1031,7 +1030,7 @@ class Program
     }
 }
 
-// Body.cs - Storing data prior to making the request 
+// Body.cs - Storing data prior to making the request
 
 using System;
 using System.Collections.Generic;
@@ -1305,12 +1304,12 @@ const SECRET: &'static str = "SAIPPUAKAUPPIAS";
 type HmacSha256 = Hmac<Sha256>;
 
 /// Calculate Checkout HMAC
-/// 
+///
 /// @param `secret` Merchant shared secret
 /// @param `header` Headers or query string parameters
 /// @param `body` Request body or empty string for GET request
 /// @return
-/// 
+///
 fn calculate_hmac(secret: &str, header: BTreeMap<&str, &str>, body: Option<JsonValue>) -> String {
 
     let hmac_payload = header
@@ -1318,7 +1317,7 @@ fn calculate_hmac(secret: &str, header: BTreeMap<&str, &str>, body: Option<JsonV
         .sorted_by_key(|item| item.0)
         .map(|item| format!("{}:{}", item.0, item.1))
         .join("\n");
-    
+
     let hmac_result = format!("{}\n{}", hmac_payload, body.unwrap_or(JsonValue::from("")).to_string());
 
     let mut hash256 = HmacSha256::new_from_slice(secret.as_bytes())
@@ -1341,7 +1340,7 @@ fn main() {
         ("checkout-nonce", "564635208570151"),
         ("checkout-timestamp", "2018-07-06T10:01:31.904Z"),
     ]);
-    
+
     // Product body for requests
     let body = object! {
           "stamp": "unique-identifier-for-merchant",
@@ -1372,7 +1371,6 @@ fn main() {
     calculate_hmac(SECRET, headers, Some(body));
 }
 ```
-
 
 ### Payment provider form rendering
 
