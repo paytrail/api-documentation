@@ -646,7 +646,7 @@ When creating CIT authorization holds or direct charges the payment might need a
 
 If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
-| field                           | type   | descrpition                                                   |
+| field                           | type   | description                                                   |
 |---------------------------------|--------|---------------------------------------------------------------|
 | message                         | string | Always "Failed to create token payment."                      |
 | status                          | string | Always "error"                                                |
