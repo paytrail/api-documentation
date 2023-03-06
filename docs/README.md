@@ -59,7 +59,7 @@ Please note that not all payment methods support testing, so only the payment me
 
 #### Shop-in-Shop merchant account
 
-_Note:_ Use these only if you are setting up a [Shop-in-Shop](https://www.checkout.fi/vinkkipankki/mita-shop-in-shop-kauppapaikat-ovat) web shop.
+_Note:_ Use these only if you are setting up a [Shop-in-Shop](https://www.paytrail.com/blog/shop-in-shop-kauppapaikat-miksi-ja-kenelle) web shop.
 
 - Aggregate merchant ID: `695861`
 - Aggregate secret key: `MONISAIPPUAKAUPPIAS`
