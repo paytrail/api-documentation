@@ -210,7 +210,7 @@ https://example.org?checkout-account=375917&checkout-algorithm=sha256&checkout-a
 The query string parameters are listed below. If callback URLs were provided, same parameters are used.
 
 | Field                           | Type    | Description                                                                                                                                                                                                                                                                                                                                            |
-| ------------------------------- | ------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `checkout-account`              | numeric | Paytrail account ID                                                                                                                                                                                                                                                                                                                                    |
 | `checkout-algorithm`            | string  | Used signature algorithm. The same as used by merchant when creating the payment.                                                                                                                                                                                                                                                                      |
 | `checkout-amount`               | numeric | Payment amount in currency minor unit, e.g. cents. Maximum value of 99999999.                                                                                                                                                                                                                                                                          |
@@ -627,7 +627,7 @@ If creating an authorization hold, the payment needs to be committed later with 
 
 ##### Request
 
-The commit request body schema is the same as the one used for [creating payments](#create-request-body) expect with the addition of a the new token field (which must also be included as part of HMAC calculation):
+The commit request body schema is the same as the one used for [create payment request body section](#create-payment) except with the addition of a the new token field (which must also be included as part of HMAC calculation):
 
 | field | info   | required           | description        |
 | ----- | ------ | ------------------ | ------------------ |
@@ -646,7 +646,7 @@ When creating CIT authorization holds or direct charges the payment might need a
 
 If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
-| field                           | type   | descrpition                                                   |
+| field                           | type   | description                                                   |
 | ------------------------------- | ------ | ------------------------------------------------------------- |
 | message                         | string | Always "Failed to create token payment."                      |
 | status                          | string | Always "error"                                                |
@@ -932,7 +932,7 @@ General API HTTP status codes and what to expect of them.
 #### Request body
 
 | Field                   | Type                                        | Required           | Description                                                                                                                                                                                                                                                                                                                                                                                              |
-| ----------------------- | ------------------------------------------- | ------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------- | ------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stamp                   | string                                      | <center>x</center> | Merchant unique identifier for the order. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                     |
 | reference               | string                                      | <center>x</center> | Order reference. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                                              |
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999999.                                                                                                                                             |
@@ -952,25 +952,25 @@ General API HTTP status codes and what to expect of them.
 
 ##### Item
 
-| Field         | Type                      | Required           | Example                              | Description                                                                                                                                                                                                                                              |
-| ------------- | ------------------------- | ------------------ | ------------------------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| unitPrice     | integer                   | <center>x</center> | 1000                                 | Price per unit, in each country's minor unit, e.g. for Euros use cents. By default price should include VAT, unless [`usePricesWithoutVat`](#request-body) is set to true. No negative values accepted. Maximum value of 2147483647, minimum value is 0. |
-| units         | integer                   | <center>x</center> | 5                                    | Quantity, how many items ordered. Negative values are not supported.                                                                                                                                                                                     |
-| vatPercentage | integer                   | <center>x</center> | 24                                   | VAT percentage                                                                                                                                                                                                                                           |
-| productCode   | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods. Maximum of 100 characters                                                                                                                                                      |
-| deliveryDate  | string                    | <center>-</center> | 2019-12-31                           | When is this item going to be delivered. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                  |
-| description   | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods. Maximum of 1000 characters.                                                                                                                                                         |
-| category      | string                    | <center>-</center> | fur suits                            | Merchant specific item category                                                                                                                                                                                                                          |
-| orderId       | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                                                                                                                                                                             |
-| stamp         | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                     |
-| reference     | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                             |
-| merchant      | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments.                                                                                                                                                            |
-| commission    | [Commission](#commission) | <center>-</center> | -                                    | Shop-in-Shop commission. Do not use for normal payments.                                                                                                                                                                                                 |
+| Field                     | Type                      | Required           | Example                              | Description                                                                                                                                                                                                                                              |
+| ------------------------- | ------------------------- | ------------------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| unitPrice                 | integer                   | <center>x</center> | 1000                                 | Price per unit, in each country's minor unit, e.g. for Euros use cents. By default price should include VAT, unless [`usePricesWithoutVat`](#request-body) is set to true. No negative values accepted. Maximum value of 2147483647, minimum value is 0. |
+| units                     | integer                   | <center>x</center> | 5                                    | Quantity, how many items ordered. Negative values are not supported.                                                                                                                                                                                     |
+| vatPercentage             | integer                   | <center>x</center> | 24                                   | VAT percentage                                                                                                                                                                                                                                           |
+| productCode               | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods. Maximum of 100 characters                                                                                                                                                      |
+| description               | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods. Maximum of 1000 characters.                                                                                                                                                         |
+| category                  | string                    | <center>-</center> | fur suits                            | Merchant specific item category                                                                                                                                                                                                                          |
+| orderId                   | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                                                                                                                                                                             |
+| stamp                     | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                     |
+| reference                 | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                             |
+| merchant                  | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments.                                                                                                                                                            |
+| commission                | [Commission](#commission) | <center>-</center> | -                                    | Shop-in-Shop commission. Do not use for normal payments.                                                                                                                                                                                                 |
+| deliveryDate (Deprecated) | string                    | <center>-</center> | 2019-12-31                           | (Deprecated) When is this item going to be delivered. This field is deprecated but remains here as a reference for old integrations.                                                                                                                     |
 
 ##### Customer
 
 | Field       | Type   | Required           | Example              | Description                                                                       |
-| ----------- | ------ | ------------------ | -------------------- |-----------------------------------------------------------------------------------|
+| ----------- | ------ | ------------------ | -------------------- | --------------------------------------------------------------------------------- |
 | email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                                 |
 | firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley/Collector). Maximum of 50 characters. |
 | lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley/Collector). Maximum of 50 characters.  |
@@ -981,7 +981,7 @@ General API HTTP status codes and what to expect of them.
 ##### Address
 
 | Field         | Type   | Required           | Example         | Description                               |
-| ------------- | ------ | ------------------ | --------------- |-------------------------------------------|
+| ------------- | ------ | ------------------ | --------------- | ----------------------------------------- |
 | streetAddress | string | <center>x</center> | Fake Street 123 | Street address. Maximum of 50 characters. |
 | postalCode    | string | <center>x</center> | 00100           | Postal code. Maximum of 15 characters.    |
 | city          | string | <center>x</center> | Luleå           | City. maximum of 30 characters.           |
@@ -1045,12 +1045,12 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                                              |
-| ------------ | -------------------------------------------------------------------------------------------------------- |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                                          |
-| `bank`       | Bank payment methods                                                                                     |
-| `creditcard` | Visa, MasterCard, American Express                                                                       |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay, Fellow Yrityslasku |
+| ID           | Description                                                                          |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                      |
+| `bank`       | Bank payment methods                                                                 |
+| `creditcard` | Visa, MasterCard, American Express                                                   |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
 
