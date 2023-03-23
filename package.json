@@ -7,9 +7,9 @@
     "node": "18"
   },
   "devDependencies": {
-    "docsify": "4.12.2",
+    "docsify": "4.13.0",
     "docsify-cli": "4.4.4",
-    "prettier": "2.7.1"
+    "prettier": "2.8.6"
   },
   "scripts": {
     "serve": "docsify serve -p 8080 docs",
