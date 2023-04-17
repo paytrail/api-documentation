@@ -710,6 +710,27 @@ Revert will return `HTTP 200` when successful, and the `transactionId` of the pa
 | ------------- | ------ | --------------------------------------- |
 | transactionId | string | Assigned transaction ID for the payment |
 
+### Pay and add card
+
+This method is an alternative way to add (tokenize) a card, which combines a payment and adding a new card to allow getting the card token after a successful payment with a single request.
+
+##### Request
+
+`HTTP POST /tokenization/pay-and-add-card` creates a new transaction and returns a redirect-URL, to which the user needs to be redirected to.
+
+The request body is exactly the same as in a normal [Payment-creation](#create).
+
+##### Response
+
+The initial request will return `HTTP 200` when successful, the `transactionId` of the payment and a `redirectUrl`.
+
+| field         | type   | description                                                              |
+| ------------- | ------ | ------------------------------------------------------------------------ |
+| redirectUrl   | string | URL of the payment flow, to which the user needs to be 302-redirected to |
+| transactionId | string | Assigned transaction ID for the payment                                  |
+
+If the flow is successfully completed, the given [success-redirect & -callback URLs](#redirect-and-callback-url-parameters) will be called with an additional parameter: `checkout-card-token`, which is also included in the HMAC-calculation of the `signature`-parameter. This token can be saved by the merchant and additional payments can be [charged](#charging-a-token) on the token.
+
 ## Invoices
 
 ### Manually activating invoices
