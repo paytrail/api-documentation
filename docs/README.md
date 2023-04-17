@@ -813,7 +813,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 ```
 
 When callback is requested in CSV-format, `refunditems`-field will be serialised in following format:
-`stamp:amount|stamp2:amount|...` containing a pipe-delimited `|` list of pairs. Pairs being the refunded payment item's stamp and the refunded amount. The stamp and amount inside pairs are delimited with colon `:`.
+`stamp:amount|stamp:amount|...` containing a pipe-delimited `|` list of pairs. Pairs being the refunded payment item's stamp and the refunded amount. The stamp and amount inside pairs are delimited with colon `:`.
 
 ```csv
 Example of the refunditems serialised into CSV
