@@ -1377,15 +1377,15 @@ fn main() {
 Dummy form rendering from the example [response](#response):
 
 ```javascript
-const parameterToInput = (param) => `<input type='hidden' name='${param.name}' value='${param.value}' />`;
+const parameterToInput = (param) => `<input type="hidden" name="${param.name}" value="${param.value}" />`;
 
 const responseToHtml = (response) =>
   response.providers
     .map(
       (provider) =>
-        `<form method='POST' action=${provider.url}>
+        `<form method="POST" action="${provider.url}">
             ${provider.parameters.map(parameterToInput)}
-            <button><img src='${provider.svg}' /></button>
+            <button><img src="${provider.svg}" /></button>
         </form>`
     )
     .join('\n');

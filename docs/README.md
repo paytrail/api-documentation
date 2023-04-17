@@ -399,7 +399,7 @@ const applePayParameters = response.customProviders.applepay.parameters;
 
 const responseToApplePayHtml = (response) =>
   `<div id="apple-pay-button">
-    ${applePayParameters.map((param) => `<input type='hidden' name='${param.name}' value='${param.value}' />`)}
+    ${applePayParameters.map((param) => `<input type="hidden" name="${param.name}" value="${param.value}" />`)}
   </div>`;
 ```
 
