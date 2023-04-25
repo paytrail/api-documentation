@@ -260,6 +260,7 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 | provider      | string  | If processed, the name of the payment method provider                                                                |
 | filingCode    | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
 | paidAt        | string  | Timestamp when the transaction was paid                                                                              |
+| settlementReference | string | If payment is settled, corresponding settlement reference is included                                           |
 
 See [example response](/examples#get) from examples tab.
 
