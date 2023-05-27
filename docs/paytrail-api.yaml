@@ -702,6 +702,14 @@ paths:
         Use checkout-tokenization-id received from /tokenization/addcard-form redirect to request a token which can be used for payments.
       operationId: requestTokenForTokenizationId
       parameters:
+        - name: checkout-tokenization-id
+          in: path
+          description: Tokenization id received from /tokenization/addcard-form
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -1076,6 +1084,14 @@ paths:
         Request committing of previously created authorization hold. The final amount committed can either equal or be less than the authorization hold. The committed amount may not exceed the authorization hold. The final items may differ from the ones used when creating the authorization hold.
       operationId: tokenCommit
       parameters:
+        - name: transactionId
+          in: path
+          description: The transaction ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -1149,6 +1165,14 @@ paths:
         Request committing of previously created authorization hold. A successful revert will remove the authorization hold from the payer's bank account.
       operationId: tokenRevert
       parameters:
+        - name: transactionId
+          in: path
+          description: The transaction ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
