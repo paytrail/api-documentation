@@ -748,11 +748,25 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: checkout-tokenization-id
+          in: header
+          description: Tokenization id received from /tokenization/addcard-form
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
           schema:
             type: string
+      requestBody:
+        description: Tokenization request payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTokenRequest'
       responses:
         '200':
           description: Tokenization request response
@@ -1576,6 +1590,17 @@ components:
           type: string
           example: 123e4567-e89b-12d3-a456-426655440000
           description: Payment card token received from request to /tokenization/{checkout-tokenization-id}
+
+    GetTokenRequest:
+      type: object
+      description: Get token request payload
+      required:
+        - checkout-tokenization-id
+      properties:
+        checkout-tokenization-id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426655440000
 
     Item:
       type: object
