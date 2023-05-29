@@ -1131,6 +1131,13 @@ paths:
             enum:
               - GET
               - POST
+        - name: checkout-transaction-id
+          in: header
+          description: The same transaction ID as in route
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
@@ -1212,6 +1219,13 @@ paths:
             enum:
               - GET
               - POST
+        - name: checkout-transaction-id
+          in: header
+          description: The same transaction ID as in route
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
@@ -1725,7 +1739,7 @@ components:
           description: Street address
         postalCode:
           type: string
-          pattern: '^\d+$'
+          pattern: '^[0-9A-z -]+$'
           example: '00100'
           maxLength: 15
           description: Postal code
@@ -1926,6 +1940,22 @@ components:
           enum:
             - sha256
             - sha512
+        checkout-method:
+          type: string
+          description: HTTP method of the request
+          example: POST
+          enum:
+            - GET
+            - POST
+        checkout-nonce:
+          type: string
+          description: Unique random identifier
+          example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+        checkout-timestamp:
+          type: string
+          description: Current timestamp in ISO 8601 format
+          example: '2018-08-08T10:10:59Z'
+          format: date-time
         checkout-redirect-success-url:
           type: string
           format: url
@@ -1954,6 +1984,12 @@ components:
             - SV
             - EN
           description: Alpha-2 language code for the card addition form
+        signature:
+          type: string
+          example: 0634fd04380bbaf5069c8c46a74c7d21df7414888d980c27a16d5e262cb8c9059139c212d0926000faf026e483904cefae2f5e9d9bd5f51fbc2ac4c4de518115
+          description: HMAC signature calculated over the request headers and payload
+          schema:
+            type: string
 
     TokenizationRequestResponse:
       required:
@@ -2249,6 +2285,7 @@ components:
             - fail
             - pending
             - delayed
+            - authorization-hold
           description: Transaction status
         amount:
           type: integer
