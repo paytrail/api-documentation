@@ -781,6 +781,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 | limit         | integer  | <center></center>  | `50000`   | Limit the amount of payments included in the report. Maximum 50000.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | reportFields  | string[] | <center></center>  | all       | Limit the fields that will be included in the report. Leaving this empty will include all fields. Possible values: `entryDate`, `created`, `amount`, `status`, `firstname`, `familyname`, `description`, `reference`, `paymentMethod`, `stamp`, `address`, `postcode`, `postoffice`, `country`, `checkoutReference`, `archiveNumber`, `payerName`, `settlementId`, `settlementDate`, `settlementReference`, `originalTradeReference`, `vatPercentage`, `vatAmount`, `paymentMethodFee`, `paymentMethodCommission`, `shopInShopCommission`, `shopInShopCommissionVatPercentage`, `shopInShopCommissionVatAmount`, `companyName`, `vatId` and `refunditems` |
 | submerchant   | integer  | <center></center>  |           | Get submerchant's payment report (aggregate only)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| includeItems  | boolean  | <center></center>  | false     | Include trade items in generated report. Only applicable when requestType is set to `json`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 #### Response
 
@@ -829,6 +830,11 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
       {
         stamp: 'stamp2', amount: -5
       },
+    ],
+    tradeitems: [
+      {
+        stamp: 'stamp1', amount: 2555, description: 'item',  vat: 24, code: 'ABC', quantity: 1
+      }
     ]
   }
 ]
