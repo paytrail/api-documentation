@@ -65,6 +65,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -152,6 +157,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -234,6 +244,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -755,6 +770,11 @@ paths:
             type: string
             format: uuid
             example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -832,6 +852,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -905,6 +930,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -976,6 +1006,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -1055,6 +1090,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -1151,6 +1191,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -1237,6 +1282,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
