@@ -1999,12 +1999,17 @@ components:
                 shopInShopCommissionVatPercentage,
                 shopInShopCommissionVatAmount,
                 refunditems,
+                tradeitems
 
               ]
         submerchant:
           type: integer
           example: 695874
           description: Get submerchant's payment report
+        includeItems:
+          type: boolean
+          example: true
+          description: Include trade items in created payment report
 
     PaymentRequestResponse:
       type: object
