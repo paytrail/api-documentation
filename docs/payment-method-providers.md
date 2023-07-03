@@ -26,7 +26,8 @@ The payment methods that can be tested without real money transactions have been
 | Ålandsbanken                                         | `alandsbanken`                                        | Testing is not possible                                                                                                                                                                                                                                    |
 | Nordea B2B                                           | `nordea-business`                                     | Testing is not possible                                                                                                                                                                                                                                    |
 | Danske B2B                                           | `danske-business`                                     | Testing is not possible                                                                                                                                                                                                                                    |
-| Alisa Yrityslasku                                    | `alisa`                                              | Testing is not possible                                                                                                                                                                                                                                    |
+| Alisa Yrityslasku                                    | `alisa`                                               | Testing is not possible                                                                                                                                                                                                                                    |
+| PayPal                                               | `paypal`                                              | Testing is not possible                                                                                                                                                                                                                                    |
 
 ## Test cards for tokenization
 
@@ -63,3 +64,4 @@ In addition to the limitations above, the following restrictions apply for refun
 
 - Nordea refunds do not work
 - Aktia refunds do not work
+- PayPal refunds do not work
