@@ -732,6 +732,8 @@ The initial request will return `HTTP 200` when successful, the `transactionId` 
 
 If the flow is successfully completed, the given [success-callback URL](#redirect-and-callback-url-parameters) will be called with an additional parameter: `checkout-card-token`, which is also included in the HMAC-calculation of the `signature`-parameter. This token can be saved by the merchant and additional payments can be [charged](#charging-a-token) on the token. The token is **not** included in the redirect URL parameters, as we don't want the user to be able to see the token.
 
+If the flow fails due to issues with the card itself (insufficient funds, fraud etc.), the given [cancel-callback URL](#redirect-and-callback-url-parameters) will be called with additional parameters `checkout-acquirer-response-code` and `checkout-acquirer-response-code-description` for troubleshooting the possible cause.
+
 ## Invoices
 
 ### Manually activating invoices
