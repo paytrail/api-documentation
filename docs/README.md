@@ -740,13 +740,15 @@ If the flow fails due to issues with the card itself (insufficient funds, fraud 
 
 Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley/Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
 
+Walley/Collector will keep the incvoice open for a maximum of 90 days. An invoice **cannot** be activated after this 90 day period.
+
 #### Payment creation to pending status
 
 Payment needs to be created with the `manualInvoiceActivation` flag set to true. If paid with invoice, the payment will be left to `pending` status and invoice will not be activated automatically.
 
 #### Activating invoice
 
-`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley/Collector and is in pending status.
+`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley/Collector, is in pending status and the payment was created within 90 days of the activation call.
 
 ##### Request
 
