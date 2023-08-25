@@ -1386,7 +1386,7 @@ const responseToHtml = (response) =>
         `<form method="POST" action="${provider.url}">
             ${provider.parameters.map(parameterToInput)}
             <button><img src="${provider.svg}" /></button>
-        </form>`
+        </form>`,
     )
     .join('\n');
 ```

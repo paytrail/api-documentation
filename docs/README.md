@@ -247,20 +247,20 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 
 #### Response
 
-| Field         | Type    | Description                                                                                                          |
-| ------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
-| transactionId | string  | Assigned transaction ID for the payment                                                                              |
-| status        | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                             |
-| amount        | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
-| currency      | alpha3  | Currency                                                                                                             |
-| stamp         | string  | Merchant unique identifier for the order                                                                             |
-| reference     | string  | Order reference                                                                                                      |
-| createdAt     | string  | Transaction creation timestamp                                                                                       |
-| href          | string  | If transaction is in status `new`, link to the hosted payment gateway                                                |
-| provider      | string  | If processed, the name of the payment method provider                                                                |
-| filingCode    | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
-| paidAt        | string  | Timestamp when the transaction was paid                                                                              |
-| settlementReference | string | If payment is settled, corresponding settlement reference is included                                           |
+| Field               | Type    | Description                                                                                                          |
+| ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| transactionId       | string  | Assigned transaction ID for the payment                                                                              |
+| status              | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                             |
+| amount              | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
+| currency            | alpha3  | Currency                                                                                                             |
+| stamp               | string  | Merchant unique identifier for the order                                                                             |
+| reference           | string  | Order reference                                                                                                      |
+| createdAt           | string  | Transaction creation timestamp                                                                                       |
+| href                | string  | If transaction is in status `new`, link to the hosted payment gateway                                                |
+| provider            | string  | If processed, the name of the payment method provider                                                                |
+| filingCode          | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
+| paidAt              | string  | Timestamp when the transaction was paid                                                                              |
+| settlementReference | string  | If payment is settled, corresponding settlement reference is included                                                |
 
 See [example response](/examples#get) from examples tab.
 
@@ -785,7 +785,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
 | limit         | integer  | <center></center>  | `50000`   | Limit the amount of payments included in the report. Maximum 50000.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | reportFields  | string[] | <center></center>  | all       | Limit the fields that will be included in the report. Leaving this empty will include all fields. Possible values: `entryDate`, `created`, `amount`, `status`, `firstname`, `familyname`, `description`, `reference`, `paymentMethod`, `stamp`, `address`, `postcode`, `postoffice`, `country`, `checkoutReference`, `archiveNumber`, `payerName`, `settlementId`, `settlementDate`, `settlementReference`, `originalTradeReference`, `vatPercentage`, `vatAmount`, `paymentMethodFee`, `paymentMethodCommission`, `shopInShopCommission`, `shopInShopCommissionVatPercentage`, `shopInShopCommissionVatAmount`, `companyName`, `vatId` and `refunditems` |
 | submerchant   | integer  | <center></center>  |           | Get submerchant's payment report (aggregate only)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| includeItems  | boolean  | <center></center>  | false     | Include trade items in generated report. Only applicable when requestType is set to `json`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| includeItems  | boolean  | <center></center>  | false     | Include trade items in generated report. Only applicable when requestType is set to `json`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 #### Response
 
@@ -852,7 +852,6 @@ Example of the refunditems serialised into CSV
 
 ...;"stamp1:-4,00|stamp2:-5,00"
 ```
-
 
 !> When validating report signature, body must be in raw body format in order to signature match.
 

@@ -1999,8 +1999,7 @@ components:
                 shopInShopCommissionVatPercentage,
                 shopInShopCommissionVatAmount,
                 refunditems,
-                tradeitems
-
+                tradeitems,
               ]
         submerchant:
           type: integer
@@ -2489,9 +2488,9 @@ components:
           description: Payment method commission VAT amount in Euros
           example: 0.192
         refunditems:
-            type: string
-            description: Contains a `|` (pipe) -delimited list of *stamp*:*amount* pairs. Pairs are delimited by a `:` (colon). Stamp refers to the payment item's stamp that was refunded.
-            example: 'stamp1:400|stamp2:200'
+          type: string
+          description: Contains a `|` (pipe) -delimited list of *stamp*:*amount* pairs. Pairs are delimited by a `:` (colon). Stamp refers to the payment item's stamp that was refunded.
+          example: 'stamp1:400|stamp2:200'
 
     GroupedPaymentProvidersResponse:
       description: List grouped providers response body
