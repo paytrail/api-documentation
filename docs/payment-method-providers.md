@@ -28,6 +28,7 @@ The payment methods that can be tested without real money transactions have been
 | Danske B2B                                           | `danske-business`                                     | Testing is not possible                                           |
 | Alisa Yrityslasku                                    | `alisa`                                               | Testing is not possible                                           |
 | PayPal                                               | `paypal`                                              | Testing is not possible                                           |
+| Maksu by Rahalaitos                                  | `maksu-by-rahalaitos`                                 | Testing is not possible                                           |
 
 ## Test cards for tokenization
 
