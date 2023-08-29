@@ -829,15 +829,15 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
     shopInShopCommissionVatAmount: 0.192,
     refunditems: [
       {
-        stamp: 'stamp1', amount: -4
+        stamp: 'stamp1', amount: -4, description: 'item1', vat: 0, code: 'AAA', quantity: 1
       },
       {
-        stamp: 'stamp2', amount: -5
+        stamp: 'stamp2', amount: -5, description: 'item2', vat: 0, code: 'BBB', quantity: 1
       },
     ],
     tradeitems: [
       {
-        stamp: 'stamp1', amount: 2555, description: 'item',  vat: 24, code: 'ABC', quantity: 1
+        stamp: 'stamp1', amount: 2555, description: 'item', vat: 24, code: 'ABC', quantity: 1
       }
     ]
   }
