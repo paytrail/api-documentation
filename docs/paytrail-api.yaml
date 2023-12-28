@@ -65,6 +65,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -152,6 +157,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -234,6 +244,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -702,6 +717,14 @@ paths:
         Use checkout-tokenization-id received from /tokenization/addcard-form redirect to request a token which can be used for payments.
       operationId: requestTokenForTokenizationId
       parameters:
+        - name: checkout-tokenization-id
+          in: path
+          description: Tokenization id received from /tokenization/addcard-form
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -740,11 +763,30 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: checkout-tokenization-id
+          in: header
+          description: Tokenization id received from /tokenization/addcard-form
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
           schema:
             type: string
+      requestBody:
+        description: Tokenization request payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTokenRequest'
       responses:
         '200':
           description: Tokenization request response
@@ -808,6 +850,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -883,6 +930,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -954,6 +1006,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -1035,6 +1092,11 @@ paths:
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
           schema:
             type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -1076,6 +1138,14 @@ paths:
         Request committing of previously created authorization hold. The final amount committed can either equal or be less than the authorization hold. The committed amount may not exceed the authorization hold. The final items may differ from the ones used when creating the authorization hold.
       operationId: tokenCommit
       parameters:
+        - name: transactionId
+          in: path
+          description: The transaction ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -1101,6 +1171,13 @@ paths:
             enum:
               - GET
               - POST
+        - name: checkout-transaction-id
+          in: header
+          description: The same transaction ID as in route
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
@@ -1112,6 +1189,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -1149,6 +1231,14 @@ paths:
         Request committing of previously created authorization hold. A successful revert will remove the authorization hold from the payer's bank account.
       operationId: tokenRevert
       parameters:
+        - name: transactionId
+          in: path
+          description: The transaction ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-account
           in: header
           description: Merchant ID
@@ -1174,6 +1264,13 @@ paths:
             enum:
               - GET
               - POST
+        - name: checkout-transaction-id
+          in: header
+          description: The same transaction ID as in route
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
         - name: checkout-timestamp
           in: header
           description: Current timestamp in ISO 8601 format
@@ -1185,6 +1282,11 @@ paths:
           in: header
           description: Unique random identifier
           example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
           schema:
             type: string
         - name: signature
@@ -1553,6 +1655,17 @@ components:
           example: 123e4567-e89b-12d3-a456-426655440000
           description: Payment card token received from request to /tokenization/{checkout-tokenization-id}
 
+    GetTokenRequest:
+      type: object
+      description: Get token request payload
+      required:
+        - checkout-tokenization-id
+      properties:
+        checkout-tokenization-id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426655440000
+
     Item:
       type: object
       required:
@@ -1676,7 +1789,7 @@ components:
           description: Street address
         postalCode:
           type: string
-          pattern: '^\d+$'
+          pattern: '^[0-9A-z -]+$'
           example: '00100'
           maxLength: 15
           description: Postal code
@@ -1877,6 +1990,22 @@ components:
           enum:
             - sha256
             - sha512
+        checkout-method:
+          type: string
+          description: HTTP method of the request
+          example: POST
+          enum:
+            - GET
+            - POST
+        checkout-nonce:
+          type: string
+          description: Unique random identifier
+          example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+        checkout-timestamp:
+          type: string
+          description: Current timestamp in ISO 8601 format
+          example: '2018-08-08T10:10:59Z'
+          format: date-time
         checkout-redirect-success-url:
           type: string
           format: url
@@ -1905,6 +2034,12 @@ components:
             - SV
             - EN
           description: Alpha-2 language code for the card addition form
+        signature:
+          type: string
+          example: 0634fd04380bbaf5069c8c46a74c7d21df7414888d980c27a16d5e262cb8c9059139c212d0926000faf026e483904cefae2f5e9d9bd5f51fbc2ac4c4de518115
+          description: HMAC signature calculated over the request headers and payload
+          schema:
+            type: string
 
     TokenizationRequestResponse:
       required:
@@ -2204,6 +2339,7 @@ components:
             - fail
             - pending
             - delayed
+            - authorization-hold
           description: Transaction status
         amount:
           type: integer
