@@ -1065,7 +1065,7 @@ See [an example payload and response](/examples#create)
 
 #### Response body
 
-The response JSON object contains the transaction ID of the payment and list of provider forms. It is highly recommended to render the icons and forms in the shop, but if this is not possible the response also contains a link to the hosted payment gateway. The response contains also HMAC verification headers and `cof-request-id` header. Storing or logging the request ID header is advised for possible debug needs.
+The response JSON object contains the transaction ID of the payment and list of provider forms. It is highly recommended to render the icons and forms in the shop, but if this is not possible the response also contains a link to the hosted payment gateway. The response contains also HMAC verification headers and `request-id` header. Storing or logging the request ID header is advised for possible debug needs.
 
 | Field           | Type                                                | Description                                                                                                                                |
 | --------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
