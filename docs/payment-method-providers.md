@@ -22,7 +22,7 @@ The payment methods that can be tested without real money transactions have been
 | Pivo                                                 | `pivo`                                                | Testing is not possible                                                 |
 | MobilePay                                            | `mobilepay`                                           | Testing is not possible                                                 |
 | Siirto                                               | `siirto`                                              | Testing is not possible                                                 |
-| OP Lasku                                             | `oplasku`                                             | Testing is not possible                                                 |
+| OP Lasku                                             | `oplaskuV1`                                           | Testing is not possible                                                 |
 | OP Tililuotto                                        | `op-tililuotto`                                       | Testing is not possible                                                 |
 | Jousto                                               | `jousto`                                              | Testing is not possible                                                 |
 | Ålandsbanken                                         | `alandsbanken`                                        | Testing is not possible                                                 |
