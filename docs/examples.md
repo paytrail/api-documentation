@@ -864,7 +864,7 @@ if ($responseHmac !== $response->getHeader('signature')[0]) {
 } else {
     echo(json_encode(json_decode($responseBody), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 }
-echo "\n\nRequest ID: {$response->getHeader('cof-request-id')[0]}\n\n";
+echo "\n\nRequest ID: {$response->getHeader('request-id')[0]}\n\n";
 ```
 
 ### HMAC calculation (C#)
