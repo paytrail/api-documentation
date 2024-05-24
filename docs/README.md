@@ -719,7 +719,7 @@ This method is an alternative way to add (tokenize) a card, which combines a pay
 
 `HTTP POST /tokenization/pay-and-add-card` creates a new transaction and returns a redirect-URL, to which the user needs to be redirected to.
 
-The request body is exactly the same as in a normal [Payment-creation](#create).
+The request body is exactly the same as in a normal [Payment-creation](#create) with the exception that `callbackUrls` is a required field.
 
 ##### Response
 
