@@ -470,7 +470,7 @@ const body = {
   },
 };
 
-// Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+// Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 calculateHmac(SECRET, headers, body);
 ```
 
@@ -559,7 +559,7 @@ public class Customer {
 public class Item {
   private int unitPrice;
   private int units;
-  private int vatPercentage;
+  private float vatPercentage;
   private String productCode;
   private String deliveryDate;
 }
@@ -620,7 +620,7 @@ public class DemoApplication {
     var encData = Crypto.CalculateHmac(secret,headers,body);
     logger.info("Encrypted data: " + encData);
     // result after running the app:
-    //Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+    //Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
   }
 
 }
@@ -750,7 +750,7 @@ body = json.dumps(b.toDictionary(), separators=(',', ':'))
 encData = Crypto.calculate_hmac(Crypto,secret,headers,body)
 print("Encrypted data: " + encData)
 # result after running the program:
-# Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+# Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 
 ```
 
@@ -838,7 +838,7 @@ $body = json_encode(
     JSON_UNESCAPED_SLASHES
 );
 
-// string(64) "9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291"
+// string(64) "9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129"
 $headers['signature'] = calculateHmac($SECRET, $headers, $body);
 
 $client = new \GuzzleHttp\Client([ 'headers' => $headers ]);
@@ -1084,7 +1084,7 @@ namespace HMACCalculation
         public string cancel { get; set; }
     }
 
-// Expected HMAC with commented default values: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+// Expected HMAC with commented default values: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 ```
 
 ### HMAC calculation (Go)
@@ -1165,7 +1165,7 @@ func main() {
 	json.Compact(buf, Body)
 	fmt.Println(CalculateHmac(Secret, buf.Bytes(), Headers))
 
-	// Result: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+	// Result: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 }
 ```
 
@@ -1286,7 +1286,7 @@ headers="$PACKAGE_HEADERS"
 body="$PACKAGE_BODY"
 
 calculate_hmac "$secret" "$headers" "$body"
-# result: (stdin)= 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+# result: (stdin)= 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 ```
 
 ### HMAC Calculation (Rust)
@@ -1366,7 +1366,7 @@ fn main() {
           },
     };
 
-    // Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac3661291
+    // Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 
     calculate_hmac(SECRET, headers, Some(body));
 }
