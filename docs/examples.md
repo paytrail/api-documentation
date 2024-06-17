@@ -21,7 +21,7 @@ You can find example payloads and responses for all the requests, as well as [co
     {
       "unitPrice": 1590,
       "units": 1,
-      "vatPercentage": 24,
+      "vatPercentage": 25.5,
       "productCode": "#927502759",
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
@@ -73,7 +73,7 @@ You can find example payloads and responses for all the requests, as well as [co
     {
       "unitPrice": 1590,
       "units": 1,
-      "vatPercentage": 24,
+      "vatPercentage": 25.5,
       "productCode": "#927502759",
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
@@ -456,7 +456,7 @@ const body = {
     {
       unitPrice: 1525,
       units: 1,
-      vatPercentage: 24,
+      vatPercentage: 25.5,
       productCode: '#1234',
       deliveryDate: '2018-09-01',
     },
@@ -638,7 +638,7 @@ from hmac import HMAC
 
 class Item:
 
-  def __init__(self, unitPrice: int, units: int, vatPercentage: int, productCode: str, deliveryDate: str) -> None:
+  def __init__(self, unitPrice: int, units: int, vatPercentage: float, productCode: str, deliveryDate: str) -> None:
     self.unitPrice = unitPrice
     self.units = units
     self.vatPercentage = vatPercentage
@@ -735,7 +735,7 @@ language = "FI"
 
 unitPrice = 1525
 units = 1
-vatPercentage = 24
+vatPercentage = 25.5
 productCode = "#1234"
 deliveryDate = "2018-09-01"
 
@@ -822,7 +822,7 @@ $body = json_encode(
             [
                 'unitPrice' => 1525,
                 'units' => 1,
-                'vatPercentage' => 24,
+                'vatPercentage' => 25.5,
                 'productCode' => '#1234',
                 'deliveryDate' => '2018-09-01'
             ]
@@ -994,7 +994,7 @@ class Program
         var item = new Item();
         item.unitPrice = 1525;
         item.units = 1;
-        item.vatPercentage = 24;
+        item.vatPercentage = 25.5;
         item.productCode = "#1234";
         item.deliveryDate = DateTime.Now.AddDays(5).ToString("yyyy-MM-dd");
         //item.deliveryDate = "2018-09-01";
@@ -1057,7 +1057,7 @@ namespace HMACCalculation
     {
         public int unitPrice { get; set; }
         public int units { get; set; }
-        public int vatPercentage { get; set; }
+        public float vatPercentage { get; set; }
         public string productCode { get; set; }
         public string deliveryDate { get; set; }
     }
@@ -1147,7 +1147,7 @@ func main() {
 		  {
 			"unitPrice": 1525,
 			"units": 1,
-			"vatPercentage": 24,
+			"vatPercentage": 25.5,
 			"productCode": "#1234",
 			"deliveryDate": "2018-09-01"
 		  }
@@ -1218,7 +1218,7 @@ PACKAGE_ITEM=$(cat <<EOF
 {
   "$ITEM_UNIT_PRICE":1525,
   "$ITEM_UNITS":1,
-  "$ITEM_VAT_PERCENTAGE":24,
+  "$ITEM_VAT_PERCENTAGE":25.5,
   "$ITEM_PRODUCT_CODE":"#1234",
   "$ITEM_DELIVERY_DATE":"2018-09-01"
 }
@@ -1352,7 +1352,7 @@ fn main() {
             {
               "unitPrice": 1525,
               "units": 1,
-              "vatPercentage": 24,
+              "vatPercentage": 25.5,
               "productCode": "#1234",
               "deliveryDate": "2018-09-01",
             },
