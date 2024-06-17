@@ -820,7 +820,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
     payerName: 'MALLIKASMIK',
     originalTradeReference: null,
     vatPercentage: 24,
-    vatAmount: 6.132
+    vatAmount: 6.132,
     paymentMethodFee: 0.12,
     paymentMethodCommission: 0.024,
     settlementId: 123456,
