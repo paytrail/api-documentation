@@ -1689,7 +1689,8 @@ components:
           maximum: 10000000
           description: Number of units
         vatPercentage:
-          type: numeric
+          type: number
+          format: float
           example: 25.5
           minimum: 0
           maximum: 100
