@@ -21,7 +21,7 @@ You can find example payloads and responses for all the requests, as well as [co
     {
       "unitPrice": 1590,
       "units": 1,
-      "vatPercentage": 24,
+      "vatPercentage": 25.5,
       "productCode": "#927502759",
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
@@ -73,7 +73,7 @@ You can find example payloads and responses for all the requests, as well as [co
     {
       "unitPrice": 1590,
       "units": 1,
-      "vatPercentage": 24,
+      "vatPercentage": 25.5,
       "productCode": "#927502759",
       "deliveryDate": "2018-03-07",
       "description": "Cat ladder",
@@ -456,7 +456,7 @@ const body = {
     {
       unitPrice: 1525,
       units: 1,
-      vatPercentage: 24,
+      vatPercentage: 25.5,
       productCode: '#1234',
       deliveryDate: '2018-09-01',
     },
@@ -470,7 +470,7 @@ const body = {
   },
 };
 
-// Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+// Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 calculateHmac(SECRET, headers, body);
 ```
 
@@ -559,7 +559,7 @@ public class Customer {
 public class Item {
   private int unitPrice;
   private int units;
-  private int vatPercentage;
+  private float vatPercentage;
   private String productCode;
   private String deliveryDate;
 }
@@ -620,7 +620,7 @@ public class DemoApplication {
     var encData = Crypto.CalculateHmac(secret,headers,body);
     logger.info("Encrypted data: " + encData);
     // result after running the app:
-    //Encrypted data: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+    //Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
   }
 
 }
@@ -638,7 +638,7 @@ from hmac import HMAC
 
 class Item:
 
-  def __init__(self, unitPrice: int, units: int, vatPercentage: int, productCode: str, deliveryDate: str) -> None:
+  def __init__(self, unitPrice: int, units: int, vatPercentage: float, productCode: str, deliveryDate: str) -> None:
     self.unitPrice = unitPrice
     self.units = units
     self.vatPercentage = vatPercentage
@@ -735,7 +735,7 @@ language = "FI"
 
 unitPrice = 1525
 units = 1
-vatPercentage = 24
+vatPercentage = 25.5
 productCode = "#1234"
 deliveryDate = "2018-09-01"
 
@@ -750,7 +750,7 @@ body = json.dumps(b.toDictionary(), separators=(',', ':'))
 encData = Crypto.calculate_hmac(Crypto,secret,headers,body)
 print("Encrypted data: " + encData)
 # result after running the program:
-# Encrypted data: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+# Encrypted data: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 
 ```
 
@@ -822,7 +822,7 @@ $body = json_encode(
             [
                 'unitPrice' => 1525,
                 'units' => 1,
-                'vatPercentage' => 24,
+                'vatPercentage' => 25.5,
                 'productCode' => '#1234',
                 'deliveryDate' => '2018-09-01'
             ]
@@ -838,7 +838,7 @@ $body = json_encode(
     JSON_UNESCAPED_SLASHES
 );
 
-// string(64) "3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6"
+// string(64) "9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129"
 $headers['signature'] = calculateHmac($SECRET, $headers, $body);
 
 $client = new \GuzzleHttp\Client([ 'headers' => $headers ]);
@@ -994,7 +994,7 @@ class Program
         var item = new Item();
         item.unitPrice = 1525;
         item.units = 1;
-        item.vatPercentage = 24;
+        item.vatPercentage = 25.5;
         item.productCode = "#1234";
         item.deliveryDate = DateTime.Now.AddDays(5).ToString("yyyy-MM-dd");
         //item.deliveryDate = "2018-09-01";
@@ -1057,7 +1057,7 @@ namespace HMACCalculation
     {
         public int unitPrice { get; set; }
         public int units { get; set; }
-        public int vatPercentage { get; set; }
+        public float vatPercentage { get; set; }
         public string productCode { get; set; }
         public string deliveryDate { get; set; }
     }
@@ -1084,7 +1084,7 @@ namespace HMACCalculation
         public string cancel { get; set; }
     }
 
-// Expected HMAC with commented default values: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+// Expected HMAC with commented default values: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 ```
 
 ### HMAC calculation (Go)
@@ -1147,7 +1147,7 @@ func main() {
 		  {
 			"unitPrice": 1525,
 			"units": 1,
-			"vatPercentage": 24,
+			"vatPercentage": 25.5,
 			"productCode": "#1234",
 			"deliveryDate": "2018-09-01"
 		  }
@@ -1165,7 +1165,7 @@ func main() {
 	json.Compact(buf, Body)
 	fmt.Println(CalculateHmac(Secret, buf.Bytes(), Headers))
 
-	// Result: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+	// Result: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 }
 ```
 
@@ -1218,7 +1218,7 @@ PACKAGE_ITEM=$(cat <<EOF
 {
   "$ITEM_UNIT_PRICE":1525,
   "$ITEM_UNITS":1,
-  "$ITEM_VAT_PERCENTAGE":24,
+  "$ITEM_VAT_PERCENTAGE":25.5,
   "$ITEM_PRODUCT_CODE":"#1234",
   "$ITEM_DELIVERY_DATE":"2018-09-01"
 }
@@ -1286,7 +1286,7 @@ headers="$PACKAGE_HEADERS"
 body="$PACKAGE_BODY"
 
 calculate_hmac "$secret" "$headers" "$body"
-# result: (stdin)= 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+# result: (stdin)= 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 ```
 
 ### HMAC Calculation (Rust)
@@ -1352,7 +1352,7 @@ fn main() {
             {
               "unitPrice": 1525,
               "units": 1,
-              "vatPercentage": 24,
+              "vatPercentage": 25.5,
               "productCode": "#1234",
               "deliveryDate": "2018-09-01",
             },
@@ -1366,7 +1366,7 @@ fn main() {
           },
     };
 
-    // Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+    // Expected HMAC: 9a4a7735279de4c99268e4566a5526ae887e73e6e58f2918cb2309ccac366129
 
     calculate_hmac(SECRET, headers, Some(body));
 }
