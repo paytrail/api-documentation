@@ -820,7 +820,7 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
     payerName: 'MALLIKASMIK',
     originalTradeReference: null,
     vatPercentage: 25.5,
-    vatAmount: 6.132
+    vatAmount: 6.132,
     paymentMethodFee: 0.12,
     paymentMethodCommission: 0.024,
     settlementId: 123456,
@@ -839,7 +839,10 @@ A Shop-in-Shop aggregate merchant can also fetch its submerchant's payment repor
     ],
     tradeitems: [
       {
-        stamp: 'stamp1', amount: 2555, description: 'item', vat: 25.5, code: 'ABC', quantity: 1
+        stamp: 'stamp1', amount: 1555, description: 'item1', vat: 25.5, code: 'ABC', quantity: 1, reference: 'item reference'
+      },
+      {
+        stamp: 'stamp2', amount: 1000, description: 'item2', vat: 25.5, code: 'CBA', quantity: 1, reference: null
       }
     ]
   }
