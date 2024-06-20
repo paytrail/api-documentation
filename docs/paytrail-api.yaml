@@ -1689,9 +1689,9 @@ components:
           maximum: 10000000
           description: Number of units
         vatPercentage:
-          type: integer
-          format: int64
-          example: 24
+          type: number
+          format: float
+          example: 25.5
           minimum: 0
           maximum: 100
           description: Item VAT percentage
@@ -2592,7 +2592,7 @@ components:
           type: number
           format: float
           description: Payment VAT percentage
-          example: 24
+          example: 25.5
         vatAmount:
           type: number
           format: float
@@ -2617,7 +2617,7 @@ components:
           type: number
           format: float
           description: Payment method commission VAT percentage
-          example: 24
+          example: 25.5
         shopInShopCommissionVatAmount:
           type: number
           format: float
