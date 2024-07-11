@@ -261,15 +261,15 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 | filingCode          | string   | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
 | paidAt              | string   | Timestamp when the transaction was paid                                                                              |
 | settlementReference | string   | If payment is settled, corresponding settlement reference is included                                                |
-| cardInfo            | CardInfo | If it was a card payment, the card information is included                                                           |
+| cardInfo            | CardInfo | If it was a card payment, the card information is included when available                                            |
 
 ##### CardInfo
 
-| Field           | Type   | Description                                               |
-| --------------- | ------ | --------------------------------------------------------- |
-| cardPartialPan  | string | Last digits of payment cards Primary Account Number (PAN) |
-| cardCountryCode | string | The card issuers ISO 3166-1 alpha-2 country code          |
-| cardBin         | string | The card issuers Bank Identification Number (BIN)         |
+| Field       | Type   | Description                                               |
+| ----------- | ------ | --------------------------------------------------------- |
+| partialPan  | string | Last digits of payment cards Primary Account Number (PAN) |
+| countryCode | string | The card issuers ISO 3166-1 alpha-2 country code          |
+| bin         | string | The card issuers Bank Identification Number (BIN)         |
 
 See [example response](/examples#get) from examples tab.
 

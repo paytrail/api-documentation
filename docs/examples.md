@@ -345,9 +345,9 @@ signature: 4d84e3aedaa847b23e672ff3bc9c57ae5d1c1e84aec251ce39914eaf250bb8b2
   "createdAt": "2019-11-01T10:48:39.979Z",
   "href": "https://pay.paytrail.com/pay/681538c4-fc84-11e9-83bc-2ffcef4c3453",
   "cardInfo": {
-    "cardPartialPan": "1234",
-    "cardCountryCode": "FI",
-    "cardBin": "123456"
+    "partialPan": "1234",
+    "countryCode": "FI",
+    "bin": "123456"
   }
 }
 ```
