@@ -1902,6 +1902,22 @@ components:
           description: Identifies a specific card, including the expiry date. Hex string of length 64.
           example: e858e18daac509247f463292641237d6a74ce44e0971ba2de4a14874928a8805
 
+    CardInfo:
+      type: object
+      properties:
+        partialPan:
+          type: string
+          description: 'Last digits of payment cards Primary Account Number (PAN)'
+          example: '1234'
+        countryCode:
+          type: string
+          description: 'The card issuers ISO 3166-1 alpha-2 country code'
+          example: 'FI'
+        bin:
+          type: string
+          description: 'The card issuers Bank Identification Number (BIN)'
+          example: '123456'
+
     # Refund request payload
     # - Normal merchant:
     #   - Only amount required, no need for item level reference
@@ -2375,6 +2391,8 @@ components:
           type: string
           example: '2019-10-30T09:14:28'
           description: Timestamp when the transaction was paid
+        cardInfo:
+          $ref: '#/components/schemas/CardInfo'
 
     # TODO: Once async, response status should be 'pending'
     RefundResponse:

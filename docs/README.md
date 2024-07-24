@@ -247,20 +247,29 @@ Get transaction info. Payments are reported primarily via callbacks, and impleme
 
 #### Response
 
-| Field               | Type    | Description                                                                                                          |
-| ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
-| transactionId       | string  | Assigned transaction ID for the payment                                                                              |
-| status              | string  | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                             |
-| amount              | integer | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
-| currency            | alpha3  | Currency                                                                                                             |
-| stamp               | string  | Merchant unique identifier for the order                                                                             |
-| reference           | string  | Order reference                                                                                                      |
-| createdAt           | string  | Transaction creation timestamp                                                                                       |
-| href                | string  | If transaction is in status `new`, link to the hosted payment gateway                                                |
-| provider            | string  | If processed, the name of the payment method provider                                                                |
-| filingCode          | string  | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
-| paidAt              | string  | Timestamp when the transaction was paid                                                                              |
-| settlementReference | string  | If payment is settled, corresponding settlement reference is included                                                |
+| Field               | Type     | Description                                                                                                          |
+| ------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| transactionId       | string   | Assigned transaction ID for the payment                                                                              |
+| status              | string   | `new`, `ok`, `fail`, `pending`, or `delayed`. Statuses are described [above](#statuses).                             |
+| amount              | integer  | Total amount of the payment in currency's minor units, e.g. for Euros use cents                                      |
+| currency            | alpha3   | Currency                                                                                                             |
+| stamp               | string   | Merchant unique identifier for the order                                                                             |
+| reference           | string   | Order reference                                                                                                      |
+| createdAt           | string   | Transaction creation timestamp                                                                                       |
+| href                | string   | If transaction is in status `new`, link to the hosted payment gateway                                                |
+| provider            | string   | If processed, the name of the payment method provider                                                                |
+| filingCode          | string   | If paid, the filing code issued by the payment method provider if any. Some providers do not return the filing code. |
+| paidAt              | string   | Timestamp when the transaction was paid                                                                              |
+| settlementReference | string   | If payment is settled, corresponding settlement reference is included                                                |
+| cardInfo            | CardInfo | If it was a card payment, the card information is included when available                                            |
+
+##### CardInfo
+
+| Field       | Type   | Description                                               |
+| ----------- | ------ | --------------------------------------------------------- |
+| partialPan  | string | Last digits of payment cards Primary Account Number (PAN) |
+| countryCode | string | The card issuers ISO 3166-1 alpha-2 country code          |
+| bin         | string | The card issuers Bank Identification Number (BIN)         |
 
 See [example response](/examples#get) from examples tab.
 
