@@ -28,7 +28,6 @@ The payment methods that can be tested without real money transactions have been
 | Ålandsbanken                                         | `alandsbanken`                                        | Testing is not possible                                                 |
 | Nordea B2B                                           | `nordea-business`                                     | Testing is not possible                                                 |
 | Danske B2B                                           | `danske-business`                                     | Testing is not possible                                                 |
-| Alisa Yrityslasku                                    | `alisa`                                               | Testing is not possible                                                 |
 | PayPal                                               | `paypal`                                              | Testing is not possible                                                 |
 
 ## Test cards for payments
