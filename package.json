@@ -4,12 +4,12 @@
   "description": "Paytrail Payment API documentation",
   "engineStrict": true,
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "devDependencies": {
     "docsify": "4.13.1",
     "docsify-cli": "4.4.4",
-    "prettier": "3.0.3"
+    "prettier": "3.3.3"
   },
   "scripts": {
     "serve": "docsify serve -p 8080 docs",
