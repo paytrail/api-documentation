@@ -387,7 +387,7 @@ Now we are ready to implement Apple Pay to your store page.
 First include **paytrail.js** in your page:
 
 ```html
-<script src="https://services.paytrail.com/static/paytrail.js"></script>
+<script src="http://resources.paytrail.com/libraries/paytrail.js"></script>
 ```
 
 Then add an `#apple-pay-button` -element to your site, and generate parameter `<input>`-elements inside it from the [Payments Create-response's](#response) `customProviders.applepay`-field:
@@ -437,7 +437,7 @@ _**Note:** In production, the button should be hidden by default with `display: 
 Finally, we need to mount the button element using **paytrail.js**. Mounting will display the button and add on-click -actions to initiate payment.
 
 ```javascript
-const applePayButton = checkoutFinland.applePayButton;
+const applePayButton = paytrail.applePayButton;
 
 // canMakePayment() checks that the user is on a Safari browser which supports Apple Pay.
 if (applePayButton.canMakePayment()) {
