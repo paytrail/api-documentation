@@ -308,7 +308,7 @@ Note, that at the moment HTTP 400 may occur also for 3rd party reasons - e.g. be
 
 ```json
 {
-  "provider": "handelsbanken",
+  "provider": "spankki",
   "status": "ok",
   "transactionId": "258ad3a5-9711-44c3-be65-64a0ef462ba3"
 }
