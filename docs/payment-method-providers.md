@@ -6,29 +6,29 @@ The payment methods that can be tested without real money transactions have been
 
 `checkout-provider` values are provided too, but they are subject to change without notice.
 
-| Provider                                 | `checkout-provider`               | Credentials                                                             |
-| ---------------------------------------- | --------------------------------- | ----------------------------------------------------------------------- |
-| Nordea                                   | `nordea`                          | Username: `123456`<br>Password: `1111`<br>Security code: any            |
-| OP                                       | `osuuspankki`                     | No credentials needed, will not present an UI on OP side                |
-| Aktia                                    | `aktia`                           | Username: `12345678`<br>Password: `123456`<br>Security code: `1234`     |
-| POP Pankki<br>Säästöpankki<br>OmaSP      | pop`<br>`saastopankki`<br>`omasp` | Username: `11111111`<br>Password: `123456`<br>Security code: `123456`   |
-| S-Pankki                                 | `spankki`                         | Username: `12345678`<br>Password: `9999`<br>Security code: `1234`       |
-| Danske                                   | `danske`                          | Danske test account login requires using real Danske credentials        |
-| Visa                                     | `creditcard`                      | See table below                                                         |
-| Mastercard                               | `creditcard`                      | See table below                                                         |
-| American Express                         | `amex`                            | Card number: `373953192351004`<br>Expiry date: `12/2026`<br>CVC: `1004` |
-| Apple Pay                                | `apple-pay`                       | Requires using real Apple Pay credentials and hosted payment gateway    |
-| Walley/Collector<br>Walley/Collector B2B | `collectorb2c`<br>`collectorb2b`  | Social security number: `010380-000P`                                   |
-| Pivo                                     | `pivo`                            | Testing is not possible                                                 |
-| MobilePay                                | `mobilepay`                       | Testing is not possible                                                 |
-| Siirto                                   | `siirto`                          | Testing is not possible                                                 |
-| OP Lasku                                 | `oplaskuV1`                       | Testing is not possible                                                 |
-| OP Tililuotto                            | `op-tililuotto`                   | Testing is not possible                                                 |
-| Jousto                                   | `jousto`                          | Testing is not possible                                                 |
-| Ålandsbanken                             | `alandsbanken`                    | Testing is not possible                                                 |
-| Nordea B2B                               | `nordea-business`                 | Testing is not possible                                                 |
-| Danske B2B                               | `danske-business`                 | Testing is not possible                                                 |
-| PayPal                                   | `paypal`                          | Testing is not possible                                                 |
+| Provider                                 | `checkout-provider`                | Credentials                                                             |
+| ---------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| Nordea                                   | `nordea`                           | Username: `123456`<br>Password: `1111`<br>Security code: any            |
+| OP                                       | `osuuspankki`                      | No credentials needed, will not present an UI on OP side                |
+| Aktia                                    | `aktia`                            | Username: `12345678`<br>Password: `123456`<br>Security code: `1234`     |
+| POP Pankki<br>Säästöpankki<br>OmaSP      | `pop`<br>`saastopankki`<br>`omasp` | Username: `11111111`<br>Password: `123456`<br>Security code: `123456`   |
+| S-Pankki                                 | `spankki`                          | Username: `12345678`<br>Password: `9999`<br>Security code: `1234`       |
+| Danske                                   | `danske`                           | Danske test account login requires using real Danske credentials        |
+| Visa                                     | `creditcard`                       | See table below                                                         |
+| Mastercard                               | `creditcard`                       | See table below                                                         |
+| American Express                         | `amex`                             | Card number: `373953192351004`<br>Expiry date: `12/2026`<br>CVC: `1004` |
+| Apple Pay                                | `apple-pay`                        | Requires using real Apple Pay credentials and hosted payment gateway    |
+| Walley/Collector<br>Walley/Collector B2B | `collectorb2c`<br>`collectorb2b`   | Social security number: `010380-000P`                                   |
+| Pivo                                     | `pivo`                             | Testing is not possible                                                 |
+| MobilePay                                | `mobilepay`                        | Testing is not possible                                                 |
+| Siirto                                   | `siirto`                           | Testing is not possible                                                 |
+| OP Lasku                                 | `oplaskuV1`                        | Testing is not possible                                                 |
+| OP Tililuotto                            | `op-tililuotto`                    | Testing is not possible                                                 |
+| Jousto                                   | `jousto`                           | Testing is not possible                                                 |
+| Ålandsbanken                             | `alandsbanken`                     | Testing is not possible                                                 |
+| Nordea B2B                               | `nordea-business`                  | Testing is not possible                                                 |
+| Danske B2B                               | `danske-business`                  | Testing is not possible                                                 |
+| PayPal                                   | `paypal`                           | Testing is not possible                                                 |
 
 ## Test cards for payments
 
