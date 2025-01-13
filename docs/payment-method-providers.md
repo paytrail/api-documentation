@@ -10,8 +10,8 @@ The payment methods that can be tested without real money transactions have been
 | ---------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
 | Nordea                                   | `nordea`                           | Username: `123456`<br>Password: `1111`<br>Security code: any            |
 | OP                                       | `osuuspankki`                      | No credentials needed, will not present an UI on OP side                |
-| Aktia                                    | `aktia`                            | Username: `12345678`<br>Password: `123456`<br>Security code: `1234`     |
 | POP Pankki<br>Säästöpankki<br>OmaSP      | `pop`<br>`saastopankki`<br>`omasp` | Username: `11111111`<br>Password: `123456`<br>Security code: `123456`   |
+| Aktia                                    | `aktia`                            | Username: `12345678`<br>Password: `123456`<br>Security code: `1234`     |
 | S-Pankki                                 | `spankki`                          | Username: `12345678`<br>Password: `9999`<br>Security code: `1234`       |
 | Danske                                   | `danske`                           | Danske test account login requires using real Danske credentials        |
 | Visa                                     | `creditcard`                       | See table below                                                         |
