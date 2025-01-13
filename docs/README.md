@@ -30,7 +30,7 @@ The headers are:
 | `checkout-account`        | numeric | Paytrail account ID, e.g. `375917`                                                                                                                                                                                                                                                                                                                                      |
 | `checkout-algorithm`      | string  | Used signature algorithm, either `sha256` or `sha512`                                                                                                                                                                                                                                                                                                                   |
 | `checkout-method`         | string  | HTTP verb of the request, either `GET` or `POST`                                                                                                                                                                                                                                                                                                                        |
-| `checkout-nonce`          | string  | Unique identifier for this request                                                                                                                                                                                                                                                                                                                                      |
+| `checkout-nonce`          | string  | A unique value (e.g., UUID) required for each request, used to prevent replay attacks. Duplicate nonces may be rejected                                                                                                                                                                                                                                                 |
 | `checkout-timestamp`      | string  | ISO 8601 date time                                                                                                                                                                                                                                                                                                                                                      |
 | `checkout-transaction-id` | string  | Paytrail transaction ID when accessing single transaction - not required for a new payment request                                                                                                                                                                                                                                                                      |
 | `platform-name`           | string  | For SaaS services, use the marketing name of the platform (for example, `shopify`). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, `woocommerce-yourcompany`). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration. |
@@ -497,19 +497,19 @@ POST parameters
 
 #### Request
 
-| field                           | info    | required           | description                                                                                                       |
-| ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                               |
-| `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
-| `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                            |
-| `checkout-nonce`                | string  | <center>x</center> | Unique identifier for this request                                                                                |
-| `checkout-timestamp`            | string  | <center>x</center> | ISO 8601 date time                                                                                                |
-| `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                      |
-| `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                          |
-| `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers |
-| `checkout-callback-success-url` | string  | <center>-</center> | Merchant's url called on successful card addition                                                                 |
-| `checkout-callback-cancel-url`  | string  | <center>-</center> | Merchant's url called on failed card addition                                                                     |
-| `language`                      | alpha2  | <center>-</center> | Card addition form language, currently supported are `FI`, `SV`, and `EN`                                         |
+| field                           | info    | required           | description                                                                                                             |
+| ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                                     |
+| `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                       |
+| `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                                  |
+| `checkout-nonce`                | string  | <center>x</center> | A unique value (e.g., UUID) required for each request, used to prevent replay attacks. Duplicate nonces may be rejected |
+| `checkout-timestamp`            | string  | <center>x</center> | ISO 8601 date time                                                                                                      |
+| `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                            |
+| `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                                |
+| `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers       |
+| `checkout-callback-success-url` | string  | <center>-</center> | Merchant's url called on successful card addition                                                                       |
+| `checkout-callback-cancel-url`  | string  | <center>-</center> | Merchant's url called on failed card addition                                                                           |
+| `language`                      | alpha2  | <center>-</center> | Card addition form language, currently supported are `FI`, `SV`, and `EN`                                               |
 
 #### Response
 
