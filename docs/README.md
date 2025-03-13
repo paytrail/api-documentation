@@ -353,7 +353,10 @@ See detailed description from [refund payment request body section](#refund-paym
 
 ## Apple Pay
 
-**The Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Paytrail's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
+!> Starting March 2025, Apple Pay was simplified to work like other payment methods. Users will be redirected to Paytrail's payment page to complete Apple Pay payments. If you want to implement a native Apple Pay button in your webshop, you'll need to contact Paytrail customer service to enable this feature
+and implement the custom integration described below.
+
+**The native Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Paytrail's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
 
 Paytrail provides a frontend library **paytrail.js** which makes implementing Apple Pay to your existing Paytrail payment wall simple.
 
@@ -362,7 +365,8 @@ Paytrail provides a frontend library **paytrail.js** which makes implementing Ap
 Before you start, you need to:
 
 - **Enable Apple Pay for your merchant** in [Paytrail Merchant Panel > Payment Methods](https://merchant.paytrail.com/trades/methods).
-  - After Apple Pay is enabled for your merchant, your [Payments Create-response's](#response) `customProviders`-field will contain parameters for your Apple Pay implementation, which are used later in [Step 1.](#3-mount-an-apple-pay-button-to-the-html-element)
+- **Contact customer support** to enable the native version of Apple Pay
+- After the above steps, your [Payments Create-response's](#response) `customProviders`-field will contain parameters for your Apple Pay implementation, which are used later in [Step 1.](#3-mount-an-apple-pay-button-to-the-html-element)
 - **Serve your frontend application over HTTPS.** This is a requirement both in development and production. For development, we recommend serving your localhost server with [**ngrok**](https://ngrok.com/).
 - [**Verify your domain with Apple Pay**](#verifying-your-domain-with-apple-pay), both in development and production.
 
