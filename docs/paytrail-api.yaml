@@ -5,7 +5,7 @@ info:
   description: |
     Paytrail Payment API
   contact:
-    name: Checkout
+    name: Paytrail
     url: https://github.com/paytrail/api-documentation/issues
 servers:
   - url: https://services.paytrail.com
@@ -620,7 +620,7 @@ paths:
           description: Get submerchant's payment report
           example: '695874'
           required: false
-          style: form
+          style: simple
           schema:
             type: string
             format: integer
@@ -656,6 +656,12 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: checkout-nonce
+          in: header
+          description: Unique random identifier
+          example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -2054,8 +2060,6 @@ components:
           type: string
           example: 0634fd04380bbaf5069c8c46a74c7d21df7414888d980c27a16d5e262cb8c9059139c212d0926000faf026e483904cefae2f5e9d9bd5f51fbc2ac4c4de518115
           description: HMAC signature calculated over the request headers and payload
-          schema:
-            type: string
 
     TokenizationRequestResponse:
       required:
@@ -2532,7 +2536,8 @@ components:
           description: Hour and minute of the payment creation
           example: '11:31'
         amount:
-          type: float
+          type: number
+          format: float
           description: Payment amount in Euros
           example: 15.95
         status:
