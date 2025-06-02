@@ -537,15 +537,16 @@ No request body required.
 
 #### Response
 
-If tokenization is successful, `HTTP 200` and the `token` of the card is returned along with [card details](#card).
+If tokenization is successful, `HTTP 200` and the `token` of the card is returned along with [card details](#card), [customer details](#customer) and optionally [network token details](#networkToken).
 
 This token is used to make authorization holds and charges on the payment card.
 
-| field    | type                  | description                                                 |
-| -------- | --------------------- | ----------------------------------------------------------- |
-| token    | string                | Payment card token                                          |
-| card     | [Card](#card)         | Masked card details. Present if verification was successful |
-| customer | [Customer](#customer) | Customer details                                            |
+| field         | type                          | description                                                                               |
+| ------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
+| token         | string                        | Payment card token                                                                        |
+| card          | [Card](#card)                 | Masked card details.                                                                      |
+| customer      | [Customer](#customer)         | Customer details                                                                          |
+| network_token | [NetworkToken](#networkToken) | Additional network token details. **Only present** if the token is of type network token. |
 
 ##### Card
 
@@ -573,6 +574,19 @@ Customer details
 | --------------- | ------ | ----------------------------------------------------------- |
 | network_address | string | The IP address of the customer for fraud detection purposes |
 | country_code    | string | e.g. FI                                                     |
+
+##### NetworkToken
+
+Additional details for network token. Only present if the token is of type network token.
+
+| Field                     | Type   | Description                                                       |
+| ------------------------- | ------ | ----------------------------------------------------------------- |
+| type                      | string | Type of the card. 'Visa' or 'Mastercard'                          |
+| partial_pan               | string | Last four digits of the card                                      |
+| expire_year               | string | Card expiration year                                              |
+| expire_month              | string | Card expiration month                                             |
+| image_url                 | string | Card illustration. **Only present** if illustration is available. |
+| payment_account_reference | string | Reference to the card. **Only present** for type 'Visa' cards.    |
 
 ### Charging a token
 
