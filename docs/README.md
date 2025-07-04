@@ -236,6 +236,7 @@ The currently possible payment statuses are:
 | `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                    |
 | `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing<br> 2. invoice requires manual activation<br>3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals) |
 | `delayed` | A rare status related to a single payment method that is not generally enabled. May take days to complete. If completed, will be reported as `ok` via the callback _or_ the redirect URL. This can be handled the same way as `pending`.                                                                         |
+| `authorization-hold` | Authorization hold has been created on tokenized card. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint.                                                                                                                                             |
 
 ### Get
 
