@@ -18,6 +18,7 @@ The payment methods that can be tested without real money transactions have been
 | Mastercard                               | `creditcard`                       | See table below                                                         |
 | American Express                         | `amex`                             | Card number: `373953192351004`<br>Expiry date: `12/2026`<br>CVC: `1004` |
 | Apple Pay                                | `apple-pay`                        | Requires using real Apple Pay credentials and hosted payment gateway    |
+| Google Pay                               | `google-pay`                       | Enroll your Google Account to [test card group](https://groups.google.com/g/googlepay-test-mode-stub-data)    |
 | Walley/Collector<br>Walley/Collector B2B | `collectorb2c`<br>`collectorb2b`   | Social security number: `010380-000P`                                   |
 | Pivo                                     | `pivo`                             | Testing is not possible                                                 |
 | MobilePay                                | `mobilepay`                        | Testing is not possible                                                 |
