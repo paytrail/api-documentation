@@ -24,7 +24,6 @@ The main differences are:
   - `cof-plugin-version` is now `platform-name`
 - One previously required field has been made optional:
   - `deliveryDate`
-- Email refund responses now have status `new`. Status `ok` callback will be sent when the actual refund has been completed.
 
 ## Paytrail Payment API endpoints
 
