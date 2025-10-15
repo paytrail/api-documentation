@@ -227,13 +227,13 @@ Merchant must check that signature is valid. Signature is calculated as describe
 
 The currently possible payment statuses are:
 
-| Status    | Description                                                                                                                                                                                                                                                                                                      |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                     |
-| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                  |
-| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                    |
-| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing<br> 2. invoice requires manual activation<br>3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals) |
-| `delayed` | A rare status related to a single payment method that is not generally enabled. May take days to complete. If completed, will be reported as `ok` via the callback _or_ the redirect URL. This can be handled the same way as `pending`.                                                                         |
+| Status    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing. This only occurs with Walley B2B. Actual outcome will be reported as `ok` or `fail` via the callback URL. <br> 2. Invoice requires manual activation if [manualInvoiceActivation](#manually-activating-invoices) was set `true`. <br> 3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals).<br><br> <b>Note!</b> If needed, the payment status can be fetched using the [HTTP GET /payments/{transactionId}](#get) endpoint. |
+| `delayed` | May take days to complete. If completed, it will be reported as `ok` via the callback or the redirect URL. This can be handled the same way as `pending`. <br><br><b>Note!</b> This status is only seen in special cases where a specific feature is enabled for your merchant account. If you have not been specifically told to handle this status by Paytrail, you will not see this in your payments.                                                                                                                                                                                                                                    |
 
 ### Get
 
@@ -274,9 +274,6 @@ See [example response](/examples#get) from examples tab.
 ### Refund
 
 `HTTP POST /payments/{transactionId}/refund` refunds a payment by transaction ID.
-
-?>
-Refunds can be asynchronous. Technically this means that when a refund request is accepted, the response may contain status `pending`. Later, when the refund is processed, the callback will be called with the actual outcome. At the moment, this only applies to email refunds but might be implemented for other types later.
 
 #### Request
 
@@ -765,9 +762,9 @@ If the flow fails due to issues with the card itself (insufficient funds, fraud 
 
 ### Manually activating invoices
 
-Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley/Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
+Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley), it is possible to activate the invoice manually later. This can be used for example with preordered products.
 
-Walley/Collector will keep the incvoice open for a maximum of 90 days. An invoice **cannot** be activated after this 90 day period.
+Walley will keep the incvoice open for a maximum of 90 days. An invoice **cannot** be activated after this 90 day period.
 
 #### Payment creation to pending status
 
@@ -775,7 +772,7 @@ Payment needs to be created with the `manualInvoiceActivation` flag set to true.
 
 #### Activating invoice
 
-`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley/Collector, is in pending status and the payment was created within 90 days of the activation call.
+`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley, is in pending status and the payment was created within 90 days of the activation call.
 
 ##### Request
 
@@ -1020,12 +1017,12 @@ General API HTTP status codes and what to expect of them.
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999998.                                                                                                                                             |
 | currency                | alpha3                                      | <center>x</center> | Currency, only `EUR` supported at the moment                                                                                                                                                                                                                                                                                                                                                             |
 | language                | alpha2                                      | <center>x</center> | Payment's language, currently supported are `FI`, `SV`, and `EN`                                                                                                                                                                                                                                                                                                                                         |
-| orderId                 | string                                      | <center>-</center> | Order ID. Used for e.g. Walley/Collector payments order ID. If not given, merchant reference is used instead.                                                                                                                                                                                                                                                                                            |
+| orderId (Deprecated)    | string                                      | <center>-</center> | (Deprecated) Order ID. Was used for e.g. Walley payments order ID. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                                                                 |
 | items                   | [Item](#item)[]                             | <center>-</center> | Array of items. Always required for Shop-in-Shop payments. Required if VAT calculations are wanted in settlement reports.                                                                                                                                                                                                                                                                                |
 | customer                | [Customer](#customer-1)                     | <center>x</center> | Customer information                                                                                                                                                                                                                                                                                                                                                                                     |
 | deliveryAddress         | [Address](#address)                         | <center>-</center> | Delivery address                                                                                                                                                                                                                                                                                                                                                                                         |
 | invoicingAddress        | [Address](#address)                         | <center>-</center> | Invoicing address                                                                                                                                                                                                                                                                                                                                                                                        |
-| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Walley/Collector.                                                                                                                                                                                                                                                        |
+| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Walley.                                                                                                                                                                                                                                                                  |
 | redirectUrls            | [CallbackUrl](#callbackurl)                 | <center>x</center> | Where to redirect browser after a payment is paid or cancelled. A single redirect URL can have maximum of 300 characters.                                                                                                                                                                                                                                                                                |
 | callbackUrls            | [CallbackUrl](#callbackurl)                 | <center>-</center> | Which url to ping after this payment is paid or cancelled.                                                                                                                                                                                                                                                                                                                                               |
 | callbackDelay           | number                                      | <center>-</center> | Callback URL polling delay in seconds. If callback URLs are given, the call can be delayed up to 900 seconds. Default: 0                                                                                                                                                                                                                                                                                 |
@@ -1042,7 +1039,7 @@ General API HTTP status codes and what to expect of them.
 | productCode               | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods. Maximum of 100 characters.                                                                                                                                                                                                                                                        |
 | description               | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods. Maximum of 1000 characters.                                                                                                                                                                                                                                                            |
 | category                  | string                    | <center>-</center> | fur suits                            | Merchant specific item category. Maximum of 100 characters.                                                                                                                                                                                                                                                                                                 |
-| orderId                   | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                                                                                                                                                                                                                                                                                |
+| orderId (Deprecated)      | string                    | <center>-</center> |                                      | (Deprecated) Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                    |
 | stamp                     | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments. Required for item refunds. Maximum of 200 characters.                                                                                                                                                                                                                                  |
 | reference                 | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                                                                                                                                |
 | merchant                  | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments.                                                                                                                                                                                                                                                               |
@@ -1051,14 +1048,14 @@ General API HTTP status codes and what to expect of them.
 
 ##### Customer
 
-| Field       | Type   | Required           | Example              | Description                                                                       |
-| ----------- | ------ | ------------------ | -------------------- | --------------------------------------------------------------------------------- |
-| email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                                 |
-| firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley/Collector). Maximum of 50 characters. |
-| lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley/Collector). Maximum of 50 characters.  |
-| phone       | string | <center>-</center> | 358451031234         | Phone number                                                                      |
-| vatId       | string | <center>-</center> | FI02454583           | VAT ID, if any                                                                    |
-| companyName | string | <center>-</center> | Example company      | Company name, if any. Maximum of 100 characters.                                  |
+| Field       | Type   | Required           | Example              | Description                                                             |
+| ----------- | ------ | ------------------ | -------------------- | ----------------------------------------------------------------------- |
+| email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                       |
+| firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley). Maximum of 50 characters. |
+| lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley). Maximum of 50 characters.  |
+| phone       | string | <center>-</center> | 358451031234         | Phone number                                                            |
+| vatId       | string | <center>-</center> | FI02454583           | VAT ID, if any                                                          |
+| companyName | string | <center>-</center> | Example company      | Company name, if any. Maximum of 100 characters.                        |
 
 ##### Address
 
@@ -1127,12 +1124,12 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                          |
-| ------------ | ------------------------------------------------------------------------------------ |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                      |
-| `bank`       | Bank payment methods                                                                 |
-| `creditcard` | Visa, MasterCard, American Express                                                   |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay |
+| ID           | Description                                                                |
+| ------------ | -------------------------------------------------------------------------- |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                            |
+| `bank`       | Bank payment methods                                                       |
+| `creditcard` | Visa, MasterCard, American Express                                         |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
 
