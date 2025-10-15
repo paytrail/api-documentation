@@ -19,7 +19,7 @@ The payment methods that can be tested without real money transactions have been
 | American Express                    | `amex`                             | Card number: `373953192351004`<br>Expiry date: `12/2026`<br>CVC: `1004`                                       |
 | Apple Pay                           | `apple-pay`                        | Requires using real Apple Pay credentials and hosted payment gateway                                          |
 | Google Pay                          | `google-pay`                       | Google Account with test cards required. Contact tekniikka@paytrail.com for more information.                 |
-| Walley<br>Walley B2B                | `collectorb2c`<br>`collectorb2b`   | Social security number: `010380-000P`                                                                         |
+| Walley<br>Walley B2B                | `walleyb2c`<br>`walleyb2b`         | Social security number: `010380-000P`                                                                         |
 | MobilePay                           | `mobilepay`                        | Testing is not possible with general [test credentials.](/#test-credentials). Contact tekniikka@paytrail.com. |
 | Siirto                              | `siirto`                           | Testing is not possible                                                                                       |
 | OP Lasku                            | `oplaskuV1`                        | Testing is not possible                                                                                       |
