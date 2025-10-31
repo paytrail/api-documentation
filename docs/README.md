@@ -311,6 +311,8 @@ Note, that at the moment HTTP 400 may occur also for 3rd party reasons - e.g. be
 
 ### Email refunds (deprecated)
 
+Instead of this, use the standard `/payments/{transactionId}/refund` endpoint with the customer’s email.
+
 `HTTP POST /payments/{transactionId}/refund/email` email refunds a payment by transaction ID.
 
 ?> Email refunds are always asynchronous. When a refund request is accepted, the response contain status `ok` and the callback will be called. The callback is not called with the actual outcome.
