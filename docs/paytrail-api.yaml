@@ -1859,7 +1859,7 @@ components:
       properties:
         type:
           type: string
-          description: Card type, for example ‘Visa’
+          description: Card type, for example 'Visa'
           example: Visa
         partial_pan:
           type: string
@@ -2149,6 +2149,11 @@ components:
                 shopInShopCommission,
                 shopInShopCommissionVatPercentage,
                 shopInShopCommissionVatAmount,
+                settlementReference,
+                transactionId,
+                settlementDueDate,
+                companyName,
+                vatId,
                 refunditems,
                 tradeitems,
               ]
@@ -2504,6 +2509,13 @@ components:
                 shopInShopCommission,
                 shopInShopCommissionVatPercentage,
                 shopInShopCommissionVatAmount,
+                settlementReference,
+                transactionId,
+                settlementDueDate,
+                companyName,
+                vatId,
+                refunditems,
+                tradeitems,
               ]
         submerchant:
           type: integer
@@ -2645,6 +2657,51 @@ components:
           type: string
           description: Contains a `|` (pipe) -delimited list of *stamp*:*amount* pairs. Pairs are delimited by a `:` (colon). Stamp refers to the payment item's stamp that was refunded.
           example: 'stamp1:400|stamp2:200'
+        settlementReference:
+          type: string
+          description: Settlement reference
+          example: '45667372'
+        transactionId:
+          type: string
+          description: Assigned transaction ID for the payment
+          example: '5770642a-9a02-4ca2-8eaa-cc6260a78eb6'
+        settlementDueDate:
+          type: string
+          description: When the payment settlement is due
+          format: DD-MM-YYYY
+          example: '2019-04-10'
+        tradeitems:
+          type: array
+          description: Trade items included in the payment
+          items:
+            type: object
+            properties:
+              stamp:
+                type: string
+                description: Payment item stamp
+              amount:
+                type: number
+                description: Item amount in cents
+              description:
+                type: string
+                description: Item description
+              vat:
+                type: number
+                description: VAT percentage
+              code:
+                type: string
+                description: Product code
+              quantity:
+                type: number
+                description: Quantity
+        companyName:
+          type: string
+          description: Company name
+          example: 'Example company'
+        vatId:
+          type: string
+          description: Company VAT ID in international format
+          example: 'FI02454583'
 
     GroupedPaymentProvidersResponse:
       description: List grouped providers response body
