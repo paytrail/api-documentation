@@ -5,7 +5,7 @@ info:
   description: |
     Paytrail Payment API
   contact:
-    name: Checkout
+    name: Paytrail
     url: https://github.com/paytrail/api-documentation/issues
 servers:
   - url: https://services.paytrail.com
@@ -278,6 +278,109 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           description: Payment method provider does not support refunds
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          $ref: '#/components/responses/Error'
+
+  #It's recommended to use /payments/{transactionId}/refund instead and provide customer email as a fallback
+  /payments/{transactionId}/refund/email:
+    post:
+      tags:
+        - payments
+      summary: Refund a payment
+      description: |
+        Email refunds a payment by transaction ID. If payment provider supports API refunds, API refund will be made instead. Refund operation is asynchronous. Refund request is validated,
+        and if the refund can be done a 201 is returned.
+      operationId: emailRefundPaymentByTransactionId
+      parameters:
+        - name: transactionId
+          in: path
+          description: Transaction ID of payment to refund
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
+        - name: checkout-account
+          in: header
+          description: Merchant ID
+          example: 375917
+          schema:
+            type: integer
+            format: int32
+        - name: checkout-algorithm
+          in: header
+          description: HMAC algorithm
+          example: sha512
+          schema:
+            type: string
+            enum:
+              - sha256
+              - sha512
+        - name: checkout-method
+          in: header
+          description: HTTP method of the request
+          example: POST
+          schema:
+            type: string
+            enum:
+              - GET
+              - POST
+        - name: checkout-transaction-id
+          in: header
+          description: The same transaction ID as in route
+          schema:
+            type: string
+            format: uuid
+            example: 93ee8d18-10db-410b-92ac-7d6e49369ce3
+        - name: checkout-timestamp
+          in: header
+          description: Current timestamp in ISO 8601 format
+          example: '2018-08-08T10:10:59Z'
+          schema:
+            type: string
+            format: date-time
+        - name: checkout-nonce
+          in: header
+          description: Unique random identifier
+          example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
+        - name: platform-name
+          in: header
+          description: For SaaS services, use the marketing name of the platform (for example, shopify). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, woocommerce-yourcompany). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration.
+          schema:
+            type: string
+        - name: signature
+          in: header
+          description: HMAC signature calculated over the request headers and payload
+          schema:
+            type: string
+      requestBody:
+        description: EmailRefund payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailRefund'
+      responses:
+        '201':
+          description: Email refund request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Used payment method provider does not support email refunds
           content:
             application/json:
               schema:
@@ -620,7 +723,7 @@ paths:
           description: Get submerchant's payment report
           example: '695874'
           required: false
-          style: form
+          style: simple
           schema:
             type: string
             format: integer
@@ -656,6 +759,12 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: checkout-nonce
+          in: header
+          description: Unique random identifier
+          example: 39da40b8-5fb0-499c-869d-35e575b9a6cd
+          schema:
+            type: string
         - name: signature
           in: header
           description: HMAC signature calculated over the request headers and payload
@@ -1957,6 +2066,38 @@ components:
           description: Item level refund information for SiS refunds.
         callbackUrls:
           $ref: '#/components/schemas/Callbacks'
+        email:
+          type: string
+          format: email
+          example: john.doe@example.org
+          description: Refund recipient email address as a fallback method if API refund is unsuccessful
+
+    EmailRefund:
+      type: object
+      required:
+        - email
+        - callbackUrls
+      properties:
+        amount:
+          type: integer
+          format: int64
+          example: 1590
+          minimum: 1
+          description: |
+            The amount to refund. Required for normal merchant accounts.
+            SiS aggregate can refund the whole purchase by providing just the amount
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefundItem'
+          description: Item level refund information for SiS refunds.
+        callbackUrls:
+          $ref: '#/components/schemas/Callbacks'
+        email:
+          type: string
+          format: email
+          example: john.doe@example.org
+          description: Refund recipient email address
 
     RefundItem:
       type: object
@@ -2054,8 +2195,6 @@ components:
           type: string
           example: 0634fd04380bbaf5069c8c46a74c7d21df7414888d980c27a16d5e262cb8c9059139c212d0926000faf026e483904cefae2f5e9d9bd5f51fbc2ac4c4de518115
           description: HMAC signature calculated over the request headers and payload
-          schema:
-            type: string
 
     TokenizationRequestResponse:
       required:
@@ -2544,7 +2683,8 @@ components:
           description: Hour and minute of the payment creation
           example: '11:31'
         amount:
-          type: float
+          type: number
+          format: float
           description: Payment amount in Euros
           example: 15.95
         status:

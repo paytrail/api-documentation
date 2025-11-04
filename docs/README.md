@@ -6,8 +6,6 @@ OpenAPI 3 specification for the API is also [available for download](paytrail-ap
 
 ?> If you have any feedback regarding how we could improve the documentation, [please file an issue on Github](https://github.com/paytrail/api-documentation/issues). You can also ask for support by opening an issue on GitHub. Thank you!
 
-?> [Checkout Finland API reference](https://checkoutfinland.github.io/psp-api/#/) is available separately.
-
 ## API endpoint
 
 API endpoint is `services.paytrail.com`.
@@ -30,7 +28,7 @@ The headers are:
 | `checkout-account`        | numeric | Paytrail account ID, e.g. `375917`                                                                                                                                                                                                                                                                                                                                      |
 | `checkout-algorithm`      | string  | Used signature algorithm, either `sha256` or `sha512`                                                                                                                                                                                                                                                                                                                   |
 | `checkout-method`         | string  | HTTP verb of the request, either `GET` or `POST`                                                                                                                                                                                                                                                                                                                        |
-| `checkout-nonce`          | string  | Unique identifier for this request                                                                                                                                                                                                                                                                                                                                      |
+| `checkout-nonce`          | string  | A unique value (e.g., UUID) required for each request, used to prevent replay attacks. Duplicate nonces may be rejected                                                                                                                                                                                                                                                 |
 | `checkout-timestamp`      | string  | ISO 8601 date time                                                                                                                                                                                                                                                                                                                                                      |
 | `checkout-transaction-id` | string  | Paytrail transaction ID when accessing single transaction - not required for a new payment request                                                                                                                                                                                                                                                                      |
 | `platform-name`           | string  | For SaaS services, use the marketing name of the platform (for example, `shopify`). For third party eCommerce platform plugins, use the platform name and your identifier, like company name (for example, `woocommerce-yourcompany`). Platform and integrator information helps customer service to provide better assistance for the merchants using the integration. |
@@ -229,13 +227,13 @@ Merchant must check that signature is valid. Signature is calculated as describe
 
 The currently possible payment statuses are:
 
-| Status    | Description                                                                                                                                                                                                                                                                                                      |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                     |
-| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                  |
-| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                    |
-| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing<br> 2. invoice requires manual activation<br>3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals) |
-| `delayed` | A rare status related to a single payment method that is not generally enabled. May take days to complete. If completed, will be reported as `ok` via the callback _or_ the redirect URL. This can be handled the same way as `pending`.                                                                         |
+| Status    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing. This only occurs with Walley B2B. Actual outcome will be reported as `ok` or `fail` via the callback URL. <br> 2. Invoice requires manual activation if [manualInvoiceActivation](#manually-activating-invoices) was set `true`. <br> 3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals).<br><br> <b>Note!</b> If needed, the payment status can be fetched using the [HTTP GET /payments/{transactionId}](#get) endpoint. |
+| `delayed` | May take days to complete. If completed, it will be reported as `ok` via the callback or the redirect URL. This can be handled the same way as `pending`. <br><br><b>Note!</b> This status is only seen in special cases where a specific feature is enabled for your merchant account. If you have not been specifically told to handle this status by Paytrail, you will not see this in your payments.                                                                                                                                                                                                                                    |
 
 ### Get
 
@@ -276,9 +274,6 @@ See [example response](/examples#get) from examples tab.
 ### Refund
 
 `HTTP POST /payments/{transactionId}/refund` refunds a payment by transaction ID.
-
-?>
-Refunds can be asynchronous. Technically this means that when a refund request is accepted, the response may contain status `pending`. Later, when the refund is processed, the callback will be called with the actual outcome. At the moment, this only applies to email refunds but might be implemented for other types later.
 
 #### Request
 
@@ -353,7 +348,10 @@ See detailed description from [refund payment request body section](#refund-paym
 
 ## Apple Pay
 
-**The Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Paytrail's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
+!> Starting March 2025, Apple Pay was simplified to work like other payment methods. Users will be redirected to Paytrail's payment page to complete Apple Pay payments. If you want to implement a native Apple Pay button in your webshop, you'll need to contact Paytrail customer service to enable this feature
+and implement the custom integration described below.
+
+**The native Apple Pay button is rendered separately from other payment methods on the frontend**, as it requires custom JavaScript ran on the browser. Paytrail's Apple Pay implementation however uses the same [Payment Create-response](#response) which is already used for creating the payment wall.
 
 Paytrail provides a frontend library **paytrail.js** which makes implementing Apple Pay to your existing Paytrail payment wall simple.
 
@@ -362,7 +360,8 @@ Paytrail provides a frontend library **paytrail.js** which makes implementing Ap
 Before you start, you need to:
 
 - **Enable Apple Pay for your merchant** in [Paytrail Merchant Panel > Payment Methods](https://merchant.paytrail.com/trades/methods).
-  - After Apple Pay is enabled for your merchant, your [Payments Create-response's](#response) `customProviders`-field will contain parameters for your Apple Pay implementation, which are used later in [Step 1.](#3-mount-an-apple-pay-button-to-the-html-element)
+- **Contact customer support** to enable the native version of Apple Pay
+- After the above steps, your [Payments Create-response's](#response) `customProviders`-field will contain parameters for your Apple Pay implementation, which are used later in [Step 1.](#3-mount-an-apple-pay-button-to-the-html-element)
 - **Serve your frontend application over HTTPS.** This is a requirement both in development and production. For development, we recommend serving your localhost server with [**ngrok**](https://ngrok.com/).
 - [**Verify your domain with Apple Pay**](#verifying-your-domain-with-apple-pay), both in development and production.
 
@@ -497,19 +496,19 @@ POST parameters
 
 #### Request
 
-| field                           | info    | required           | description                                                                                                       |
-| ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                               |
-| `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                 |
-| `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                            |
-| `checkout-nonce`                | string  | <center>x</center> | Unique identifier for this request                                                                                |
-| `checkout-timestamp`            | string  | <center>x</center> | ISO 8601 date time                                                                                                |
-| `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                      |
-| `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                          |
-| `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers |
-| `checkout-callback-success-url` | string  | <center>-</center> | Merchant's url called on successful card addition                                                                 |
-| `checkout-callback-cancel-url`  | string  | <center>-</center> | Merchant's url called on failed card addition                                                                     |
-| `language`                      | alpha2  | <center>-</center> | Card addition form language, currently supported are `FI`, `SV`, and `EN`                                         |
+| field                           | info    | required           | description                                                                                                             |
+| ------------------------------- | ------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `checkout-account`              | numeric | <center>x</center> | Paytrail account ID                                                                                                     |
+| `checkout-algorithm`            | string  | <center>x</center> | Used signature algorithm. The same as used by merchant when creating the payment.                                       |
+| `checkout-method`               | string  | <center>x</center> | HTTP verb of the request. Always POST for addcard-form                                                                  |
+| `checkout-nonce`                | string  | <center>x</center> | A unique value (e.g., UUID) required for each request, used to prevent replay attacks. Duplicate nonces may be rejected |
+| `checkout-timestamp`            | string  | <center>x</center> | ISO 8601 date time                                                                                                      |
+| `checkout-redirect-success-url` | string  | <center>x</center> | Merchant's url for user redirect on successful card addition                                                            |
+| `checkout-redirect-cancel-url`  | string  | <center>x</center> | Merchant's url for user redirect on failed card addition                                                                |
+| `signature`                     | alpha2  | <center>x</center> | Signature calculated from 'checkout-' prefixed POST parameters the same way as calculating signature from headers       |
+| `checkout-callback-success-url` | string  | <center>-</center> | Merchant's url called on successful card addition                                                                       |
+| `checkout-callback-cancel-url`  | string  | <center>-</center> | Merchant's url called on failed card addition                                                                           |
+| `language`                      | alpha2  | <center>-</center> | Card addition form language, currently supported are `FI`, `SV`, and `EN`                                               |
 
 #### Response
 
@@ -533,15 +532,16 @@ No request body required.
 
 #### Response
 
-If tokenization is successful, `HTTP 200` and the `token` of the card is returned along with [card details](#card).
+If tokenization is successful, `HTTP 200` and the `token` of the card is returned along with [card details](#card), [customer details](#customer) and optionally [network token details](#networkToken).
 
 This token is used to make authorization holds and charges on the payment card.
 
-| field    | type                  | description                                                 |
-| -------- | --------------------- | ----------------------------------------------------------- |
-| token    | string                | Payment card token                                          |
-| card     | [Card](#card)         | Masked card details. Present if verification was successful |
-| customer | [Customer](#customer) | Customer details                                            |
+| field         | type                          | description                                                                               |
+| ------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
+| token         | string                        | Payment card token                                                                        |
+| card          | [Card](#card)                 | Masked card details.                                                                      |
+| customer      | [Customer](#customer)         | Customer details                                                                          |
+| network_token | [NetworkToken](#networkToken) | Additional network token details. **Only present** if the token is of type network token. |
 
 ##### Card
 
@@ -569,6 +569,19 @@ Customer details
 | --------------- | ------ | ----------------------------------------------------------- |
 | network_address | string | The IP address of the customer for fraud detection purposes |
 | country_code    | string | e.g. FI                                                     |
+
+##### NetworkToken
+
+Additional details for network token. Only present if the token is of type network token.
+
+| Field                     | Type   | Description                                                       |
+| ------------------------- | ------ | ----------------------------------------------------------------- |
+| type                      | string | Type of the card. 'Visa' or 'Mastercard'                          |
+| partial_pan               | string | Last four digits of the card                                      |
+| expire_year               | string | Card expiration year                                              |
+| expire_month              | string | Card expiration month                                             |
+| image_url                 | string | Card illustration. **Only present** if illustration is available. |
+| payment_account_reference | string | Reference to the card. **Only present** for type 'Visa' cards.    |
 
 ### Charging a token
 
@@ -749,9 +762,9 @@ If the flow fails due to issues with the card itself (insufficient funds, fraud 
 
 ### Manually activating invoices
 
-Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley/Collector), it is possible to activate the invoice manually later. This can be used for example with preordered products.
+Paytrail provides customer an option to pay with invoice. For certain invoice payment methods (currently only Walley), it is possible to activate the invoice manually later. This can be used for example with preordered products.
 
-Walley/Collector will keep the incvoice open for a maximum of 90 days. An invoice **cannot** be activated after this 90 day period.
+Walley will keep the incvoice open for a maximum of 90 days. An invoice **cannot** be activated after this 90 day period.
 
 #### Payment creation to pending status
 
@@ -759,7 +772,7 @@ Payment needs to be created with the `manualInvoiceActivation` flag set to true.
 
 #### Activating invoice
 
-`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley/Collector, is in pending status and the payment was created within 90 days of the activation call.
+`HTTP POST /payments/{transactionId}/activate-invoice` manually activates invoice by transaction ID. Can only be used if payment was paid with Walley, is in pending status and the payment was created within 90 days of the activation call.
 
 ##### Request
 
@@ -1004,14 +1017,14 @@ General API HTTP status codes and what to expect of them.
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999998.                                                                                                                                             |
 | currency                | alpha3                                      | <center>x</center> | Currency, only `EUR` supported at the moment                                                                                                                                                                                                                                                                                                                                                             |
 | language                | alpha2                                      | <center>x</center> | Payment's language, currently supported are `FI`, `SV`, and `EN`                                                                                                                                                                                                                                                                                                                                         |
-| orderId                 | string                                      | <center>-</center> | Order ID. Used for e.g. Walley/Collector payments order ID. If not given, merchant reference is used instead.                                                                                                                                                                                                                                                                                            |
+| orderId (Deprecated)    | string                                      | <center>-</center> | (Deprecated) Order ID. Was used for e.g. Walley payments order ID. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                                                                 |
 | items                   | [Item](#item)[]                             | <center>-</center> | Array of items. Always required for Shop-in-Shop payments. Required if VAT calculations are wanted in settlement reports.                                                                                                                                                                                                                                                                                |
 | customer                | [Customer](#customer-1)                     | <center>x</center> | Customer information                                                                                                                                                                                                                                                                                                                                                                                     |
 | deliveryAddress         | [Address](#address)                         | <center>-</center> | Delivery address                                                                                                                                                                                                                                                                                                                                                                                         |
 | invoicingAddress        | [Address](#address)                         | <center>-</center> | Invoicing address                                                                                                                                                                                                                                                                                                                                                                                        |
-| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Walley/Collector.                                                                                                                                                                                                                                                        |
-| redirectUrls            | [CallbackUrl](#callbackurl)                 | <center>x</center> | Where to redirect browser after a payment is paid or cancelled.                                                                                                                                                                                                                                                                                                                                          |
-| callbackUrls            | [CallbackUrl](#callbackurl)                 | <center>-</center> | Which url to ping after this payment is paid or cancelled                                                                                                                                                                                                                                                                                                                                                |
+| manualInvoiceActivation | boolean                                     | <center>-</center> | If paid with invoice payment method, the invoice will not be activated automatically immediately. Currently only supported with Walley.                                                                                                                                                                                                                                                                  |
+| redirectUrls            | [CallbackUrl](#callbackurl)                 | <center>x</center> | Where to redirect browser after a payment is paid or cancelled. A single redirect URL can have maximum of 300 characters.                                                                                                                                                                                                                                                                                |
+| callbackUrls            | [CallbackUrl](#callbackurl)                 | <center>-</center> | Which url to ping after this payment is paid or cancelled.                                                                                                                                                                                                                                                                                                                                               |
 | callbackDelay           | number                                      | <center>-</center> | Callback URL polling delay in seconds. If callback URLs are given, the call can be delayed up to 900 seconds. Default: 0                                                                                                                                                                                                                                                                                 |
 | groups                  | [PaymentMethodGroup](#paymentmethodgroup)[] | <center>-</center> | Instead of all enabled payment methods, return only those of given groups. It is highly recommended to use [list providers](#list-providers) before initiating the payment if filtering by group. If the payment methods are rendered in the webshop the grouping functionality can be implemented based on the `group` attribute of each returned payment instead of filtering when creating a payment. |
 | usePricesWithoutVat     | boolean                                     | <center>-</center> | If true, `amount` and `items.unitPrice` should be sent to API not including VAT, and final amount is calculated by Paytrail's system using the items' `unitPrice` and `vatPercentage` (with amounts rounded to closest cent). Also, when true, **items must be included** and all item unit prices must be positive.                                                                                     |
@@ -1026,8 +1039,8 @@ General API HTTP status codes and what to expect of them.
 | productCode               | string                    | <center>x</center> | 9a                                   | Merchant product code. May appear on invoices of certain payment methods. Maximum of 100 characters.                                                                                                                                                                                                                                                        |
 | description               | string                    | <center>-</center> | Bear suits for adults                | Item description. May appear on invoices of certain payment methods. Maximum of 1000 characters.                                                                                                                                                                                                                                                            |
 | category                  | string                    | <center>-</center> | fur suits                            | Merchant specific item category. Maximum of 100 characters.                                                                                                                                                                                                                                                                                                 |
-| orderId                   | string                    | <center>-</center> |                                      | Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases.                                                                                                                                                                                                                                                                                |
-| stamp                     | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments. Required for item refunds.                                                                                                                                                                                                                                                             |
+| orderId (Deprecated)      | string                    | <center>-</center> |                                      | (Deprecated) Item level order ID (suborder ID). Mainly useful for Shop-in-Shop purchases. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                    |
+| stamp                     | string                    | <center>-</center> | d4aca017-f1e7-4fa5-bfb5-2906e141ebac | Unique identifier for this item. Required for Shop-in-Shop payments. Required for item refunds. Maximum of 200 characters.                                                                                                                                                                                                                                  |
 | reference                 | string                    | <center>-</center> | fur-suits-5                          | Reference for this item. Required for Shop-in-Shop payments.                                                                                                                                                                                                                                                                                                |
 | merchant                  | string                    | <center>-</center> | 695874                               | Merchant ID for the item. Required for Shop-in-Shop payments, do not use for normal payments.                                                                                                                                                                                                                                                               |
 | commission                | [Commission](#commission) | <center>-</center> | -                                    | Shop-in-Shop commission. Do not use for normal payments.                                                                                                                                                                                                                                                                                                    |
@@ -1035,14 +1048,14 @@ General API HTTP status codes and what to expect of them.
 
 ##### Customer
 
-| Field       | Type   | Required           | Example              | Description                                                                       |
-| ----------- | ------ | ------------------ | -------------------- | --------------------------------------------------------------------------------- |
-| email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                                 |
-| firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley/Collector). Maximum of 50 characters. |
-| lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley/Collector). Maximum of 50 characters.  |
-| phone       | string | <center>-</center> | 358451031234         | Phone number                                                                      |
-| vatId       | string | <center>-</center> | FI02454583           | VAT ID, if any                                                                    |
-| companyName | string | <center>-</center> | Example company      | Company name, if any. Maximum of 100 characters.                                  |
+| Field       | Type   | Required           | Example              | Description                                                             |
+| ----------- | ------ | ------------------ | -------------------- | ----------------------------------------------------------------------- |
+| email       | string | <center>x</center> | john.doe@example.org | Email. Maximum of 200 characters.                                       |
+| firstName   | string | <center>-</center> | John                 | First name (required for OPLasku and Walley). Maximum of 50 characters. |
+| lastName    | string | <center>-</center> | Doe                  | Last name (required for OPLasku and Walley). Maximum of 50 characters.  |
+| phone       | string | <center>-</center> | 358451031234         | Phone number                                                            |
+| vatId       | string | <center>-</center> | FI02454583           | VAT ID, if any                                                          |
+| companyName | string | <center>-</center> | Example company      | Company name, if any. Maximum of 100 characters.                        |
 
 ##### Address
 
@@ -1111,12 +1124,12 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                          |
-| ------------ | ------------------------------------------------------------------------------------ |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                                      |
-| `bank`       | Bank payment methods                                                                 |
-| `creditcard` | Visa, MasterCard, American Express                                                   |
-| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley/Collector, Jousto, AfterPay |
+| ID           | Description                                                                |
+| ------------ | -------------------------------------------------------------------------- |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                            |
+| `bank`       | Bank payment methods                                                       |
+| `creditcard` | Visa, MasterCard, American Express                                         |
+| `credit`     | Instalment and invoice payment methods: OP Lasku, Walley, Jousto, AfterPay |
 
 ##### PaymentMethodGroupData
 
