@@ -311,6 +311,8 @@ Note, that at the moment HTTP 400 may occur also for 3rd party reasons - e.g. be
 
 ### Email refunds
 
+**Note!** This function is outdated. A separate email refund action is not needed. Include the customer's email in the [refund payment request](#refund-payment), and the system will handle the email automatically.
+
 `HTTP POST /payments/{transactionId}/refund/email` email refunds a payment by transaction ID.
 
 ?> Email refunds are always asynchronous. When a refund request is accepted, the response contain status `ok` and the callback will be called. The callback is not called with the actual outcome.
@@ -1017,7 +1019,8 @@ General API HTTP status codes and what to expect of them.
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999998.                                                                                                                                             |
 | currency                | alpha3                                      | <center>x</center> | Currency, only `EUR` supported at the moment                                                                                                                                                                                                                                                                                                                                                             |
 | language                | alpha2                                      | <center>x</center> | Payment's language, currently supported are `FI`, `SV`, and `EN`                                                                                                                                                                                                                                                                                                                                         |
-| orderId (Deprecated)    | string                                      | <center>-</center> | (Deprecated) Order ID. Was used for e.g. Walley payments order ID. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                                                                 |
+| orderId (Deprecated)    | string                                      | <center>-</center> | (Deprecated) Order ID. Was used for e.g. Walley payments order ID. This field is deprecated but remains here as a reference for old integrations.                                                                                                                                                                                                                                                        |
+| description             | string                                      | <center>-</center> | An internal information for the payment. Only visible in the Merchant panel.                                                                                                                                                                                                                                                                                                                             |
 | items                   | [Item](#item)[]                             | <center>-</center> | Array of items. Always required for Shop-in-Shop payments. Required if VAT calculations are wanted in settlement reports.                                                                                                                                                                                                                                                                                |
 | customer                | [Customer](#customer-1)                     | <center>x</center> | Customer information                                                                                                                                                                                                                                                                                                                                                                                     |
 | deliveryAddress         | [Address](#address)                         | <center>-</center> | Delivery address                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -1078,10 +1081,11 @@ These URLs must use HTTPS.
 
 ##### Commission
 
-| Field    | Type    | Required           | Example | Description                                                                                   |
-| -------- | ------- | ------------------ | ------- | --------------------------------------------------------------------------------------------- |
-| merchant | string  | <center>x</center> | 695874  | Merchant who gets the commission                                                              |
-| amount   | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable. |
+| Field         | Type    | Required           | Example | Description                                                                                       |
+| ------------- | ------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------- |
+| merchant      | string  | <center>x</center> | 695874  | Merchant who gets the commission                                                                  |
+| amount        | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable.     |
+| vatPercentage | integer | <center></center>  | 25.5    | Commissions VAT percentage. Values between 0 and 100 are allowed with one number in decimal part. |
 
 See [an example payload and response](/examples#create)
 
