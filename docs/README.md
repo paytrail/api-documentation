@@ -1081,11 +1081,11 @@ These URLs must use HTTPS.
 
 ##### Commission
 
-| Field         | Type    | Required           | Example | Description                                                                                       |
-| ------------- | ------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------- |
-| merchant      | string  | <center>x</center> | 695874  | Merchant who gets the commission                                                                  |
-| amount        | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable.     |
-| vatPercentage | integer | <center></center>  | 25.5    | Commissions VAT percentage. Values between 0 and 100 are allowed with one number in decimal part. |
+| Field         | Type    | Required           | Example | Description                                                                                                                                  |
+| ------------- | ------- | ------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| merchant      | string  | <center>x</center> | 695874  | Merchant who gets the commission                                                                                                             |
+| amount        | integer | <center>x</center> | 250     | Amount of commission in currency's minor units, e.g. for Euros use cents. VAT not applicable.                                                |
+| vatPercentage | integer | <center></center>  | 25.5    | Commissions VAT percentage. Values between 0 and 100 are allowed with one number in decimal part. If not given, 25.5 will be used as default |
 
 See [an example payload and response](/examples#create)
 
