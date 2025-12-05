@@ -361,6 +361,7 @@ signature: 4d84e3aedaa847b23e672ff3bc9c57ae5d1c1e84aec251ce39914eaf250bb8b2
 ```json
 {
   "amount": 1590,
+  "email": "recipient@example.com"
   "refundStamp": "88907910-7b85-4940-8563-202b93d5ca79",
   "refundReference": "your reference",
   "callbackUrls": {
