@@ -1380,7 +1380,9 @@ fn main() {
 
 ### Payment provider form rendering
 
-Dummy form rendering from the example [response](#response):
+Dummy form rendering from the example [response](#response)
+
+Developers should ensure that any API response data is properly escaped before rendering it into HTML.
 
 ```javascript
 const parameterToInput = (param) => `<input type="hidden" name="${param.name}" value="${param.value}" />`;
