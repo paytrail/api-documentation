@@ -227,14 +227,14 @@ Merchant must check that signature is valid. Signature is calculated as describe
 
 The currently possible payment statuses are:
 
-| Status    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new`     | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `ok`      | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `fail`    | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `pending` | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing. This only occurs with Walley B2B. Actual outcome will be reported as `ok` or `fail` via the callback URL. <br> 2. Invoice requires manual activation if [manualInvoiceActivation](#manually-activating-invoices) was set `true`. <br> 3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals).<br><br> <b>Note!</b> If needed, the payment status can be fetched using the [HTTP GET /payments/{transactionId}](#get) endpoint. |
-| `delayed` | May take days to complete. If completed, it will be reported as `ok` via the callback or the redirect URL. This can be handled the same way as `pending`. <br><br><b>Note!</b> This status is only seen in special cases where a specific feature is enabled for your merchant account. If you have not been specifically told to handle this status by Paytrail, you will not see this in your payments.                                                                                                                                                                                                                                    |
-| `authorization-hold` | Authorization hold has been created on tokenized card. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint.
+| Status               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new`                | Payment has been created but nothing more. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `ok`                 | Payment was accepted by the provider and confirmed successfully                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `fail`               | Payment was cancelled by the user or rejected by the provider                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `pending`            | Payment was initially approved by the provider but further processing is required, used in e.g. these cases: <br><br> 1. anti-fraud check is ongoing. This only occurs with Walley B2B. Actual outcome will be reported as `ok` or `fail` via the callback URL. <br> 2. Invoice requires manual activation if [manualInvoiceActivation](#manually-activating-invoices) was set `true`. <br> 3. Refund has been initiated but waiting for approval (only used for merchants which require refund approvals).<br><br> <b>Note!</b> If needed, the payment status can be fetched using the [HTTP GET /payments/{transactionId}](#get) endpoint. |
+| `delayed`            | May take days to complete. If completed, it will be reported as `ok` via the callback or the redirect URL. This can be handled the same way as `pending`. <br><br><b>Note!</b> This status is only seen in special cases where a specific feature is enabled for your merchant account. If you have not been specifically told to handle this status by Paytrail, you will not see this in your payments.                                                                                                                                                                                                                                    |
+| `authorization-hold` | Authorization hold has been created on tokenized card. Never returned as a result, but can be received from the `GET /payments/{transactionId}` endpoint.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### Get
 
@@ -468,7 +468,6 @@ The standard Paytrail integration for Klarna doesn't require any Klarna-specific
 
 Klarna also supports **manual invoice activation (capture)**; see [Invoices](#invoices).
 
-
 For payment reference and examples, see:
 
 - [Create](#create)
@@ -501,7 +500,6 @@ Sharing the `klarna.networkSessionToken` is required with the Conversion feature
 
 **Klarna Network Data:** You can also send `klarna.networkData` in the `providerDetails` object as a serialized JSON. This enriched data helps increase approval rates and reduce false declines by enabling Klarna to make smarter decisions. Providing complete and accurate data improves acceptance rates. For more details, refer to Klarna's [Optimize Conversion Rate](https://docs.klarna.com/acquirer/paytrail/get-started/maximize-sales-with-klarna/optimize-conversion-rate/?utm_source=paytrail-docs) documentation and also check [Klarna Network Data Schema](https://docs.klarna.com/acquirer/paytrail/api/klarna-network-data-schema/?utm_source=paytrail-docs).
 
-
 Example:
 
 ```json
@@ -522,13 +520,13 @@ Example:
 
 #### Klarna provider details
 
-| Field               | Type   | Required           | Example / constraints         | Description                                                                 |
-| ------------------- | ------ | ------------------ | ----------------------------- | --------------------------------------------------------------------------- |
-| networkSessionToken | string | <center>x</center> | Min length 1, max length 8192 | Klarna Network Session Token from the Web SDK (Conversion features). |
-| networkData         | string | <center>x</center> | Min length 1, max length 10240 | Optional serialized JSON; enriched data to improve approval rates. |
-
+| Field               | Type   | Required           | Example / constraints          | Description                                                          |
+| ------------------- | ------ | ------------------ | ------------------------------ | -------------------------------------------------------------------- |
+| networkSessionToken | string | <center>x</center> | Min length 1, max length 8192  | Klarna Network Session Token from the Web SDK (Conversion features). |
+| networkData         | string | <center>x</center> | Min length 1, max length 10240 | Optional serialized JSON; enriched data to improve approval rates.   |
 
 #### Highest-converting Klarna Integration
+
 Integrate Klarna's Web SDK to deliver a seamless, optimized checkout experience on your site. Initialize the SDK, present Klarna in the payment selector, and finalize the flow with Klarna's payment button. You will also utilize the same Klarna Web SDK for [Conversion features](#conversion-features).
 
 Refer to the Klarna documentation for [Implementing Klarna Web SDK](https://docs.klarna.com/acquirer/paytrail/recommended-integration/build-the-checkout/klarna-websdk/?utm_source=paytrail-docs).
@@ -550,6 +548,7 @@ You can implement Klarna's [Conversion features](https://docs.klarna.com/acquire
 For Conversion features, make sure to add the `klarna_network_session_token` returned by the Klarna Web SDK to the `providerDetails.klarna.networkSessionToken` field in Paytrail's `/payments` call.
 
 Alternative to the `/payments` endpoint, you can also utilize two other dedicated endpoints for Klarna:
+
 - `/payments/klarna/charge` (for auto-capture)
 - `/payments/klarna/authorization-hold` (for manual capture)
 
@@ -570,6 +569,7 @@ If the customer still needs to get redirected to take further action about the p
 ```
 
 If you prefer to use `/payments/klarna/authorization-hold`;
+
 - to capture the authorization, you need to call `/payments/{transactionId}/klarna/commit`
 - to void (cancel) the authorization, you need to call `/payments/{transactionId}/klarna/revert`
 
@@ -863,7 +863,7 @@ This method is an alternative way to add (tokenize) a card, which combines a pay
 
 `HTTP POST /tokenization/pay-and-add-card` creates a new transaction and returns a redirect-URL, to which the user needs to be redirected to.
 
-The request body is exactly the same as in a normal [Payment-creation](#create) with the exception that `callbackUrls` is a required field.
+The request body is exactly the same as in a normal [Payment-creation](#create) with the exception that only special characters `_` and `-` can be used in `stamp` and `callbackUrls` is a required field.
 
 ##### Response
 
@@ -1199,7 +1199,7 @@ General API HTTP status codes and what to expect of them.
 | Field                   | Type                                        | Required           | Description                                                                                                                                                                                                                                                                                                                                                                                              |
 | ----------------------- | ------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stamp                   | string                                      | <center>x</center> | Merchant unique identifier for the order. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                     |
-| reference               | string                                      | <center>x</center> | Order reference. Maximum of 200 characters.                                                                                                                                                                                                                                                                                                                                                              |
+| reference               | string                                      | <center>x</center> | Order reference. Maximum of 200 characters. Should be a valid Finnish bank reference if per-transaction settlements are used.                                                                                                                                                                                                                                                                            |
 | amount                  | integer                                     | <center>x</center> | Total amount of the payment in currency's minor units, e.g. for Euros use cents. Must match the total sum of items and must be more than zero. By default amount should include VAT, unless `usePricesWithoutVat` is set to true. Maximum value of 99999998.                                                                                                                                             |
 | currency                | alpha3                                      | <center>x</center> | Currency, only `EUR` supported at the moment                                                                                                                                                                                                                                                                                                                                                             |
 | language                | alpha2                                      | <center>x</center> | Payment's language, currently supported are `FI`, `SV`, and `EN`                                                                                                                                                                                                                                                                                                                                         |
@@ -1318,11 +1318,11 @@ The form field values are rendered as hidden `<input>` elements in the form. See
 
 ##### PaymentMethodGroup
 
-| ID           | Description                                                                |
-| ------------ | -------------------------------------------------------------------------- |
-| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                            |
-| `bank`       | Bank payment methods                                                       |
-| `creditcard` | Visa, MasterCard, American Express                                         |
+| ID           | Description                                                      |
+| ------------ | ---------------------------------------------------------------- |
+| `mobile`     | Mobile payment methods: Pivo, Siirto, MobilePay                  |
+| `bank`       | Bank payment methods                                             |
+| `creditcard` | Visa, MasterCard, American Express                               |
 | `credit`     | Instalment and invoice payment methods: Klarna, OP Lasku, Walley |
 
 ##### PaymentMethodGroupData
