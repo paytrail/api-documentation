@@ -64,8 +64,4 @@ Authenticate as the `aggregate` merchant in the `headers` and specify in the bod
 
 Sub-merchant accounts can be created through the [Paytrail Partner portal](https://partner.paytrail.com/).
 
-For automated or programmatic onboarding, sub-merchants can also be created via the [Reseller API](https://services.paytrail.com/merchants/ext/docs/index.html#/default/post_merchants)
-
-- This requires separate activation by Paytrail, after which an API key is provided for authentication.
-
-!> The Reseller API uses [Bearer token authentication](https://services.paytrail.com/merchants/ext/docs/index.html#/default/post_merchants). This is the only endpoint in the Paytrail API that does not use HMAC signature authentication.
+For automated or programmatic onboarding, sub-merchants can also be created via the [Reseller API](/#reseller-api)
