@@ -1263,7 +1263,7 @@ These URLs must use HTTPS.
 | Field   | Type   | Required           | Example                        | Description                  |
 | ------- | ------ | ------------------ | ------------------------------ | ---------------------------- |
 | success | string | <center>x</center> | https://example.org/51/success | Called on successful payment |
-| cancel  | string | <center>x</center> | https://example.org/51/cancel  | Called on successful payment |
+| cancel  | string | <center>x</center> | https://example.org/51/cancel  | Called on cancelled payment |
 
 ##### Commission
 
