@@ -2,9 +2,9 @@
 
 Merchant accounts can be created through the [Paytrail Partner portal](https://partner.paytrail.com/).
 
-For automated or programmatic onboarding, merchants can also be created via the [Reseller API](/#creating-a-merchant).
+For automated or programmatic onboarding, merchants can also be created via the [Reseller API](#/reseller-api?id=creating-a-merchant).
 
-Using [Reseller API](/#creating-a-merchant) requires separate activation by Paytrail, after which `Authorization: Bearer <api-key>` is provided for authentication.
+Using [Reseller API](#/reseller-api?id=creating-a-merchant) requires separate activation by Paytrail, after which `Authorization: Bearer <api-key>` is provided for authentication.
 
 !> Reseller API uses **Bearer token** authentication. This is the only endpoint that does not use HMAC signature authentication.
 
@@ -88,6 +88,7 @@ Creates a new merchant. The same endpoint is used both for **normal merchants** 
   "postalCode": "33100",
   "city": "Tampere",
   "packageId": "2",
+  "vatId": "1234567-1",
   "contactDetails": {
     "email": "sub.merchant@example.com",
     "streetAddress": "Hämeenkatu 1",
@@ -136,7 +137,7 @@ Before creating a merchant you must choose a package for it. A package defines t
 | Response code | Explanation                                                                           |
 | ----------- | ------------------------------------------------------------------------------------- |
 | 200        | 	OK                                                                |
-| 401        | Bad Request  |
+| 401        | Invalid credentials  |
 | 404        | No packages found.|
 
 When `200` is returned, the response body contains a list of all available packages for the reseller:
