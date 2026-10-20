@@ -1,6 +1,126 @@
+/* Paytrail brand tokens */
+:root {
+  --brand-primary: #e60094;
+  --brand-secondary: #aa0066;
+  --brand-primary-lighter: #ffe7f2;
+  --gray1: #23232a;
+  --gray2: #59595c;
+  --gray3: #76767a;
+  --gray4: #e4e4e5;
+  --white2: #f7f7f8;
+  --font-base: 'Source Sans 3', Helvetica, Arial, sans-serif;
+  --font-title: 'DM Sans', Helvetica, Arial, sans-serif;
+}
+
 body {
-  font-family: 'Poppins', Helvetica, Arial, sans-serif;
+  font-family: var(--font-base);
   font-size: 15px;
+  color: var(--gray2);
+}
+
+/* Typography */
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3,
+.markdown-section h4,
+.markdown-section h5,
+.markdown-section h6 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--gray1);
+}
+
+.markdown-section h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.markdown-section h2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.03em;
+}
+
+.markdown-section strong {
+  color: var(--gray1);
+}
+
+.markdown-section a {
+  color: var(--brand-primary);
+}
+
+.markdown-section a:hover {
+  color: var(--brand-secondary);
+}
+
+.markdown-section code {
+  color: var(--brand-secondary);
+  background-color: var(--white2);
+}
+
+.markdown-section pre,
+.markdown-section pre > code {
+  background-color: var(--white2);
+}
+
+.markdown-section pre > code {
+  color: var(--gray1);
+}
+
+/* Tables */
+.markdown-section td,
+.markdown-section th {
+  border-color: var(--gray4);
+}
+
+.markdown-section tr {
+  border-top-color: var(--gray4);
+}
+
+.markdown-section th {
+  color: var(--gray1);
+  font-weight: 600;
+  background-color: var(--white2);
+}
+
+.markdown-section tr:nth-child(2n) {
+  background-color: transparent;
+}
+
+/* Callouts */
+.markdown-section p.warn {
+  background: var(--brand-primary-lighter);
+  border-radius: 4px;
+}
+
+.markdown-section p.tip {
+  border-left-color: var(--brand-primary);
+  background-color: var(--white2);
+}
+
+.markdown-section p.tip:before {
+  background-color: var(--brand-primary);
+}
+
+.markdown-section blockquote {
+  color: var(--gray3);
+}
+
+/* Top navigation */
+.app-nav a {
+  color: var(--gray1);
+  font-weight: 600;
+}
+
+.app-nav a:hover,
+.app-nav a.active {
+  color: var(--brand-primary);
+}
+
+.sidebar {
+  border-right-color: var(--gray4);
 }
 
 .app-name img {
@@ -27,7 +147,7 @@ body {
 
 .sidebar .sidebar-nav ul li a {
   padding: 8px 0;
-  color: #2c3e50;
+  color: var(--gray1);
   font-size: 15px;
   white-space: normal;
 }
@@ -39,15 +159,16 @@ body {
 
 .sidebar .sidebar-nav ul li.active > a {
   border-right: none;
-  color: var(--theme-color);
-  font-weight: 500;
+  color: var(--brand-primary);
+  font-weight: 600;
 }
 
 .sidebar .sidebar-nav .sidebar-group-label {
   margin: 28px 0 6px;
-  color: #1a1a1a;
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--gray1);
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -82,7 +203,7 @@ body {
 
 .sidebar .sidebar-nav li.has-children > ul a {
   padding: 5px 0;
-  color: #505d6b;
+  color: var(--gray2);
   font-size: 14px;
 }
 
@@ -105,8 +226,8 @@ body {
   left: 10px;
   width: 6px;
   height: 6px;
-  border-right: 1.5px solid #505d6b;
-  border-bottom: 1.5px solid #505d6b;
+  border-right: 1.5px solid var(--gray3);
+  border-bottom: 1.5px solid var(--gray3);
   transform: rotate(-45deg);
   transition: transform 0.15s ease;
 }
