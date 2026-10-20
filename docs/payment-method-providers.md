@@ -1,8 +1,14 @@
 # Payment Method Providers
 
-The payment methods that can be tested without real money transactions have been enabled for the test accounts. Test credentials for the services can be found below.
+This page covers:
+- **Testing:** test credentials and test cards per payment method, and what doesn't work on test accounts
+- **Limitations:** general restrictions per payment method that apply both in production and testing
 
-## Test credentials
+## Testing
+
+The payment methods that can be tested without real money have been enabled for the test accounts.
+
+### Test credentials
 
 `checkout-provider` values are provided too, but they are subject to change without notice.
 
@@ -19,9 +25,10 @@ The payment methods that can be tested without real money transactions have been
 | American Express                    | `amex`                             | Card number: `373953192351004`<br>Expiry date: `12/2026`<br>CVC: `1004`                                                                                    |
 | Apple Pay                           | `apple-pay`                        | Requires using real Apple Pay credentials and hosted payment gateway                                                                                       |
 | Google Pay                          | `google-pay`                       | Google Account with test cards required. Contact tekniikka@paytrail.com for more information.                                                              |
-| Walley<br>Walley B2B                | `walleyb2c`<br>`walleyb2b`         | Social security number: `010380-000P`                                                                                                                      |
+| Walley | `walleyb2c` | Fill in any details in the required fiels and finish with online bank authentication:<br>- OP and Aktia: test credentials are filled in automatically<br>- Nordea: username `DEMOUSER1`–`DEMOUSER99` (any number from 1 to 99) |
+| Walley B2B | `walleyb2b` | Enter a valid Finnish business ID (Y-tunnus) and any phone number. No online bank authentication is required. |
 | MobilePay                           | `mobilepay`                        | Requires a separate test app and test credentials. Contact tekniikka@paytrail.com for more information.                                                    |
-| Siirto                              | `siirto`                           | Success: `+358401122332`<br>User rejects: `+358401122333`                                                                                                  |
+| Siirto                              | `siirto`                           | Success: `+358401111111`<br>User rejects: `+358402222222`                                                                                                  |
 | OP Lasku                            | `oplaskuV1`                        | Testing is not possible                                                                                                                                    |
 | OP Tililuotto                       | `op-tililuotto`                    | Testing is not possible                                                                                                                                    |
 | Ålandsbanken                        | `alandsbanken`                     | Testing is not possible                                                                                                                                    |
@@ -31,7 +38,7 @@ The payment methods that can be tested without real money transactions have been
 | Klarna                              | `klarna`                           | Use the provided test data: [here](https://docs.klarna.com/resources/developer-tools/sample-data/sample-customer-data/#europe-finland) |
 | PayPal                              | `paypal`                           | Testing is not possible                                                                                                                                    |
 
-## Test cards for payments
+### Test cards for payments
 
 | Tokenization | Payment | Card number                        | Expiry  | CVC | Description                                                                                                                                                                                                                                                  |
 | ------------ | ------- | ---------------------------------- | ------- | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -53,17 +60,40 @@ Some payment method providers have minimum and/or maximum amounts for the purcha
 
 ### Refunds
 
-API refunds have been implemented for all providers supporting them. Currently payments created by the following methods can be refunded only with email refunds due to their lack of a refund API:
+Payments via Finnish banks are available through two interfaces and the available interface(s) are defined in the merchant’s agreement.
+
+#### eBanking refunds
+
+API refunds are supported for all providers with refund APIs. Payments created via the following eBanking interfaces can only be refunded through the email refund flow:
 
 - S-pankki
 - Ålandsbanken
 
-There can be limitations in the refund APIs too, eg. Nordea API allows to refund only once per payment, and only for payments created less than 13 weeks earlier.
+Some eBanking refund APIs have constraints. For example, Nordea allows only one refund per payment and only within 13 weeks of the original transaction.
 
-#### Refunds with test account
+#### PSD2 refunds (Open Banking)
+
+IBAN refunds are the default. The refund is credited directly to the customer’s bank account, with no differences between banks.
+
+**[Customer name](/#customer-1) is mandatory** 
+- If included in the payment request, refund proceeds normally.
+- If missing, Paytrail retrieves it from the bank statement. This adds a delay of 1–2 banking days.
+- If refund is initiated before the name is available, the flow falls back to email refund.
+
+**Recommendation:** If the customer name is not included in the payment request, wait a few banking days before initiating the refund. This avoids fallback to the email flow.
+
+#### Card and mobile payments
+
+Refunds are processed to the original card if it is valid and active. Payments where the card is no longer available can only be refunded through the email refund flow.
+
+#### PayPal
+
+Refunds for PayPal payments are not available through Paytrail. Refunds must be issued directly in the PayPal merchant panel, as Paytrail does not settle PayPal transactions.
+
+### Test account payments
 
 In addition to the limitations above, the following restrictions apply for refunding test account payments:
 
-- Nordea refunds do not work
+- Nordea payments can only be refunded through email
 - Aktia refunds do not work
 - PayPal refunds do not work
