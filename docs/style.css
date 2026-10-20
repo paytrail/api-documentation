@@ -6,3 +6,117 @@ body {
 .app-name img {
   max-width: 100px;
 }
+
+/* Sidebar navigation */
+.sidebar .sidebar-nav {
+  padding: 8px 16px 40px 24px;
+  line-height: 1.4;
+}
+
+.sidebar .sidebar-nav ul {
+  margin: 0;
+}
+
+.sidebar .sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar .sidebar-nav li:before {
+  content: none;
+}
+
+.sidebar .sidebar-nav ul li a {
+  padding: 8px 0;
+  color: #2c3e50;
+  font-size: 15px;
+  white-space: normal;
+}
+
+.sidebar .sidebar-nav ul li a:hover {
+  color: var(--theme-color);
+  text-decoration: none;
+}
+
+.sidebar .sidebar-nav ul li.active > a {
+  border-right: none;
+  color: var(--theme-color);
+  font-weight: 500;
+}
+
+.sidebar .sidebar-nav .sidebar-group-label {
+  margin: 28px 0 6px;
+  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sidebar .sidebar-nav .sidebar-group-label:first-child {
+  margin-top: 8px;
+}
+
+/* Collapsible sub-items */
+.sidebar .sidebar-nav li.has-children {
+  position: relative;
+}
+
+.sidebar .sidebar-nav li.has-children > a {
+  padding-right: 32px;
+}
+
+.sidebar .sidebar-nav li.has-children > ul {
+  display: none;
+  padding: 0 0 6px 16px;
+}
+
+.sidebar .sidebar-nav li.has-children.open > ul,
+.sidebar .sidebar-nav li.has-children.active > ul,
+.sidebar .sidebar-nav li.has-children:has(li.active) > ul {
+  display: block;
+}
+
+.sidebar .sidebar-nav li.has-children.closed > ul {
+  display: none;
+}
+
+.sidebar .sidebar-nav li.has-children > ul a {
+  padding: 5px 0;
+  color: #505d6b;
+  font-size: 14px;
+}
+
+.sidebar-toggle-children {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sidebar-toggle-children:after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid #505d6b;
+  border-bottom: 1.5px solid #505d6b;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+}
+
+li.open > .sidebar-toggle-children:after,
+li.active > .sidebar-toggle-children:after,
+li:has(li.active) > .sidebar-toggle-children:after {
+  transform: rotate(45deg);
+}
+
+li.closed > .sidebar-toggle-children:after {
+  transform: rotate(-45deg);
+}
