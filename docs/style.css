@@ -4,18 +4,33 @@
   --brand-secondary: #aa0066;
   --brand-primary-lighter: #ffe7f2;
   --gray1: #23232a;
-  --gray2: #59595c;
-  --gray3: #76767a;
+  --gray2: #505053;
+  --gray3: #707074;
   --gray4: #e4e4e5;
   --white2: #f7f7f8;
+  --white3: #f0f0f1;
+  --white4: #e4e4e5;
+  --light-border: rgba(15, 15, 23, 0.06);
   --font-base: 'Source Sans 3', Helvetica, Arial, sans-serif;
   --font-title: 'DM Sans', Helvetica, Arial, sans-serif;
 }
 
+html {
+  font-size: 15px;
+
+  @media (width > 1600px) {
+    font-size: 16px;
+  }
+}
+
 body {
   font-family: var(--font-base);
-  font-size: 15px;
+  font-size: 1rem;
   color: var(--gray2);
+}
+
+.markdown-section {
+  max-width: min(84%, 1200px);
 }
 
 /* Typography */
@@ -39,27 +54,91 @@ body {
 }
 
 .markdown-section h2 {
-  font-size: 1.75rem;
+  font-size: 2rem;
+  line-height: 1.25;
   letter-spacing: -0.03em;
+  margin: 3rem 0 0.65em;
+}
+
+.markdown-section h3 {
+  font-size: 1.55rem;
+  margin: 2.5rem 0 0.7em;
+}
+
+.markdown-section h4 {
+  font-size: 1.25rem;
+  margin: 2rem 0 0.7em;
+}
+
+.markdown-section h5 {
+  font-size: 1.1rem;
+  margin: 2rem 0 0.7em;
+}
+
+.markdown-section h6 {
+  font-size: 1rem;
+  margin: 1.75rem 0 0.7em;
+}
+
+.markdown-section h2 + h3,
+.markdown-section h3 + h4 {
+  margin-top: 1rem;
+}
+
+.markdown-section :is(h1) * {
+  font-weight: 700;
+}
+.markdown-section :is(h2, h3, h4, h5) * {
+  font-weight: 600;
+}
+
+h1 .anchor span,
+h2 .anchor span,
+h3 .anchor span,
+h4 .anchor span,
+h5 .anchor span,
+h6 .anchor span {
+  color: var(--gray1);
+}
+
+.markdown-section p {
+  margin: 0 0 1.2em;
 }
 
 .markdown-section strong {
   color: var(--gray1);
 }
 
+.markdown-section em {
+  color: var(--gray3);
+}
+
 .markdown-section a {
-  color: var(--brand-primary);
+  font-weight: inherit;
+  color: var(--brand-secondary);
 }
 
 .markdown-section a:hover {
   color: var(--brand-secondary);
+  text-decoration: none;
+}
+
+.markdown-section :is(h1, h2, h3, h4, h5, h6) a:hover {
+  text-decoration: underline;
 }
 
 .markdown-section code {
-  color: var(--brand-secondary);
+  color: var(--gray1);
   background-color: var(--white2);
+  border: 1px solid var(--light-border);
+  padding: 2px 6px;
+  border-radius: 0.25em;
 }
 
+.markdown-section pre {
+  border-radius: 8px;
+  padding: 0;
+}
 .markdown-section pre,
 .markdown-section pre > code {
   background-color: var(--white2);
@@ -67,6 +146,16 @@ body {
 
 .markdown-section pre > code {
   color: var(--gray1);
+  border: none;
+  box-shadow: none;
+  padding: 1.5rem;
+  font-size: 13px !important;
+  margin: 0;
+}
+
+.markdown-section code:not(pre code) {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* Tables */
@@ -92,16 +181,43 @@ body {
 /* Callouts */
 .markdown-section p.warn {
   background: var(--brand-primary-lighter);
-  border-radius: 4px;
+  color: var(--gray1);
+  border-radius: 8px;
+}
+.markdown-section p.warn code {
+  background-color: #f0dbe4;
 }
 
+/* !> block */
 .markdown-section p.tip {
-  border-left-color: var(--brand-primary);
-  background-color: var(--white2);
+  border-radius: 0.5rem;
+  border: none;
+  padding: 1rem 1rem 1rem 48px;
+  background-color: #f6e9fc;
+  color: var(--gray1);
+  margin: 1.2rem 0;
+}
+
+.markdown-section p.tip a,
+.markdown-section p.tip strong {
+  color: inherit;
+}
+
+.markdown-section p.tip code {
+  background-color: #eadcee;
 }
 
 .markdown-section p.tip:before {
-  background-color: var(--brand-primary);
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23865b98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' x2='12' y1='8' y2='12'/%3E%3Cline x1='12' x2='12.01' y1='16' y2='16'/%3E%3C/svg%3E");
+  color: #865b98;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  left: 1rem;
+  top: 18px;
+  width: 20px;
+  height: 20px;
+  content: '';
 }
 
 .markdown-section blockquote {
@@ -109,9 +225,17 @@ body {
 }
 
 /* Top navigation */
+.app-nav {
+  margin-top: 28px;
+}
+
 .app-nav a {
   color: var(--gray1);
   font-weight: 600;
+
+  @media (width > 1280px) {
+    font-size: 17.6px;
+  }
 }
 
 .app-nav a:hover,
@@ -121,10 +245,27 @@ body {
 
 .sidebar {
   border-right-color: var(--gray4);
+  scrollbar-gutter: stable;
+  padding-top: 1.5rem;
 }
 
 .app-name img {
-  max-width: 100px;
+  max-width: 4rem;
+}
+.sidebar > h1 {
+  margin: 0 1.5rem 1rem;
+  text-align: left;
+}
+
+.sidebar > h1 a {
+  color: var(--gray-900);
+  font-size: 1.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-title);
+  letter-spacing: -0.03em;
 }
 
 /* Sidebar navigation */
@@ -146,9 +287,9 @@ body {
 }
 
 .sidebar .sidebar-nav ul li a {
-  padding: 8px 0;
-  color: var(--gray1);
-  font-size: 15px;
+  padding: 7px 0;
+  color: var(--gray2);
+  font-size: 1rem;
   white-space: normal;
 }
 
@@ -169,7 +310,7 @@ body {
   font-family: var(--font-title);
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -188,7 +329,7 @@ body {
 
 .sidebar .sidebar-nav li.has-children > ul {
   display: none;
-  padding: 0 0 6px 16px;
+  padding: 0 0 6px 0;
 }
 
 .sidebar .sidebar-nav li.has-children.open > ul,
@@ -202,42 +343,118 @@ body {
 }
 
 .sidebar .sidebar-nav li.has-children > ul a {
-  padding: 5px 0;
+  padding: 5px 0 5px 14px;
   color: var(--gray2);
-  font-size: 14px;
+  font-size: 0.925rem;
+}
+
+.sidebar .sidebar-nav li.has-children > ul li.active a {
+  color: var(--brand-primary);
+  font-weight: 500;
+}
+
+.sidebar .sidebar-nav li.has-children > ul a:hover {
+  color: var(--brand-primary);
 }
 
 .sidebar-toggle-children {
   position: absolute;
   top: 4px;
   right: 0;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
+  border-radius: 8px;
+}
+
+.sidebar-toggle-children:hover {
+  background-color: var(--white2);
+}
+.sidebar-toggle-children:active {
+  background-color: var(--white3);
 }
 
 .sidebar-toggle-children:after {
   content: '';
   position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 6px;
-  height: 6px;
-  border-right: 1.5px solid var(--gray3);
-  border-bottom: 1.5px solid var(--gray3);
-  transform: rotate(-45deg);
-  transition: transform 0.15s ease;
+  inset: -3px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23505d6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 15px auto;
+  transition: transform 0.1s ease-out;
+  transform: rotate(0);
 }
 
 li.open > .sidebar-toggle-children:after,
 li.active > .sidebar-toggle-children:after,
 li:has(li.active) > .sidebar-toggle-children:after {
-  transform: rotate(45deg);
+  transform: rotate(90deg);
 }
 
 li.closed > .sidebar-toggle-children:after {
-  transform: rotate(-45deg);
+  transform: rotate(0);
+}
+
+/* Tables */
+.markdown-section table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.markdown-section table th,
+.markdown-section table td {
+  padding: 7px 14px;
+  border: 1px solid var(--white4);
+}
+
+.markdown-section thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--gray1);
+  background-color: var(--white2);
+  border-bottom: none;
+}
+
+.markdown-section table td {
+  vertical-align: top;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.markdown-section table th:not(:first-child),
+.markdown-section table td:not(:first-child) {
+  border-left: none;
+}
+
+.markdown-section table tr:not(:first-child) td {
+  border-top: none;
+}
+
+.markdown-section table tr:first-child th:first-child {
+  border-top-left-radius: 0.5rem;
+}
+.markdown-section table tr:first-child th:last-child {
+  border-top-right-radius: 0.5rem;
+}
+
+.markdown-section table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
+.markdown-section table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.markdown-section table tbody tr {
+  background-color: var(--bg) !important;
+}
+
+@media (width > 1200px) {
+  .markdown-section tr td:first-child code {
+    white-space: nowrap;
+  }
 }
