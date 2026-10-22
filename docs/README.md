@@ -113,6 +113,8 @@ Once the payment has been completed the client browser will return to the mercha
 
 #### Request
 
+!>**Note!** The transaction id needs to be sent on `checkout-transaction-id` header as well.
+
 See all available fields from [create payment request body section](#create-payment).
 
 ```json
@@ -242,7 +244,7 @@ The currently possible payment statuses are:
 
 Get transaction info. Payments are reported primarily via callbacks, and implementations should mainly rely on receiving the info via them. All received payments will be eventually reported.
 
-<b>Note!</b> The transaction id needs to be sent on checkout-transaction-id header as well.
+!> <b>Note!</b> When charging an existing `hold`, the transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 #### Response
 
@@ -277,6 +279,8 @@ See [example response](/examples#get) from examples tab.
 `HTTP POST /payments/{transactionId}/refund` refunds a payment by transaction ID.
 
 #### Request
+
+!>**Note!** The transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 See detailed description from [refund payment request body section](#refund-payment).
 
@@ -789,6 +793,8 @@ When creating CIT authorization holds or direct charges the payment might need a
 | --------------- | ------ | --------------------------------------- |
 | transactionId   | string | Assigned transaction ID for the payment |
 | threeDSecureUrl | string | 3DS redirect URL                        |
+
+!> **Callback URLs are not called.** The HTTP response is the only confirmation of the result, so store the `transactionId` and the status from the response.
 
 If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
