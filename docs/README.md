@@ -1190,6 +1190,8 @@ General API HTTP status codes and what to expect of them.
 | 404  | Not Found            | The requested resource doesn't exist.                                       |
 | 422  | Unprocessable Entity | The requested method is not supported.                                      |
 
+For a full list of HTTP responses and error messages, see [HTTP responses](/examples?id=http-responses) on the Examples page.
+
 ## Payloads
 
 ### Create payment
