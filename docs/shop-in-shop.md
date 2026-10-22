@@ -64,4 +64,4 @@ Authenticate as the `aggregate` merchant in the `headers` and specify in the bod
 
 Sub-merchant accounts can be created through the [Paytrail Partner portal](https://partner.paytrail.com/).
 
-For automated or programmatic onboarding, sub-merchants can also be created via the [Reseller API](/#reseller-api)
+For automated or programmatic onboarding, sub-merchants can also be created via the [Reseller API](/reseller-api?id=reseller-api).
