@@ -24,12 +24,17 @@
   <body>
 
     <script>
-      const storedTheme = localStorage.getItem('site-theme');
+      let storedTheme = null;
+       try {
+        storedTheme = localStorage.getItem('site-theme');
+      } catch (e) {
+        console.warn('Theme preference could not be read from localStorage', e);
+      }
       const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      const theme = storedTheme ?? defaultTheme;
+      const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : defaultTheme;
       document.documentElement.setAttribute('data-theme', theme);
 
-      const metaThemeColor = theme === 'light' ? '#fff' : '#15151f'
+      const metaThemeColor = theme === 'light' ? '#fff' : '#15151f';
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', metaThemeColor);
     </script>
 

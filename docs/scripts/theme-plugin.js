@@ -18,11 +18,16 @@
       const html = document.documentElement;
       const nextTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('site-theme', nextTheme);
 
       const metaThemeColor = nextTheme === 'light' ? '#fff' : '#15151f';
       const themeColorEl = document.querySelector('meta[name="theme-color"]');
-      if (themeColorEl) document.querySelector('meta[name="theme-color"]').setAttribute('content', metaThemeColor);
+      if (themeColorEl) themeColorEl.setAttribute('content', metaThemeColor);
+
+      try {
+        localStorage.setItem('site-theme', nextTheme);
+      } catch (e) {
+        console.warn('Theme preference could not be saved to localStorage', e);
+      }
     }
 
     themeBtn.addEventListener('click', toggleTheme);
