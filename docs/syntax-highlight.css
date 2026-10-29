@@ -1,0 +1,155 @@
+:root {
+  --color-code: #4c4f69;
+  --color-keyword: #8839ef;
+  --color-builtin: #d20f39;
+  --color-class-name: #996000;
+  --color-function: #2966df;
+  --color-boolean-number: #c64901;
+  --color-string-char: #389523;
+  --color-symbol: #996000;
+  --color-regex: #a33b83;
+  --color-annotation: #a33b83;
+  --color-url: #389523;
+  --color-operator: #393a34;
+  --color-variable: #4c4f69;
+  --color-constant: #c64901;
+  --color-property: #2966df;
+  --color-punctuation: #62667b;
+  --color-important: #8839ef;
+  --color-comment: #62667b;
+  --color-tag: #2966df;
+  --color-attr-name: #996000;
+  --color-attr-value: #389523;
+  --color-namespace: #996000;
+  --color-prolog-doctype: #8839ef;
+  --color-cdata: #08747b;
+  --color-entity: #d20f39;
+  --color-atrule: #8839ef;
+  --color-selector: #996000;
+  --color-deleted: #d20f39;
+  --color-inserted: #389523;
+}
+
+[data-theme='dark'] {
+  --color-code: #e3dff4;
+  --color-keyword: #cba6f7;
+  --color-builtin: #f38ba8;
+  --color-class-name: #f9e2af;
+  --color-function: #89b4fa;
+  --color-boolean-number: #fab387;
+  --color-string-char: #a6e3a1;
+  --color-symbol: #f9e2af;
+  --color-regex: #f5c2e7;
+  --color-annotation: #f5c2e7;
+  --color-url: #a6e3a1;
+  --color-operator: #89dceb;
+  --color-variable: #e3dff4;
+  --color-constant: #fab387;
+  --color-property: #89b4fa;
+  --color-punctuation: #9399b2;
+  --color-important: #cba6f7;
+  --color-comment: #9399b2;
+  --color-tag: #89b4fa;
+  --color-attr-name: #f9e2af;
+  --color-attr-value: #a6e3a1;
+  --color-namespace: #f9e2af;
+  --color-prolog-doctype: #cba6f7;
+  --color-cdata: #94e2d5;
+  --color-entity: #f38ba8;
+  --color-atrule: #cba6f7;
+  --color-selector: #f9e2af;
+  --color-deleted: #f38ba8;
+  --color-inserted: #a6e3a1;
+}
+
+pre[data-lang] code {
+  color: var(--color-code);
+}
+.token.keyword {
+  color: var(--color-keyword);
+}
+.token.builtin {
+  color: var(--color-builtin);
+}
+.token.class-name {
+  color: var(--color-class-name);
+}
+.token.function {
+  color: var(--color-function);
+}
+.token.boolean,
+.token.number {
+  color: var(--color-boolean-number);
+}
+.token.string,
+.token.char {
+  color: var(--color-string-char);
+}
+.token.symbol {
+  color: var(--color-symbol);
+}
+.token.regex {
+  color: var(--color-regex);
+}
+.token.url {
+  color: var(--color-url);
+}
+.token.operator {
+  color: var(--color-operator);
+}
+.token.variable {
+  color: var(--color-variable);
+}
+.token.constant {
+  color: var(--color-constant);
+}
+.token.property {
+  color: var(--color-property);
+}
+.token.punctuation {
+  color: var(--color-punctuation);
+}
+.token.annotation {
+  color: var(--color-annotation);
+}
+.token.important {
+  color: var(--color-important);
+}
+.token.comment {
+  color: var(--color-comment);
+}
+.token.tag {
+  color: var(--color-tag);
+}
+.token.attr-name {
+  color: var(--color-attr-name);
+}
+.token.attr-value {
+  color: var(--color-attr-value);
+}
+.token.namespace {
+  color: var(--color-namespace);
+  opacity: 1;
+}
+.token.prolog,
+.token.doctype {
+  color: var(--color-prolog-doctype);
+}
+.token.cdata {
+  color: var(--color-cdata);
+}
+.token.entity {
+  color: var(--color-entity);
+}
+.token.atrule {
+  color: var(--color-atrule);
+}
+.token.selector {
+  color: var(--color-selector);
+}
+.token.deleted {
+  color: var(--color-deleted);
+}
+.token.inserted {
+  color: var(--color-inserted);
+}
