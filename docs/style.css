@@ -901,6 +901,7 @@ li.closed > .sidebar-toggle-children:after {
   position: absolute;
   pointer-events: none;
   inset: 0;
+  visibility: hidden;
 }
 
 [data-theme='dark'] .mermaid-dark {
