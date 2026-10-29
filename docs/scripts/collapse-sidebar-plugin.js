@@ -5,6 +5,8 @@
     pagesWithOpenSidebarGroups: [],
   };
 
+  let anchorScrollFrame = null;
+
   function isExpanded(li) {
     if (li.classList.contains('closed')) return false;
     if (li.classList.contains('soft-open')) {
@@ -45,6 +47,78 @@
       event.stopPropagation();
       return;
     }
+  }
+
+  // Fix scroll when clicking anchor link that is on URL
+  //
+  // When url has /#/?id=example and user scrolls away and then clicks Example from sidebar
+  // default docsify behavior doesn't scroll anymore
+  function handleSidebarClickForCurrentAnchorScroll(event, configTopMargin) {
+    if (event.defaultPrevented) return;
+    if (!(event.target instanceof Element)) return;
+
+    // Preserve opening links in another tab/window.
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const link = event.target.closest('a.section-link');
+    if (!link || link.target === '_blank') return;
+
+    const url = new URL(link.href);
+
+    // Changed URLs are handled normally by Docsify.
+    if (url.href !== window.location.href) return;
+
+    const queryStart = url.hash.indexOf('?');
+    if (queryStart === -1) return;
+
+    const params = new URLSearchParams(url.hash.slice(queryStart + 1));
+    const id = params.get('id');
+    const heading = id && document.getElementById(id);
+    if (!heading) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Preserve the normal mobile behavior after selecting a section.
+    if (window.innerWidth <= 600) {
+      document.body.classList.remove('close');
+    }
+
+    const topMargin = Number(configTopMargin) || 0;
+    const top = heading.getBoundingClientRect().top + window.scrollY - topMargin;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (anchorScrollFrame !== null) {
+      cancelAnimationFrame(anchorScrollFrame);
+      anchorScrollFrame = null;
+    }
+
+    const targetTop = Math.max(0, top);
+    if (reduceMotion) {
+      window.scrollTo({ top: targetTop, behavior: 'instant' });
+      return;
+    }
+
+    const startTop = window.scrollY;
+    const startTime = performance.now();
+    const duration = 200;
+
+    function animateScroll(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+      window.scrollTo({
+        top: startTop + (targetTop - startTop) * easedProgress,
+        behavior: 'instant',
+      });
+
+      anchorScrollFrame = progress < 1 ? requestAnimationFrame(animateScroll) : null;
+    }
+
+    anchorScrollFrame = requestAnimationFrame(animateScroll);
   }
 
   const install = function (hook, vm) {
@@ -195,6 +269,9 @@
       if (!sidebar) return;
 
       sidebar.addEventListener('click', handleSidebarClickForMobile);
+      sidebar.addEventListener('click', function (event) {
+        handleSidebarClickForCurrentAnchorScroll(event, vm.config.topMargin);
+      });
     });
   };
 
