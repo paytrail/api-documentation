@@ -12,21 +12,25 @@
     <link rel="icon" href="/images/favicon.ico" sizes="any">
 
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&amp;family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
-      rel="stylesheet"
-    />
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css" />
 
     <link rel="stylesheet" href="./style.css" />
   </head>
+
   <body>
-    <nav>
+
+
+
+    <nav class="main-nav">
       <a href="#/">Home</a>
       <a href="#/examples">Examples</a>
       <a href="#/payment-method-providers">Providers</a>
       <a href="#/shop-in-shop">Shop-in-Shop Guidelines</a>
       <a href="#/reseller-api">Reseller API</a>
     </nav>
+
     <div id="app"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
@@ -52,89 +56,46 @@
         },
       });
 
-      // Section labels shown above top-level sidebar items, keyed by page route.
-      // Each group starts at the heading with the given id and runs until the next group.
-      var sidebarGroups = {
-        '/': [
-          { label: 'Getting started', start: 'api-endpoint' },
-          { label: 'Payments', start: 'payments' },
-          { label: 'Payment methods', start: 'apple-pay' },
-          { label: 'Reports & settlements', start: 'payment-reports' },
-          { label: 'Reference', start: 'merchants' },
-        ],
-      };
-
-      // Restructures the auto-generated sidebar: hides the page title, nests sub-items
-      // inside their parent so they can be collapsed, and adds group labels.
-      function sidebarNavPlugin(hook, vm) {
-        hook.doneEach(function () {
-          var root = document.querySelector('.sidebar-nav > ul');
-          if (!root || root.dataset.enhanced) {
-            return;
-          }
-          root.dataset.enhanced = 'true';
-
-          // A single page title (h1) wrapping everything is redundant in the sidebar
-          var title = root.firstElementChild;
-          var titleChildren = title && title.nextElementSibling;
-          if (root.children.length === 2 && titleChildren && titleChildren.tagName === 'UL') {
-            while (titleChildren.firstChild) {
-              root.appendChild(titleChildren.firstChild);
-            }
-            title.remove();
-            titleChildren.remove();
-          }
-
-          Array.prototype.slice.call(root.children).forEach(function (li) {
-            var children = li.nextElementSibling;
-            if (li.tagName !== 'LI' || !children || children.tagName !== 'UL') {
-              return;
-            }
-            li.classList.add('has-children');
-            li.appendChild(children);
-
-            var toggle = document.createElement('button');
-            toggle.className = 'sidebar-toggle-children';
-            toggle.setAttribute('aria-label', 'Toggle ' + li.firstElementChild.textContent);
-            toggle.addEventListener('click', function () {
-              var expanded = isExpanded(li);
-              li.classList.toggle('open', !expanded);
-              li.classList.toggle('closed', expanded);
-            });
-            li.insertBefore(toggle, children);
-
-            li.firstElementChild.addEventListener('click', function () {
-              li.classList.remove('closed');
-              li.classList.add('open');
-            });
-          });
-
-          (sidebarGroups[vm.route.path] || []).forEach(function (group) {
-            var link = root.querySelector(':scope > li > a[href$="?id=' + group.start + '"]');
-            if (!link) {
-              return;
-            }
-            var label = document.createElement('li');
-            label.className = 'sidebar-group-label';
-            label.textContent = group.label;
-            root.insertBefore(label, link.parentNode);
-          });
-        });
-
-        function isExpanded(li) {
-          return getComputedStyle(li.querySelector(':scope > ul')).display !== 'none';
-        }
-      }
-
       window.$docsify = {
-        name: '',
         repo: 'paytrail/api-documentation',
         maxLevel: 3,
         subMaxLevel: 3,
         themeColor: '#e60094',
-        name: 'Paytrail Payment API',
         name: '<img src="/images/paytrail-logo.svg" />API Docs',
-        plugins: [sidebarNavPlugin],
+        loadNavbar: true,
+        loadSidebar: true,
+        mergeNavbar: false,
+        auto2top: true,
+        topMargin: window.innerWidth <= 768 ? 60 : 16,
+        mobileHeader: {
+          appName: 'API Docs',
+          logo: '/images/paytrail-without-text.svg',
+        },
+        collapseSidebar: {
+          // Renders group labels in sidebar before certain links
+          sidebarGroups: {
+            '/': [
+              { label: 'Getting started', start: 'api-endpoint' },
+              { label: 'Payments', start: 'payments' },
+              { label: 'Payment methods', start: 'apple-pay' },
+              { label: 'Reports & settlements', start: 'payment-reports' },
+              { label: 'Reference', start: 'merchants' },
+            ],
+          },
+
+          // Renders sidebar titles - visible only on desktop
+          sidebarTitles: {
+            '/examples': 'Examples',
+            '/payment-method-providers': 'Providers',
+            '/shop-in-shop': 'Shop-in-Shop',
+            '/reseller-api': 'Reseller API',
+          },
+
+          // These pages have sidebar toggles open by default
+          pagesWithOpenSidebarGroups: [
+            // '/examples',
+          ]
+        },
 
         markdown: {
           renderer: {
@@ -148,5 +109,7 @@
         },
       };
     </script>
+    <script src="./scripts/collapse-sidebar-plugin.js"></script>
+    <script src="./scripts/mobile-header-plugin.js"></script>
   </body>
 </html>
