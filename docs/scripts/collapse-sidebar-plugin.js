@@ -154,11 +154,13 @@
         toggle.className = 'sidebar-toggle-children';
         toggle.setAttribute('aria-label', 'Toggle ' + li.querySelector(':scope > a').textContent);
 
+        const syncExpanded = () => toggle.setAttribute('aria-expanded', String(isExpanded(li)));
+
         if (renderOpen) {
           li.classList.add('open');
           li.classList.remove('closed');
-          toggle.setAttribute('aria-expanded', 'true');
         }
+        syncExpanded();
 
         toggle.addEventListener('click', function (event) {
           event.preventDefault();
@@ -169,7 +171,7 @@
           li.classList.remove('soft-open');
           li.classList.toggle('open', !expanded);
           li.classList.toggle('closed', expanded);
-          toggle.setAttribute('aria-expanded', String(!expanded));
+          syncExpanded();
         });
 
         li.insertBefore(toggle, children);
@@ -194,7 +196,7 @@
 
           li.classList.toggle('soft-open', !shouldClose);
           li.classList.remove('open');
-          li.classList.remove('closed');
+          syncExpanded();
         });
       });
 
