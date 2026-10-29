@@ -77,7 +77,6 @@ html {
 
 html[data-theme='dark'] {
   color-scheme: dark;
-  scrollbar-color: #585266 transparent;
 }
 
 body {
