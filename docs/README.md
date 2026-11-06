@@ -244,7 +244,7 @@ The currently possible payment statuses are:
 
 Get transaction info. Payments are reported primarily via callbacks, and implementations should mainly rely on receiving the info via them. All received payments will be eventually reported.
 
-!> <b>Note!</b> When charging an existing `hold`, the transaction id needs to be sent on `checkout-transaction-id` header as well.
+!> <b>Note!</b> The transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 #### Response
 
