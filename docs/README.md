@@ -786,14 +786,12 @@ The commit request body schema is the same as the one used for [create payment r
 
 If authorization hold or charge is successful, `HTTP 201` and the `transactionId` of the payment is returned.
 
-When creating CIT authorization holds or direct charges the payment might need a 3DS step-up. In these cases `HTTP 403` along with the `transactionId` and `threeDSecureUrl` is returned. When this happens, the merchant must redirect user to the given `threeDSecureUrl` for secure authorization and further redirect. See documentation [here](#customer-initiated-transactions-cit).
+When creating CIT authorization holds or direct charges the payment might need a 3DS step-up. In these cases `HTTP 403` along with the `transactionId` and `threeDSecureUrl` is returned. When this happens, the merchant must redirect user to the given `threeDSecureUrl` for secure authorization. After authentication, the customer is redirected to your redirect URLs, and your callback URLs are called if they were provided in the request. See documentation [here](#customer-initiated-transactions-cit).
 
 | field           | type   | description                             |
 | --------------- | ------ | --------------------------------------- |
 | transactionId   | string | Assigned transaction ID for the payment |
 | threeDSecureUrl | string | 3DS redirect URL                        |
-
-!> **Callback URLs are not called.** The HTTP response is the only confirmation of the result, so store the `transactionId` and the status from the response.
 
 If authorization hold or charge fails, `HTTP 400` and additional `acquirerResponseCode` and `acquirerResponseCodeDescription` are returned if available.
 
@@ -803,6 +801,8 @@ If authorization hold or charge fails, `HTTP 400` and additional `acquirerRespon
 | status                          | string | Always "error"                                                |
 | acquirerResponseCode            | string | Acquirer response code or empty                               |
 | acquirerResponseCodeDescription | string | Meaningful description of the acquirer response code or empty |
+
+!> **Callback URLs are not called** if the request returns `HTTP 201` (success) or `HTTP 400` (failure).
 
 ##### Retrying failed payments
 
