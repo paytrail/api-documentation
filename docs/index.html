@@ -4,28 +4,82 @@
     <meta charset="UTF-8" />
     <title>Paytrail Payment API</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="Description" />
+    <meta name="description" content="Paytrail API documentation for developers." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <meta name="theme-color" content="#fff" />
+    <meta property="og:image" content="https://docs.paytrail.com/images/paytrail-api-documentation.png">
     <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
     <link rel="icon" href="/images/favicon.ico" sizes="any">
 
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&amp;family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
-      rel="stylesheet"
-    />
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css" />
 
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./syntax-highlight.css" />
   </head>
+
   <body>
-    <nav>
+
+    <script>
+      let storedTheme = null;
+       try {
+        storedTheme = localStorage.getItem('site-theme');
+      } catch (e) {
+        console.warn('Theme preference could not be read from localStorage', e);
+      }
+      const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : defaultTheme;
+      document.documentElement.setAttribute('data-theme', theme);
+
+      const metaThemeColor = theme === 'light' ? '#fff' : '#15151f';
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', metaThemeColor);
+    </script>
+
+
+    <nav class="main-nav">
       <a href="#/">Home</a>
       <a href="#/examples">Examples</a>
       <a href="#/payment-method-providers">Providers</a>
       <a href="#/shop-in-shop">Shop-in-Shop Guidelines</a>
       <a href="#/reseller-api">Reseller API</a>
     </nav>
+
+    <div class="site-actions">
+      <div class="tooltip-wrapper">
+        <button id="theme-switcher" class="site-action-btn btn-with-tooltip" aria-label="Toggle theme"
+          aria-describedby="theme-tip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dark-mode"
+            aria-hidden="true">
+            <path
+              d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="light-mode"
+            aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </button>
+        <div class="tooltip" role="tooltip" id="theme-tip">
+          <span class="tooltip-text">Toggle theme</span>
+          <span class="shortcut">
+            <kbd>T</kbd>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <div id="app"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
@@ -40,106 +94,99 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
     <script>
       var num = 0;
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: 'base',
-        themeVariables: { primaryColor: '#f7f7f8', primaryBorderColor: '#e4e4e5', noteBkgColor: '#ffe7f2' },
 
-        sequence: {
-          useMaxWidth: true,
-          fontFamily: '"Source Sans 3", Helvetica, Arial, sans-serif',
-        },
-      });
 
-      // Section labels shown above top-level sidebar items, keyed by page route.
-      // Each group starts at the heading with the given id and runs until the next group.
-      var sidebarGroups = {
-        '/': [
-          { label: 'Getting started', start: 'api-endpoint' },
-          { label: 'Payments', start: 'payments' },
-          { label: 'Payment methods', start: 'apple-pay' },
-          { label: 'Reports & settlements', start: 'payment-reports' },
-          { label: 'Reference', start: 'merchants' },
-        ],
-      };
-
-      // Restructures the auto-generated sidebar: hides the page title, nests sub-items
-      // inside their parent so they can be collapsed, and adds group labels.
-      function sidebarNavPlugin(hook, vm) {
-        hook.doneEach(function () {
-          var root = document.querySelector('.sidebar-nav > ul');
-          if (!root || root.dataset.enhanced) {
-            return;
-          }
-          root.dataset.enhanced = 'true';
-
-          // A single page title (h1) wrapping everything is redundant in the sidebar
-          var title = root.firstElementChild;
-          var titleChildren = title && title.nextElementSibling;
-          if (root.children.length === 2 && titleChildren && titleChildren.tagName === 'UL') {
-            while (titleChildren.firstChild) {
-              root.appendChild(titleChildren.firstChild);
-            }
-            title.remove();
-            titleChildren.remove();
-          }
-
-          Array.prototype.slice.call(root.children).forEach(function (li) {
-            var children = li.nextElementSibling;
-            if (li.tagName !== 'LI' || !children || children.tagName !== 'UL') {
-              return;
-            }
-            li.classList.add('has-children');
-            li.appendChild(children);
-
-            var toggle = document.createElement('button');
-            toggle.className = 'sidebar-toggle-children';
-            toggle.setAttribute('aria-label', 'Toggle ' + li.firstElementChild.textContent);
-            toggle.addEventListener('click', function () {
-              var expanded = isExpanded(li);
-              li.classList.toggle('open', !expanded);
-              li.classList.toggle('closed', expanded);
-            });
-            li.insertBefore(toggle, children);
-
-            li.firstElementChild.addEventListener('click', function () {
-              li.classList.remove('closed');
-              li.classList.add('open');
-            });
-          });
-
-          (sidebarGroups[vm.route.path] || []).forEach(function (group) {
-            var link = root.querySelector(':scope > li > a[href$="?id=' + group.start + '"]');
-            if (!link) {
-              return;
-            }
-            var label = document.createElement('li');
-            label.className = 'sidebar-group-label';
-            label.textContent = group.label;
-            root.insertBefore(label, link.parentNode);
-          });
+      function initMermaid(theme) {
+        const isDark = theme === 'dark'
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark ? 'dark' : 'base',
+          themeVariables: {
+            mainBkg: isDark ? '#2B2639' : '#F7F7F8',
+            primaryColor: isDark ? '#26262f' : '#f0f0f1',
+            noteBkgColor: isDark ? '#52315b' : '#ECF8F4',
+            noteBorderColor: isDark ? '#604976' : '#c9d7d2',
+            noteTextColor: isDark ? '#f3e9f6' : '#334242',
+            primaryBorderColor: isDark ? '#36363e' : '#e4e4e5',
+            lineColor: isDark ? '#e7dfec' : '#333333',
+            border1: isDark ? "#d9c5e9" : '#333333',
+          },
+          sequence: {
+            useMaxWidth: true,
+            fontFamily: '"Source Sans 3", Helvetica, Arial, sans-serif',
+            messageMargin: 20,
+            height: 40,
+          },
         });
+      }
+      function renderMermaidThemeVariations(code) {
+        num = num + 1;
 
-        function isExpanded(li) {
-          return getComputedStyle(li.querySelector(':scope > ul')).display !== 'none';
-        }
+        initMermaid('light');
+        const lightSvg = mermaid.render('mermaid-svg-light-' + num, code);
+
+        initMermaid('dark');
+        const darkSvg = mermaid.render('mermaid-svg-dark-' + num, code);
+
+        return { lightSvg, darkSvg };
       }
 
+
       window.$docsify = {
-        name: '',
         repo: 'paytrail/api-documentation',
         maxLevel: 3,
         subMaxLevel: 3,
         themeColor: '#e60094',
-        name: 'Paytrail Payment API',
         name: '<img src="/images/paytrail-logo.svg" />API Docs',
-        plugins: [sidebarNavPlugin],
+        loadNavbar: true,
+        loadSidebar: true,
+        mergeNavbar: false,
+        auto2top: true,
+        topMargin: window.innerWidth <= 768 ? 60 : 16,
+        mobileHeader: {
+          appName: 'API Docs',
+          logo: '/images/paytrail-without-text.svg',
+        },
+        collapseSidebar: {
+          // Renders group labels in sidebar before certain links
+          sidebarGroups: {
+            '/': [
+              { label: 'Getting started', start: 'api-endpoint' },
+              { label: 'Payments', start: 'payments' },
+              { label: 'Payment methods', start: 'apple-pay' },
+              { label: 'Reports & settlements', start: 'payment-reports' },
+              { label: 'Reference', start: 'merchants' },
+            ],
+          },
+
+          // Renders sidebar titles - visible only on desktop
+          sidebarTitles: {
+            '/examples': 'Examples',
+            '/payment-method-providers': 'Providers',
+            '/shop-in-shop': 'Shop-in-Shop',
+            '/reseller-api': 'Reseller API',
+          },
+
+          // These pages have sidebar toggles open by default
+          pagesWithOpenSidebarGroups: [
+            // '/examples',
+          ]
+        },
 
         markdown: {
           renderer: {
             code: function (code, lang) {
               if (lang === 'mermaid') {
-                return '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + '</div>';
+                const results = renderMermaidThemeVariations(code);
+                const darkSvg = results.darkSvg;
+                const lightSvg = results.lightSvg;
+
+                return [
+                  '<div class="mermaid-wrapper">',
+                  '<div class="mermaid-dark">' + darkSvg + '</div>',
+                  '<div class="mermaid-light">' + lightSvg + '</div>',
+                  '</div>',
+                ].join('');
               }
               return this.origin.code.apply(this, arguments);
             },
@@ -147,5 +194,8 @@
         },
       };
     </script>
+    <script src="./scripts/theme-plugin.js"></script>
+    <script src="./scripts/collapse-sidebar-plugin.js"></script>
+    <script src="./scripts/mobile-header-plugin.js"></script>
   </body>
 </html>
