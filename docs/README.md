@@ -773,7 +773,7 @@ The MIT transactions are exempt from the strong customer authentication requirem
 
 If creating an authorization hold, the payment needs to be committed later with a request to the [Commit API](#commit-authorization-hold). The authorization is valid for a maximum of 7 days.
 
-<b>Note!</b> The transaction id needs to be sent on checkout-transaction-id header as well.
+!>**Note!** When charging an existing `hold` the transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 ##### Request
 
