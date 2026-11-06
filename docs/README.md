@@ -113,7 +113,6 @@ Once the payment has been completed the client browser will return to the mercha
 
 #### Request
 
-!>**Note!** The transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 See all available fields from [create payment request body section](#create-payment).
 
