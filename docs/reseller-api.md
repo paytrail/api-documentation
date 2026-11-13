@@ -22,34 +22,36 @@ Creates a new merchant. The same endpoint is used both for **normal merchants** 
 
 | Field | Type | Required | Description |
 |---|---|:---:|---|
-| `companyName` | string | X | Registered company name. |
-| `marketingName` | string | X | Public-facing / marketing name. |
-| `streetAddress` | string | X | Company street address. |
-| `postalCode` | string | X | Company postal code. |
-| `city` | string | X | Company city. |
-| `packageId` | string | X | Package to assign. See: [Listing available packages](#listing-available-packages). |
-| `vatId` | string | X | Business ID / VAT number. |
-| `contactDetails` | object | X | Contact person's details. See [contactDetails](#contactdetails). |
-| `ecommerce` | object | X | Webstore details. See [ecommerce](#ecommerce). |
-| `merchantType` | string | X | `NORMAL` or `SUB`. |
+| `companyName` | string | x | Registered company name. |
+| `marketingName` | string | x | Public-facing / marketing name. |
+| `streetAddress` | string | x | Company street address. |
+| `postalCode` | string | x | Company postal code. |
+| `city` | string | x | Company city. |
+| `packageId` | string | x | Package to assign. See: [Listing available packages](#listing-available-packages). |
+| `vatId` | string | x | Business ID / VAT number. |
+| `contactDetails` | object | x | Contact person's details. See [contactDetails](#contactdetails). |
+| `ecommerce` | object | x | Webstore details. See [ecommerce](#ecommerce). |
+| `merchantType` | string | x | `NORMAL` or `SUB`. |
 | `aggregateId` | integer | | The `merchantId` of the `aggregate` this sub-merchant belongs to. **Note**: Required only when `merchantType` is `SUB`. |
 
 #### contactDetails
 
 | Field | Type | Required | Description |
 |---|---|:---:|---|
-| `email` | string | X | Contact person's email. |
-| `streetAddress` | string | X | Contact person's address. |
-| `postalCode` | string | X | Contact person's postal code. |
-| `city` | string | X | Contact person's city. |
-| `phoneNumber` | string | X | Contact person's phone number. |
+| `email` | string | x | Contact person's email. |
+| `streetAddress` | string | x | Contact person's address. |
+| `postalCode` | string | x | Contact person's postal code. |
+| `city` | string | x | Contact person's city. |
+| `phoneNumber` | string | x | Contact person's phone number. |
+| `firstName` | string | | Contact person's first name. Maximum 50 characters. |
+| `lastName` | string | | Contact person's last name. Maximum 50 characters. |
 
 #### ecommerce
 
 | Field | Type | Required | Description |
 |---|---|:---:|---|
-| `url` | string | X | Webstore or marketplace URL. |
-| `description` | string | X | Short description of the store. |
+| `url` | string | x | Webstore or marketplace URL. |
+| `description` | string | x | Short description of the store. |
 ### Examples
 
 **Normal merchant**
