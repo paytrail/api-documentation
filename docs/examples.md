@@ -1398,3 +1398,161 @@ const responseToHtml = (response) =>
     )
     .join('\n');
 ```
+## HTTP responses
+
+The HTTP status codes the API returns, and the error messages for each error status code.
+
+!>Error messages may change over time, so handle errors based on the HTTP status code and use the message only for logging and troubleshooting.
+
+### Successful responses
+
+| Code | Text | Description |
+| --- | --- | --- |
+| 200 | OK | The request succeeded. Returned e.g. when fetching a payment, payment methods, settlements or reports. |
+| 201 | Created | A payment, refund, token payment or authorization hold was created successfully. |
+| 202 | Accepted | The request was accepted, but the result is not final yet. For example, a Klarna order cancellation is pending, and the final result is sent to the callback URL. |
+
+### 400 Bad Request
+
+#### Creating a payment
+
+| Message | Explanation |
+| --- | --- |
+| `Request payload schema validation failed. Validate request against the provided schema.` | The request body doesn't match the API schema, e.g. a required field is missing or has the wrong type. |
+| `Payload is required` | The request has no body. |
+| `Sum of purchase item amounts does not match total amount.` | The sum of the `items` amounts doesn't equal the `amount` field. |
+| `All redirect and callback URLs must use https. IPs are not allowed in callback URLs.` | Redirect and callback URLs must use HTTPS, and callback URLs can't be IP addresses. Test accounts have some exceptions. |
+| `All items must have stamps` | In a Shop-in-Shop payment, every item needs a `stamp`. |
+| `Stamps not unique` | The item `stamp` values aren't unique. |
+| `Commission amount exceeds item total amount` | An item's commission is larger than the item's total amount. |
+| `Invalid merchant IDs in items` | An item contains a sub-merchant ID that doesn't belong to the caller's Shop-in-Shop account. |
+| `Invalid delivery dates given` | The item delivery dates are invalid. |
+| `Given reference did not pass Finnish reference number validation.` | `reference` isn't a valid Finnish reference number. This is required when the merchant uses custom references or per-transaction settlements. |
+| `Negative item prices not allowed.` | An item has a negative price. |
+| `Sub-merchant not allowed to create refunds or payments` | A Shop-in-Shop sub-merchant tried to create a payment or refund with its own credentials. The call must be made with the aggregate merchant's credentials. |
+| `Invalid submerchant ID or a submerchant is not active` | The sub-merchant ID is wrong, or the sub-merchant isn't active. |
+| `Invalid commission merchant. Commission merchant must be one of SiS merchant accounts` | The commission recipient isn't part of the Shop-in-Shop account. |
+
+#### Refunds
+
+| Message | Explanation |
+| --- | --- |
+| `Transaction not paid` | The payment hasn't been paid, so it can't be refunded. |
+| `No payload defined` | The refund request has no body. |
+| `Schema validation failed` | The refund request doesn't match the schema. |
+| `Transaction with type X and status Y cannot be refunded` | The payment's type or status doesn't allow a refund. |
+| `Refund amount exceeds the remaining refund balance` | The refund amount is larger than the part of the payment that hasn't been refunded yet. |
+| `Not enough balance on account X` / `Not enough balance on account` | The merchant's account doesn't have enough balance for the refund. |
+| `Balance undefined` | The merchant's balance couldn't be determined for the refund. |
+| `Forbidden to make refunds when own contract bank account is used in original trade payment` | The original payment used the merchant's own contract, so it can't be refunded through Paytrail. |
+| `Commission amount missing and no default commission in original payment for stamps …` | A Shop-in-Shop refund is missing the commission, and the original payment has no default commission. |
+| `Matching item could not be found` | The refund item's stamp isn't found in the original payment. |
+| `Error: attempted to refund trade's X non-existing / negative amount item with stamp Y` | The refund targets an item that doesn't exist in the original payment or has a negative amount. |
+| `Refund item amount must be positive` | A refund item has a zero or negative amount. |
+| `Request payload validation failed.` | The refund failed validation when it was saved. Example: the original payment has no reference and the request has no `refundReference`. |
+| `API refund failed and provider does not support email refunds.` | The provider's refund API failed, and the provider doesn't support falling back to an email refund. |
+| `API refund failed and no email address was given, cannot do fallback.` | The provider's refund API failed, and the request had no `email` for an email refund fallback. |
+| `Trade found, but is not waiting for approval.` | The refund being approved isn't waiting for approval. |
+| `Refund already processed` | The email refund has already been processed. |
+| `Not a refund trade` | The transaction isn't a refund. |
+| `Transaction is not of type email refund` | The transaction isn't an email refund. |
+
+#### Token payments
+
+| Message | Explanation |
+| --- | --- |
+| `Failed to create token payment.` | The token charge was declined. The response includes `acquirerResponseCode` and `acquirerResponseCodeDescription`. |
+| `Failed to create authorization hold on card.` | The authorization hold on the card failed. |
+| `Token is required` | The token payment request is missing `token`. |
+| `Invalid tokenization id` | The tokenization ID is invalid. |
+| `Invalid merchant id` | The merchant ID in the token request is invalid. |
+| `Trade is already cancelled, cannot commit.` | The authorization hold has already been reverted, so it can't be committed. |
+| `Trade is not an authorization hold, cannot commit.` | The payment being committed isn't an authorization hold. |
+| `Trade is already paid, cannot cancel.` | The payment has already been charged, so the authorization hold can't be reverted. |
+| `Trade is not an authorization hold, cannot cancel.` | The payment being reverted isn't an authorization hold. |
+| `Callback urls are required` | The token request is missing callback URLs. |
+| `Missing or invalid redirect url` | The redirect URL for adding a card is missing or invalid. |
+
+#### Invoices and Klarna
+
+| Message | Explanation |
+| --- | --- |
+| `Provider does not support manual invoice activation` | `capture-order` was called for a provider that doesn't support manual invoice activation. |
+| `Payment has already been accepted and cannot be cancelled.` | `cancel-order` was called after the payment was already accepted. |
+| `Klarna is not enabled for this merchant` | Klarna isn't activated for the merchant. |
+| `Transaction is not in a … state` | The Klarna Express transaction isn't in the state the operation requires. |
+| `Missing payment reference` | The Klarna Express transaction is missing its payment reference. |
+| `Capture failed` | The Klarna Express capture failed. |
+| `Cancel failed` | The Klarna Express cancellation failed. |
+
+#### Payment reports and settlements
+
+| Message | Explanation |
+| --- | --- |
+| `Limit must be a number between 1 and …` | The `limit` parameter is out of range. |
+| `Start date cannot be later than now.` | The start date is in the future. |
+| `Start date is too old.` | The start date is earlier than allowed. |
+| `End date is too old.` | The end date is earlier than allowed. |
+| `startDate cannot be later than endDate` | The start date is after the end date. |
+| `Start date cannot be later or equal than endDate.` | The start date is the same as or after the end date. |
+| `Requested date range must be smaller or equal than max day span.` | The date range is longer than the allowed maximum. |
+| `End date must follow the ISO 8601 format.` | The end date isn't in ISO 8601 format. |
+| `The 'submerchant'-parameter can only be specified for shop-in-shop aggregate merchants` | `submerchant` was given, but the caller isn't a Shop-in-Shop aggregate merchant. |
+
+#### Other
+
+| Message | Explanation |
+| --- | --- |
+| `Invalid transaction ID` | The transaction ID isn't a valid UUID. |
+| `Invalid transaction ID or payment ID` | The transaction ID or payment ID isn't a valid UUID. |
+| `Transaction not found` | The redirect or return page couldn't find the transaction. |
+| `Invalid transaction` | The Walley return couldn't match the transaction. |
+| `Unsupported provider` | The callback came for a provider that doesn't support it. |
+
+### 401 Unauthorized
+
+| Message | Explanation |
+| --- | --- |
+| `Tokenisation not enabled for merchant id: X` | Token payments aren't activated for the merchant. |
+| `HMAC validation failed.` | The email refund request's signature is invalid. |
+| `Signature mismatch` | The callback's signature doesn't match. |
+
+### 403 Forbidden
+
+| Message | Explanation |
+| --- | --- |
+| *(no message; body contains `transactionId` and `threeDSecureUrl`)* | The CIT token payment requires 3D Secure authentication. Redirect the customer to `threeDSecureUrl`. |
+| *(body contains `transactionId`, `stepUpUrl` and `error`)* | Klarna requires an extra step from the customer. Redirect the customer to `stepUpUrl`. |
+| `Invalid merchant` | The merchant account isn't active or has been blocked. |
+| `Tokenization not allowed` | Tokenization isn't allowed for the merchant. |
+| `Access forbidden` | The merchant doesn't have access to the invoice API. |
+| `Amex not activated for merchant` | The card is American Express, and Amex isn't activated for the merchant. |
+| `Credit cards not activated for merchant` | Card payments aren't activated for the merchant. |
+
+### 404 Not Found
+
+| Message | Explanation |
+| --- | --- |
+| `Invalid transaction ID` | No payment was found with the given transaction ID. |
+| `Transaction not found` | The transaction wasn't found. |
+| `Payment not found` / `Payment not found!` | The payment wasn't found. |
+| `Trade not found` | The payment wasn't found. |
+| `Trade(s) not found with given stamps` | No payments were found with the given stamps. |
+| `No invoice found for this merchant by invoice id: X` | No settlement with the given ID was found for the merchant. |
+| `No submerchant found for this merchant by id: X` | No sub-merchant with the given ID was found under the merchant. |
+| `Provider 'X' not found` | The payment's provider wasn't found when refunding. |
+
+### 412 Precondition Failed
+
+| Message | Explanation |
+| --- | --- |
+| `checkout-tokenization-id header missing or value mismatch` | The `checkout-tokenization-id` header is missing or doesn't match the tokenization ID in the URL. |
+
+### 422 Unprocessable Entity
+
+| Message | Explanation |
+| --- | --- |
+| `Unexpected response code: X.Y` | Tokenization returned an unexpected result. X is the result code, Y is the acquirer response code. |
+| `Token not found` | The token wasn't found. |
+| `Card type not found` | The token's card type couldn't be determined. |
+| `Provider 'X' does not support refunds and no email address was given` | The provider doesn't support API refunds, and the request had no `email` for an email refund. |
