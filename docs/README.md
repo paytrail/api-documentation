@@ -113,6 +113,7 @@ Once the payment has been completed the client browser will return to the mercha
 
 #### Request
 
+
 See all available fields from [create payment request body section](#create-payment).
 
 ```json
@@ -242,7 +243,7 @@ The currently possible payment statuses are:
 
 Get transaction info. Payments are reported primarily via callbacks, and implementations should mainly rely on receiving the info via them. All received payments will be eventually reported.
 
-<b>Note!</b> The transaction id needs to be sent on checkout-transaction-id header as well.
+!> <b>Note!</b> The transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 #### Response
 
@@ -277,6 +278,8 @@ See [example response](/examples#get) from examples tab.
 `HTTP POST /payments/{transactionId}/refund` refunds a payment by transaction ID.
 
 #### Request
+
+!>**Note!** The transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 See detailed description from [refund payment request body section](#refund-payment).
 
@@ -769,7 +772,7 @@ The MIT transactions are exempt from the strong customer authentication requirem
 
 If creating an authorization hold, the payment needs to be committed later with a request to the [Commit API](#commit-authorization-hold). The authorization is valid for a maximum of 7 days.
 
-<b>Note!</b> The transaction id needs to be sent on checkout-transaction-id header as well.
+!>**Note!** When charging an existing `hold` the transaction id needs to be sent on `checkout-transaction-id` header as well.
 
 ##### Request
 
@@ -783,7 +786,7 @@ The commit request body schema is the same as the one used for [create payment r
 
 If authorization hold or charge is successful, `HTTP 201` and the `transactionId` of the payment is returned.
 
-When creating CIT authorization holds or direct charges the payment might need a 3DS step-up. In these cases `HTTP 403` along with the `transactionId` and `threeDSecureUrl` is returned. When this happens, the merchant must redirect user to the given `threeDSecureUrl` for secure authorization and further redirect. See documentation [here](#customer-initiated-transactions-cit).
+When creating CIT authorization holds or direct charges the payment might need a 3DS step-up. In these cases `HTTP 403` along with the `transactionId` and `threeDSecureUrl` is returned. When this happens, the merchant must redirect user to the given `threeDSecureUrl` for secure authorization. After authentication, the customer is redirected to your redirect URLs, and your callback URLs are called if they were provided in the request. See documentation [here](#customer-initiated-transactions-cit).
 
 | field           | type   | description                             |
 | --------------- | ------ | --------------------------------------- |
@@ -798,6 +801,8 @@ If authorization hold or charge fails, `HTTP 400` and additional `acquirerRespon
 | status                          | string | Always "error"                                                |
 | acquirerResponseCode            | string | Acquirer response code or empty                               |
 | acquirerResponseCodeDescription | string | Meaningful description of the acquirer response code or empty |
+
+!> **Callback URLs are not called** if the request returns `HTTP 201` (success) or `HTTP 400` (failure).
 
 ##### Retrying failed payments
 

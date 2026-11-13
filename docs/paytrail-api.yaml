@@ -1758,7 +1758,7 @@ components:
           minimum: 0
           maximum: 900
           example: 60
-          description: Callback delay in seconds. If callback URLs and delay are provided, callbacks will be called after the delay.
+          description: Callback delay in seconds. For token payments, callback URLs are only called after a 3DS step-up (`HTTP 403`), once the customer has completed authentication. If callback URLs and delay are provided, callbacks will be called after the delay. Callbacks are not called when the request returns `HTTP 201` or `HTTP 400`.
         token:
           type: string
           example: 123e4567-e89b-12d3-a456-426655440000
