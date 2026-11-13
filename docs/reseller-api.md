@@ -43,6 +43,8 @@ Creates a new merchant. The same endpoint is used both for **normal merchants** 
 | `postalCode` | string | x | Contact person's postal code. |
 | `city` | string | x | Contact person's city. |
 | `phoneNumber` | string | x | Contact person's phone number. |
+| `firstName` | string | | Contact person's first name. Maximum 50 characters. |
+| `lastName` | string | | Contact person's last name. Maximum 50 characters. |
 
 #### ecommerce
 
